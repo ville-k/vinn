@@ -7,9 +7,8 @@ TEST(opencl_disk_loader_tests, construction_succeeds_for_valid_source_root) {
 }
 
 TEST(opencl_disk_loader_tests, construction_fails_for_invalid_source_root) {
-  EXPECT_THROW(
-      vi::la::opencl::disk_source_loader loader("/no/such/location/exists"),
-      std::invalid_argument);
+  EXPECT_THROW(vi::la::opencl::disk_source_loader loader("/no/such/location/exists"),
+               std::invalid_argument);
 }
 
 TEST(opencl_disk_loader_tests, loading_from_valid_path_does_not_throw) {
@@ -33,8 +32,7 @@ __kernel void add_numbers(__global float * a, float b) {\n\
 
 TEST(opencl_disk_loader_tests, loading_from_invalid_paths_fails) {
   vi::la::opencl::disk_source_loader loader(std::string(SRCROOT));
-  EXPECT_THROW(loader.load("tests/fixtures/does_not_exist.cl"),
-               std::invalid_argument);
+  EXPECT_THROW(loader.load("tests/fixtures/does_not_exist.cl"), std::invalid_argument);
 }
 
 TEST(memory_source_loader, loading_from_valid_path_loads_source) {
@@ -49,4 +47,3 @@ __kernel void add_numbers(__global float * a, float b) {\n\
   vi::la::opencl::source source = loader.load(source_path);
   EXPECT_EQ(expected_source, std::string(source.data()));
 }
-

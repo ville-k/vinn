@@ -15,7 +15,7 @@ matrix::matrix(std::shared_ptr<vi::la::matrix_implementation> implementation)
     : _implementation(implementation) {}
 
 matrix::matrix(vi::la::context& context,
-    const std::initializer_list<std::initializer_list<double>>& rows) {
+               const std::initializer_list<std::initializer_list<double>>& rows) {
   size_t max_column_count(0U);
   for (const std::initializer_list<double>& row : rows) {
     max_column_count = std::max(max_column_count, row.size());
@@ -34,13 +34,11 @@ matrix::matrix(vi::la::context& context,
     }
     row_offset += max_column_count;
   }
-  _implementation =
-      context.implement_matrix(rows.size(), max_column_count, values);
+  _implementation = context.implement_matrix(rows.size(), max_column_count, values);
   delete[] values;
 }
 
-matrix::matrix(vi::la::context& context, size_t rows, size_t columns,
-               double initial_value) {
+matrix::matrix(vi::la::context& context, size_t rows, size_t columns, double initial_value) {
   if (rows == 0U || columns == 0U) {
     throw incompatible_dimensions("Matrix cannot have have 0 rows or columns");
   }
@@ -65,9 +63,7 @@ matrix::matrix(vi::la::context& context, size_t rows, size_t columns,
   _implementation = context.implement_matrix(rows, columns, values.get());
 }
 
-matrix matrix::clone() const {
-  return sub_matrix(0u, row_count() - 1U, 0U, column_count() - 1U);
-}
+matrix matrix::clone() const { return sub_matrix(0u, row_count() - 1U, 0U, column_count() - 1U); }
 
 matrix matrix::operator*(matrix const& other) const {
   if (column_count() != other.row_count()) {
@@ -86,8 +82,7 @@ matrix matrix::operator*(double const other) const {
 }
 
 matrix matrix::elementwise_product(const matrix& other) const {
-  if (row_count() != other.row_count() ||
-      column_count() != other.column_count()) {
+  if (row_count() != other.row_count() || column_count() != other.column_count()) {
     throw incompatible_dimensions(*this, other, ".*");
   }
   matrix product(owning_context(), row_count(), column_count());
@@ -95,13 +90,10 @@ matrix matrix::elementwise_product(const matrix& other) const {
   return product;
 }
 
-matrix matrix::operator/(double const divisor) const {
-  return *this * (1.0 / divisor);
-}
+matrix matrix::operator/(double const divisor) const { return *this * (1.0 / divisor); }
 
 matrix matrix::operator+(const matrix& other) const {
-  if (row_count() != other.row_count() ||
-      column_count() != other.column_count()) {
+  if (row_count() != other.row_count() || column_count() != other.column_count()) {
     throw vi::la::incompatible_dimensions(*this, other, "+");
   }
 
@@ -117,8 +109,7 @@ matrix matrix::operator+(const double other) const {
 }
 
 matrix matrix::operator-(const matrix& other) const {
-  if (row_count() != other.row_count() ||
-      column_count() != other.column_count()) {
+  if (row_count() != other.row_count() || column_count() != other.column_count()) {
     throw vi::la::incompatible_dimensions(*this, other, "-");
   }
 
@@ -135,12 +126,10 @@ matrix matrix::operator-(const double other) const {
 
 matrix matrix::operator<<(const matrix& other) const {
   if (row_count() != other.row_count()) {
-    throw incompatible_dimensions(
-        "Combined matrices must have equal number of rows");
+    throw incompatible_dimensions("Combined matrices must have equal number of rows");
   }
 
-  matrix merged(owning_context(), row_count(), column_count() + other.column_count(),
-                0.0);
+  matrix merged(owning_context(), row_count(), column_count() + other.column_count(), 0.0);
   owning_context().merge(merged, *this, other);
   return merged;
 }
@@ -148,8 +137,7 @@ matrix matrix::operator<<(const matrix& other) const {
 double* matrix::operator[](size_t row_index) const {
   if (row_index >= row_count()) {
     std::ostringstream details;
-    details << "Row index: " << row_index << " out of range:[0,"
-            << row_count() - 1 << "]";
+    details << "Row index: " << row_index << " out of range:[0," << row_count() - 1 << "]";
     throw incompatible_dimensions(details.str());
   }
   double* buffer = _implementation->raw_data();
@@ -160,9 +148,7 @@ matrix matrix::columns(size_t start_column, size_t end_column) const {
   return sub_matrix(0, row_count() - 1, start_column, end_column);
 }
 
-matrix matrix::column(size_t column_index) const {
-  return columns(column_index, column_index);
-}
+matrix matrix::column(size_t column_index) const { return columns(column_index, column_index); }
 
 matrix matrix::rows(const std::vector<size_t>& row_indices) const {
   matrix selected(owning_context(), row_indices.size(), column_count());
@@ -180,15 +166,12 @@ matrix matrix::rows(size_t start_row, size_t end_row) const {
   return sub_matrix(start_row, end_row, 0U, column_count() - 1);
 }
 
-matrix matrix::row(size_t row_index) const {
-  return rows(row_index, row_index);
-}
+matrix matrix::row(size_t row_index) const { return rows(row_index, row_index); }
 
 matrix matrix::sub_matrix(size_t start_row, size_t end_row, size_t start_column,
                           size_t end_column) const {
-  if (start_row >= row_count() || end_row >= row_count() ||
-      start_row > end_row || start_column >= column_count() ||
-      end_column >= column_count() || start_column > end_column) {
+  if (start_row >= row_count() || end_row >= row_count() || start_row > end_row ||
+      start_column >= column_count() || end_column >= column_count() || start_column > end_column) {
     std::ostringstream details;
     details << "Incompatible row or column range for matrix: ";
     details << row_count() << "x" << column_count();
@@ -200,8 +183,7 @@ matrix matrix::sub_matrix(size_t start_row, size_t end_row, size_t start_column,
   const size_t sub_columns(end_column - start_column + 1U);
 
   matrix sub_matrix(owning_context(), sub_rows, sub_columns);
-  owning_context().sub_matrix(sub_matrix, *this, start_row, end_row, start_column,
-                       end_column);
+  owning_context().sub_matrix(sub_matrix, *this, start_row, end_row, start_column, end_column);
   return sub_matrix;
 }
 
@@ -221,19 +203,18 @@ std::pair<size_t, size_t> matrix::size() const {
 
 vi::la::context& matrix::owning_context() const { return _implementation->owning_context(); }
 
-vi::la::matrix_implementation* matrix::implementation() const {
-  return _implementation.get();
-}
+vi::la::matrix_implementation* matrix::implementation() const { return _implementation.get(); }
 
-incompatible_dimensions::incompatible_dimensions(
-    const matrix& a, const matrix& b, const std::string& operator_name)
+incompatible_dimensions::incompatible_dimensions(const matrix& a, const matrix& b,
+                                                 const std::string& operator_name)
     : std::runtime_error(incompatible_operands_message(a, b, operator_name)) {}
 
 incompatible_dimensions::incompatible_dimensions(const std::string& error)
     : std::runtime_error(error) {}
 
-std::string incompatible_dimensions::incompatible_operands_message(
-    const matrix& a, const matrix& b, const std::string& operator_name) {
+std::string
+incompatible_dimensions::incompatible_operands_message(const matrix& a, const matrix& b,
+                                                       const std::string& operator_name) {
   std::ostringstream details;
   details << "Incompatible dimensions: ";
   details << a.size().first << "x" << a.size().second;
@@ -251,7 +232,5 @@ std::ostream& operator<<(std::ostream& os, const vi::la::matrix& matrix) {
   }
   return os;
 }
-
 }
 }
-

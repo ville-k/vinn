@@ -41,10 +41,7 @@ vi::la::matrix csv_file::load(vi::la::context& context) {
   // matrix copies values - ensure they get released
   std::shared_ptr<double> shared_values(values, [](double* p) { delete[] p; });
 
-  return vi::la::matrix(context, matrix_values.size(), max_columns,
-                        shared_values);
-}
-
+  return vi::la::matrix(context, matrix_values.size(), max_columns, shared_values);
 }
 }
-
+}

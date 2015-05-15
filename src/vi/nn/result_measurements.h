@@ -18,13 +18,10 @@ namespace nn {
 /// Measures for multi-class classification
 class result_measurements {
 public:
-  result_measurements(vi::la::context& context,
-                      const std::vector<long>& labels);
+  result_measurements(vi::la::context& context, const std::vector<long>& labels);
 
-  void add_results(const std::vector<long>& expected,
-                   const std::vector<long>& actual);
-  void add_results(const vi::la::matrix& expected,
-                   const vi::la::matrix& actual);
+  void add_results(const std::vector<long>& expected, const std::vector<long>& actual);
+  void add_results(const vi::la::matrix& expected, const vi::la::matrix& actual);
 
   double accuracy() const;
 
@@ -48,18 +45,14 @@ public:
 
 private:
   size_t label_index_for_label(long label) const;
-  void update_confusion_matrix(const std::vector<long>& expected,
-                               const std::vector<long>& actual);
+  void update_confusion_matrix(const std::vector<long>& expected, const std::vector<long>& actual);
 
   vi::la::matrix _confusion_matrix;
   const std::vector<long> _labels;
 };
 
-std::ostream& operator<<(std::ostream& os,
-                         const result_measurements& measurements);
-
+std::ostream& operator<<(std::ostream& os, const result_measurements& measurements);
 }
 }
 
 #endif
-

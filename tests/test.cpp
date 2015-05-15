@@ -27,24 +27,24 @@ std::vector<vi::la::context*> all_contexts() {
 
     std::vector<cl_device_id> device_ids = vi::la::opencl_context::supported_devices();
     for (cl_device_id device_id : device_ids) {
-        contexts.push_back(new vi::la::opencl_context({device_id}));
+      contexts.push_back(new vi::la::opencl_context({device_id}));
     }
   }
 
   return contexts;
 }
-
 }
 
 ::testing::AssertionResult AssertMatricesEqual(const char* expected_expression,
                                                const char* actual_expression,
-                                               const vi::la::matrix & expected,
-                                               const vi::la::matrix & actual) {
+                                               const vi::la::matrix& expected,
+                                               const vi::la::matrix& actual) {
   if (actual.size() != expected.size()) {
-    return ::testing::AssertionFailure() << "Matrices " << expected_expression << " and " <<
-      actual_expression << " are not equal - dimensions differ: " <<
-      expected.row_count() << "x" << expected.column_count() << " != "
-      << actual.row_count() << "x" << actual.column_count();
+    return ::testing::AssertionFailure()
+           << "Matrices " << expected_expression << " and " << actual_expression
+           << " are not equal - dimensions differ: " << expected.row_count() << "x"
+           << expected.column_count() << " != " << actual.row_count() << "x"
+           << actual.column_count();
   }
 
   for (size_t m = 0U; m < expected.row_count(); ++m) {
@@ -52,13 +52,13 @@ std::vector<vi::la::context*> all_contexts() {
       // using googletest internals, but this class has not changed in years
       const ::testing::internal::FloatingPoint<double> lhs(expected[m][n]), rhs(actual[m][n]);
       if (!lhs.AlmostEquals(rhs)) {
-        return ::testing::AssertionFailure() << "Matrices \"" << expected_expression << "\" and \"" <<
-          actual_expression << "\" are not equal - elements at " << m << ","
-          << n << " differ: " << expected[m][n] << " != " << actual[m][n];
+        return ::testing::AssertionFailure()
+               << "Matrices \"" << expected_expression << "\" and \"" << actual_expression
+               << "\" are not equal - elements at " << m << "," << n
+               << " differ: " << expected[m][n] << " != " << actual[m][n];
       }
     }
   }
 
   return ::testing::AssertionSuccess();
 }
-

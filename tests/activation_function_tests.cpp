@@ -7,8 +7,7 @@ using namespace vi::la;
 using namespace vi::nn;
 using namespace std;
 
-class activation_function_tests
-    : public ::testing::TestWithParam<vi::la::context*> {};
+class activation_function_tests : public ::testing::TestWithParam<vi::la::context*> {};
 INSTANTIATE_TEST_CASE_P(context, activation_function_tests,
                         ::testing::ValuesIn(test::all_contexts()));
 
@@ -50,17 +49,17 @@ TEST_P(activation_function_tests, softmax_activation) {
   EXPECT_NEAR(0.6224593312, input[1][1], max_error);
 }
 
-//TEST_P(activation_function_tests, softmax_gradient) {
-  //matrix input(*GetParam(), {{-1.0, -0.5}, {0.5, 1.0}});
+// TEST_P(activation_function_tests, softmax_gradient) {
+// matrix input(*GetParam(), {{-1.0, -0.5}, {0.5, 1.0}});
 
-  //softmax_activation activation;
-  //activation.activate(input);
-  //const matrix gradient = activation.gradient(input);
-  //EXPECT_EQ(input.size(), gradient.size());
-  //EXPECT_DOUBLE_EQ(0.4199743415, gradient[0][0]);
-  //EXPECT_DOUBLE_EQ(0.7864477329, gradient[0][1]);
-  //EXPECT_DOUBLE_EQ(0.7864477329, gradient[1][0]);
-  //EXPECT_DOUBLE_EQ(0.4199743415, gradient[1][1]);
+// softmax_activation activation;
+// activation.activate(input);
+// const matrix gradient = activation.gradient(input);
+// EXPECT_EQ(input.size(), gradient.size());
+// EXPECT_DOUBLE_EQ(0.4199743415, gradient[0][0]);
+// EXPECT_DOUBLE_EQ(0.7864477329, gradient[0][1]);
+// EXPECT_DOUBLE_EQ(0.7864477329, gradient[1][0]);
+// EXPECT_DOUBLE_EQ(0.4199743415, gradient[1][1]);
 //}
 
 TEST_P(activation_function_tests, hyperbolic_tangent_activation) {
@@ -87,4 +86,3 @@ TEST_P(activation_function_tests, hyperbolic_tangent_gradient) {
   EXPECT_NEAR(0.7864477329, gradient[1][0], max_error);
   EXPECT_NEAR(0.4199743415, gradient[1][1], max_error);
 }
-

@@ -18,4 +18,3 @@
 #include <vi/la/opencl/source_loader.h>
 
 #endif
-

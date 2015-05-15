@@ -13,8 +13,7 @@ namespace opencl {
 
 builder::builder(source_loader& loader) : _loader(loader) {}
 
-void
-builder::add_extension_requirements(const std::vector<std::string>& required) {
+void builder::add_extension_requirements(const std::vector<std::string>& required) {
   _required_extensions.insert(required.begin(), required.end());
 }
 
@@ -59,8 +58,7 @@ build_result builder::build(cl::Context& context) {
   }
   cl::Program program(context, sources);
 
-  std::vector<cl::Device> context_devices =
-      context.getInfo<CL_CONTEXT_DEVICES>();
+  std::vector<cl::Device> context_devices = context.getInfo<CL_CONTEXT_DEVICES>();
   std::ostringstream log_stream;
   try {
     program.build(context_devices, combine_build_options().c_str());
@@ -74,13 +72,11 @@ build_result builder::build(cl::Context& context) {
     log_stream << "Error code: " << error.err() << std::endl;
   }
 
-  for (size_t device_index = 0; device_index < context_devices.size();
-       ++device_index) {
+  for (size_t device_index = 0; device_index < context_devices.size(); ++device_index) {
     cl::Device& device = context_devices[device_index];
     log_stream << device;
     log_stream << "Build log: " << std::endl;
-    log_stream << program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(device)
-               << std::endl;
+    log_stream << program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(device) << std::endl;
   }
   result.set_log(log_stream.str());
   return result;
@@ -120,16 +116,13 @@ bool builder::supports_all_required_extensions(cl::Context& context) const {
     std::string extensions_string = device.getInfo<CL_DEVICE_EXTENSIONS>();
     std::istringstream iss(extensions_string);
     std::set<std::string> available_extensions;
-    std::copy(
-        std::istream_iterator<std::string>(iss),
-        std::istream_iterator<std::string>(),
-        std::inserter(available_extensions, available_extensions.begin()));
+    std::copy(std::istream_iterator<std::string>(iss), std::istream_iterator<std::string>(),
+              std::inserter(available_extensions, available_extensions.begin()));
 
     std::set<std::string> matching_extensions;
-    std::set_intersection(
-        available_extensions.begin(), available_extensions.end(),
-        _required_extensions.begin(), _required_extensions.end(),
-        std::inserter(matching_extensions, matching_extensions.begin()));
+    std::set_intersection(available_extensions.begin(), available_extensions.end(),
+                          _required_extensions.begin(), _required_extensions.end(),
+                          std::inserter(matching_extensions, matching_extensions.begin()));
     if (matching_extensions != _required_extensions) {
       return false;
     }
@@ -137,8 +130,6 @@ bool builder::supports_all_required_extensions(cl::Context& context) const {
 
   return true;
 }
-
 }
 }
 }
-

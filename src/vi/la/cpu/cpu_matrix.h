@@ -11,8 +11,7 @@ namespace cpu {
 /// Matrix implementation for CPU context
 class matrix : public vi::la::matrix_implementation {
 public:
-  matrix(cpu_context& context, size_t rows, size_t columns,
-         const double* initial_values);
+  matrix(cpu_context& context, size_t rows, size_t columns, const double* initial_values);
   virtual ~matrix();
 
   size_t row_count() const;
@@ -30,10 +29,8 @@ private:
   size_t _column_count;
   double* _buffer;
 };
-
 }
 }
 }
 
 #endif
-

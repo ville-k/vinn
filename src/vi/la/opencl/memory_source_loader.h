@@ -19,10 +19,8 @@ public:
 private:
   std::map<std::string, source> _path_to_source;
 };
-
 }
 }
 }
 
 #endif
-

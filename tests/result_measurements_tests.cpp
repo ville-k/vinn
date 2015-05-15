@@ -8,8 +8,7 @@ using std::vector;
 using vi::la::matrix;
 using vi::nn::result_measurements;
 
-class result_measurements_tests
-    : public ::testing::TestWithParam<vi::la::context*> {
+class result_measurements_tests : public ::testing::TestWithParam<vi::la::context*> {
 protected:
   enum Animals { Cat, Dog };
 
@@ -81,4 +80,3 @@ TEST_P(result_measurements_tests, matrix_results_all_correct) {
   EXPECT_DOUBLE_EQ(1.0, measures.recall());
   EXPECT_DOUBLE_EQ(1.0, measures.fscore());
 }
-

@@ -17,9 +17,7 @@ private:
   size_t _max_values;
   std::vector<double> _values;
 };
-
 }
 }
 
 #endif
-

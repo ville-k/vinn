@@ -11,8 +11,7 @@
 #include "vi/nn/result_measurements.h"
 
 class network_tests : public ::testing::TestWithParam<vi::la::context*> {};
-INSTANTIATE_TEST_CASE_P(context, network_tests,
-                        ::testing::ValuesIn(test::all_contexts()));
+INSTANTIATE_TEST_CASE_P(context, network_tests, ::testing::ValuesIn(test::all_contexts()));
 
 using vi::la::matrix;
 using vi::nn::network;
@@ -27,8 +26,7 @@ TEST_P(network_tests, constructing_compatible_layers_succeeds) {
 TEST_P(network_tests, constructing_incompatible_layers_fails) {
   layer l1(*GetParam(), new vi::nn::sigmoid_activation(), 42, 400);
   layer l2(*GetParam(), new vi::nn::softmax_activation(), 10, 25);
-  EXPECT_THROW(network(*GetParam(), {l1, l2}),
-               vi::nn::network::invalid_configuration);
+  EXPECT_THROW(network(*GetParam(), {l1, l2}), vi::nn::network::invalid_configuration);
 }
 
 TEST_P(network_tests, forward_single_example_succeeds) {
@@ -89,12 +87,10 @@ TEST_P(network_tests, backward_fails_with_invalid_feature_dimensions) {
   matrix targets(*GetParam(), 10, 10, 1.0);
 
   vi::nn::cross_entropy_cost cost_function;
-  EXPECT_THROW(network.backward(features, targets, cost_function),
-               vi::la::incompatible_dimensions);
+  EXPECT_THROW(network.backward(features, targets, cost_function), vi::la::incompatible_dimensions);
 }
 
-TEST_P(network_tests,
-       backward_fails_with_different_number_features_and_targets) {
+TEST_P(network_tests, backward_fails_with_different_number_features_and_targets) {
   layer l1(*GetParam(), new vi::nn::sigmoid_activation(), 25, 10);
   layer l2(*GetParam(), new vi::nn::softmax_activation(), 10, 25);
   network network(*GetParam(), {l1, l2});
@@ -103,8 +99,7 @@ TEST_P(network_tests,
   matrix targets(*GetParam(), 7, 10, 1.0);
 
   vi::nn::cross_entropy_cost cost_function;
-  EXPECT_THROW(network.backward(features, targets, cost_function),
-               vi::la::incompatible_dimensions);
+  EXPECT_THROW(network.backward(features, targets, cost_function), vi::la::incompatible_dimensions);
 }
 
 TEST_P(network_tests, backward_fails_with_invalid_target_dimensions) {
@@ -116,7 +111,5 @@ TEST_P(network_tests, backward_fails_with_invalid_target_dimensions) {
   matrix targets(*GetParam(), 10, 7, 1.0);
 
   vi::nn::cross_entropy_cost cost_function;
-  EXPECT_THROW(network.backward(features, targets, cost_function),
-               vi::la::incompatible_dimensions);
+  EXPECT_THROW(network.backward(features, targets, cost_function), vi::la::incompatible_dimensions);
 }
-

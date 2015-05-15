@@ -15,9 +15,8 @@ vi::la::matrix cross_entropy_cost::cost(const vi::la::matrix& expected,
   return cost;
 }
 
-vi::la::matrix
-cross_entropy_cost::cost_derivative(const vi::la::matrix& expected,
-                                    const vi::la::matrix& actual) {
+vi::la::matrix cross_entropy_cost::cost_derivative(const vi::la::matrix& expected,
+                                                   const vi::la::matrix& actual) {
   return actual - expected;
 }
 
@@ -29,11 +28,9 @@ vi::la::matrix squared_error_cost::cost(const vi::la::matrix& expected,
   return cost;
 }
 
-vi::la::matrix
-squared_error_cost::cost_derivative(const vi::la::matrix& expected,
-                                    const vi::la::matrix& actual) {
+vi::la::matrix squared_error_cost::cost_derivative(const vi::la::matrix& expected,
+                                                   const vi::la::matrix& actual) {
   return expected - actual;
 }
-
 }
 }

@@ -5,4 +5,3 @@
 #include <vi/io/libsvm_file.h>
 
 #endif
-

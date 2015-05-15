@@ -12,10 +12,9 @@ using namespace vi::nn;
 class layer_tests : public ::testing::TestWithParam<vi::la::context*> {
 
 protected:
-  matrix calculate_numerical_gradient(const layer& l,
-                                      cost_function& cost_function,
-                                      const matrix& input,
-                                      const matrix& expected_output, double e) {
+  matrix calculate_numerical_gradient(const layer& l, cost_function& cost_function,
+                                      const matrix& input, const matrix& expected_output,
+                                      double e) {
     matrix perturbed_theta(l.get_theta());
     matrix numerical_gradient(*GetParam(), l.get_theta().size(), 0.0);
     for (size_t m = 0U; m < perturbed_theta.row_count(); ++m) {
@@ -60,14 +59,12 @@ protected:
     }
   }
 };
-INSTANTIATE_TEST_CASE_P(context, layer_tests,
-                        ::testing::ValuesIn(test::all_contexts()));
+INSTANTIATE_TEST_CASE_P(context, layer_tests, ::testing::ValuesIn(test::all_contexts()));
 
 TEST_P(layer_tests, forward_with_single_example) {
   const size_t input_units = 5U;
   const size_t output_units = 3U;
-  vi::nn::layer l(*GetParam(), new vi::nn::sigmoid_activation(), output_units,
-                  input_units);
+  vi::nn::layer l(*GetParam(), new vi::nn::sigmoid_activation(), output_units, input_units);
 
   vi::la::matrix input(*GetParam(), 1, input_units, 1.0);
   vi::la::matrix output = l.forward(input);
@@ -78,8 +75,7 @@ TEST_P(layer_tests, forward_with_single_example) {
 TEST_P(layer_tests, forward_with_multiple_examples) {
   const size_t input_units = 5U;
   const size_t output_units = 3U;
-  vi::nn::layer l(*GetParam(), new sigmoid_activation(), output_units,
-                  input_units);
+  vi::nn::layer l(*GetParam(), new sigmoid_activation(), output_units, input_units);
 
   vi::la::matrix input(*GetParam(), 3, input_units, 1.0);
   vi::la::matrix output = l.forward(input);
@@ -95,8 +91,7 @@ TEST_P(layer_tests, backward) {
   matrix input(*GetParam(), 1U, input_units, 1U);
   matrix activations = l.forward(input);
   matrix next_error(*GetParam(), 1U, output_units, 2.0);
-  std::pair<matrix, matrix> delta_and_gradient =
-      l.backward(input, activations, next_error);
+  std::pair<matrix, matrix> delta_and_gradient = l.backward(input, activations, next_error);
 
   matrix& delta(delta_and_gradient.first);
   EXPECT_EQ(input.size(), delta.size());
@@ -117,11 +112,9 @@ TEST_P(layer_tests, gradient_check_sigmoid_activation) {
 
   squared_error_cost cost_function;
   matrix activations = l.forward(input);
-  matrix next_error =
-      cost_function.cost_derivative(expected_output, activations);
+  matrix next_error = cost_function.cost_derivative(expected_output, activations);
 
-  std::pair<matrix, matrix> delta_and_gradient =
-      l.backward(input, activations, next_error);
+  std::pair<matrix, matrix> delta_and_gradient = l.backward(input, activations, next_error);
   const double e = 0.01;
   const double max_error = 0.001;
   const matrix numerical_gradient =
@@ -149,11 +142,9 @@ TEST_P(layer_tests, gradient_check_hyperbolic_tangent_activation) {
   squared_error_cost cost_function;
   matrix activations = l.forward(input);
 
-  matrix next_error =
-      cost_function.cost_derivative(expected_output, activations);
+  matrix next_error = cost_function.cost_derivative(expected_output, activations);
 
-  std::pair<matrix, matrix> delta_and_gradient =
-      l.backward(input, activations, next_error);
+  std::pair<matrix, matrix> delta_and_gradient = l.backward(input, activations, next_error);
 
   const double e = 0.01;
   const double max_error = 0.001;
@@ -181,10 +172,8 @@ TEST_P(layer_tests, gradient_check_softmax_activation) {
 
   matrix activations = l.forward(input);
   cross_entropy_cost cost_function;
-  matrix next_error =
-      cost_function.cost_derivative(expected_output, activations);
-  std::pair<matrix, matrix> delta_and_gradient =
-      l.backward(input, activations, next_error);
+  matrix next_error = cost_function.cost_derivative(expected_output, activations);
+  std::pair<matrix, matrix> delta_and_gradient = l.backward(input, activations, next_error);
 
   const double e = 0.01;
   const double max_error = 0.001;
@@ -201,4 +190,3 @@ TEST_P(layer_tests, gradient_check_softmax_activation) {
     }
   }
 }
-

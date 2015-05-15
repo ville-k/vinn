@@ -27,10 +27,8 @@ private:
   char* _data;
   size_t _length;
 };
-
 }
 }
 }
 
 #endif
-

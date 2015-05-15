@@ -11,17 +11,16 @@ class activation_function;
 
 class layer {
 public:
-  layer(vi::la::context& context, activation_function* activation,
-        size_t output_count, size_t input_count);
-  layer(vi::la::context& context, activation_function* activation,
-        const vi::la::matrix& theta);
+  layer(vi::la::context& context, activation_function* activation, size_t output_count,
+        size_t input_count);
+  layer(vi::la::context& context, activation_function* activation, const vi::la::matrix& theta);
   layer(const layer& other);
 
   vi::la::matrix forward(const vi::la::matrix& input) const;
 
-  std::pair<vi::la::matrix, vi::la::matrix>
-  backward(const vi::la::matrix& input, const vi::la::matrix& activations,
-           const vi::la::matrix& error) const;
+  std::pair<vi::la::matrix, vi::la::matrix> backward(const vi::la::matrix& input,
+                                                     const vi::la::matrix& activations,
+                                                     const vi::la::matrix& error) const;
 
   size_t get_input_count() const;
   size_t get_output_count() const;
@@ -34,9 +33,7 @@ private:
   vi::la::matrix _theta;
   vi::la::context& _context;
 };
-
 }
 }
 
 #endif
-

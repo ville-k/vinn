@@ -29,9 +29,7 @@ source::source(const source& other) {
   memcpy((void*)_data, other.data(), other.length() * sizeof(char));
 }
 
-source::source(source&& other) : _data(nullptr), _length(0U) {
-  *this = std::move(other);
-}
+source::source(source&& other) : _data(nullptr), _length(0U) { *this = std::move(other); }
 
 source& source::operator=(const source& other) {
   if (this != &other) {
@@ -59,7 +57,6 @@ source& source::operator=(source&& other) {
 const char* source::data() const { return _data; }
 
 size_t source::length() const { return _length; }
-
 }
 }
 }

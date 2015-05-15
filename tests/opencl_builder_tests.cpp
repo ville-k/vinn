@@ -16,8 +16,7 @@ protected:
 };
 
 std::vector<cl::Context> opencl_contexts = {cl::Context(CL_DEVICE_TYPE_CPU)};
-INSTANTIATE_TEST_CASE_P(opencl_context, opencl_builder_tests,
-                        ::testing::ValuesIn(opencl_contexts));
+INSTANTIATE_TEST_CASE_P(opencl_context, opencl_builder_tests, ::testing::ValuesIn(opencl_contexts));
 
 TEST_P(opencl_builder_tests, construction_succeeds_for_valid_source_root) {
   disk_source_loader loader(source_root);
@@ -48,12 +47,10 @@ TEST_P(opencl_builder_tests, building_valid_kernel_succeeds) {
   EXPECT_NO_THROW({ cl::Kernel kernel(result.program(), "add_numbers"); });
 }
 
-TEST_P(opencl_builder_tests,
-       building_valid_kernels_from_different_sources_succeeds) {
+TEST_P(opencl_builder_tests, building_valid_kernels_from_different_sources_succeeds) {
   disk_source_loader loader(source_root);
   builder builder(loader);
-  builder.add_source_paths(
-      {"tests/fixtures/kernel.cl", "tests/fixtures/another_kernel.cl"});
+  builder.add_source_paths({"tests/fixtures/kernel.cl", "tests/fixtures/another_kernel.cl"});
 
   cl::Context ctx = GetParam();
   build_result result = builder.build(ctx);
@@ -62,8 +59,7 @@ TEST_P(opencl_builder_tests,
   EXPECT_NO_THROW({ cl::Kernel kernel(result.program(), "subtract_numbers"); });
 }
 
-TEST_P(opencl_builder_tests,
-       building_valid_kernels_from_different_memory_sources_succeeds) {
+TEST_P(opencl_builder_tests, building_valid_kernels_from_different_memory_sources_succeeds) {
   std::map<std::string, vi::la::opencl::source> source_map;
 
   const char* kernel_source = "\
@@ -72,8 +68,7 @@ __kernel void add_numbers(__global float * a, float b) {\n\
 }";
   const size_t kernel_source_length = 82 + 1;
   std::string kernel_source_path = "memory/fixtures/kernel.cl";
-  source_map[kernel_source_path] =
-      vi::la::opencl::source(kernel_source, kernel_source_length);
+  source_map[kernel_source_path] = vi::la::opencl::source(kernel_source, kernel_source_length);
 
   const char* another_kernel_source = "\
 __kernel void subtract_numbers(__global float * a, float b) {\n\
@@ -81,8 +76,8 @@ __kernel void subtract_numbers(__global float * a, float b) {\n\
 }";
   const size_t another_kernel_source_length = 87 + 1;
   std::string another_kernel_source_path = "memory/fixtures/another_kernel.cl";
-  source_map[another_kernel_source_path] = vi::la::opencl::source(
-      another_kernel_source, another_kernel_source_length);
+  source_map[another_kernel_source_path] =
+      vi::la::opencl::source(another_kernel_source, another_kernel_source_length);
 
   memory_source_loader loader(source_map);
 
@@ -136,4 +131,3 @@ TEST_P(opencl_builder_tests, building_with_unavailable_extensions_fails) {
   cl::Context ctx = GetParam();
   EXPECT_FALSE(builder.build(ctx).success());
 }
-

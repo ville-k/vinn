@@ -13,8 +13,7 @@ namespace nn {
 /// Encountered a label that the map does not know about
 class unknown_label_exception : public std::runtime_error {
 public:
-  unknown_label_exception(const std::string& error)
-      : std::runtime_error(error) {}
+  unknown_label_exception(const std::string& error) : std::runtime_error(error) {}
 };
 
 /// Map activation units to labels and vice versa
@@ -41,9 +40,7 @@ private:
   // vector index of a label indicates active unit
   std::vector<long> _active_unit_to_label;
 };
-
 }
 }
 
 #endif
-

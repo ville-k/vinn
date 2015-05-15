@@ -5,8 +5,8 @@
 #include "vi/nn/trainer.h"
 #include "vi/nn/network.h"
 
-class trainer_tests : public ::testing::TestWithParam<
-                          testing::tuple<vi::la::context*, vi::nn::trainer*>> {
+class trainer_tests
+    : public ::testing::TestWithParam<testing::tuple<vi::la::context*, vi::nn::trainer*>> {
 protected:
   virtual void SetUp() {
     vi::la::context* context = std::get<0>(GetParam());
@@ -36,22 +36,19 @@ protected:
 };
 
 TEST_P(trainer_tests, batch_train_succeeds) {
-  double final_cost =
-      _trainer->train(*_network, *_features, *_targets, _cost_function);
+  double final_cost = _trainer->train(*_network, *_features, *_targets, _cost_function);
   EXPECT_LT(0.0, final_cost);
 }
 
 TEST_P(trainer_tests, batch_train_calls_early_stopping_callback) {
   size_t early_stopping_called(0U);
   _trainer->set_stop_early(
-      [&early_stopping_called](const vi::nn::network&, size_t,
-                               double) -> bool {
+      [&early_stopping_called](const vi::nn::network&, size_t, double) -> bool {
         early_stopping_called++;
         return false;
       });
 
-  double final_cost =
-      _trainer->train(*_network, *_features, *_targets, _cost_function);
+  double final_cost = _trainer->train(*_network, *_features, *_targets, _cost_function);
   EXPECT_LT(0.0, final_cost);
   // softmax layer should never find a solution
   EXPECT_EQ(_max_epochs, early_stopping_called);
@@ -60,14 +57,12 @@ TEST_P(trainer_tests, batch_train_calls_early_stopping_callback) {
 TEST_P(trainer_tests, batch_train_stops_training_early) {
   size_t early_stopping_called(0U);
   _trainer->set_stop_early(
-      [&early_stopping_called](const vi::nn::network&, size_t,
-                               double) -> bool {
+      [&early_stopping_called](const vi::nn::network&, size_t, double) -> bool {
         early_stopping_called++;
         return true;
       });
 
-  double final_cost =
-      _trainer->train(*_network, *_features, *_targets, _cost_function);
+  double final_cost = _trainer->train(*_network, *_features, *_targets, _cost_function);
   EXPECT_LT(0.0, final_cost);
   EXPECT_EQ(1U, early_stopping_called);
 }
@@ -77,8 +72,6 @@ TEST_P(trainer_tests, batch_train_stops_training_early) {
 
 INSTANTIATE_TEST_CASE_P(
     interface, trainer_tests,
-    ::testing::Combine(
-        ::testing::ValuesIn(test::all_contexts()),
-        ::testing::Values(new vi::nn::minibatch_gradient_descent(5, 0.3, 10),
-                          new vi::nn::batch_gradient_descent(5, 0.3))));
-
+    ::testing::Combine(::testing::ValuesIn(test::all_contexts()),
+                       ::testing::Values(new vi::nn::minibatch_gradient_descent(5, 0.3, 10),
+                                         new vi::nn::batch_gradient_descent(5, 0.3))));

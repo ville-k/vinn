@@ -7,8 +7,7 @@
 using namespace std;
 
 class csv_file_tests : public ::testing::TestWithParam<vi::la::context*> {};
-INSTANTIATE_TEST_CASE_P(context, csv_file_tests,
-                        ::testing::ValuesIn(test::all_contexts()));
+INSTANTIATE_TEST_CASE_P(context, csv_file_tests, ::testing::ValuesIn(test::all_contexts()));
 
 TEST_P(csv_file_tests, load_valid_file_succeeds) {
   const string matrix_path(test::fixture_path("valid.csv"));
@@ -23,11 +22,8 @@ TEST_P(csv_file_tests, parse_valid_file_succeeds) {
   vi::io::csv_file csv(matrix_file);
   vi::la::matrix m(csv.load(*GetParam()));
 
-  vi::la::matrix expected(*GetParam(), {
-    {0.0, 0.1, 0.2, 0.3},
-    {1.0, 1.1, 1.2, 1.3},
-    {2.0, 2.1, 2.2, 2.3}
-  });
+  vi::la::matrix expected(*GetParam(),
+                          {{0.0, 0.1, 0.2, 0.3}, {1.0, 1.1, 1.2, 1.3}, {2.0, 2.1, 2.2, 2.3}});
   EXPECT_MATRIX_EQ(expected, m);
 }
 
@@ -57,11 +53,6 @@ TEST_P(csv_file_tests, parsing_valid_string_succeeds) {
   vi::io::csv_file csv(stream);
   vi::la::matrix m(csv.load(*GetParam()));
 
-  vi::la::matrix expected(*GetParam(), {
-    {1.0, 2.0, 3.0},
-    {4.0, 5.0, 6.0},
-    {7.0, 8.0, 9.0}
-  });
+  vi::la::matrix expected(*GetParam(), {{1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}, {7.0, 8.0, 9.0}});
   EXPECT_MATRIX_EQ(expected, m);
 }
-

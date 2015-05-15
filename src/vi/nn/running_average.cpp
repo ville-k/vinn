@@ -25,7 +25,5 @@ double running_average::calculate() const {
   }
   return total / _values.size();
 }
-
 }
 }
-

@@ -7,8 +7,7 @@ namespace vi {
 namespace la {
 namespace opencl {
 
-disk_source_loader::disk_source_loader(const std::string& source_root)
-    : _source_root(source_root) {
+disk_source_loader::disk_source_loader(const std::string& source_root) : _source_root(source_root) {
   if (!is_directory(_source_root)) {
     throw std::invalid_argument("invalid source root: " + _source_root);
   }
@@ -43,8 +42,7 @@ source disk_source_loader::load(const std::string& relative_path) {
   }
 
   std::ifstream stream(absolute_path);
-  std::string contents((std::istreambuf_iterator<char>(stream)),
-                       std::istreambuf_iterator<char>());
+  std::string contents((std::istreambuf_iterator<char>(stream)), std::istreambuf_iterator<char>());
   return source(contents);
 }
 
@@ -52,8 +50,6 @@ bool disk_source_loader::can_load(const std::string& relative_path) const {
   std::string absolute_path = _source_root + "/" + relative_path;
   return is_file(absolute_path);
 }
-
 }
 }
 }
-

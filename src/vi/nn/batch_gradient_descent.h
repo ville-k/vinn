@@ -12,16 +12,13 @@ public:
   batch_gradient_descent(size_t max_epoch_count, double learning_rate);
 
   virtual double train(vi::nn::network& network, const vi::la::matrix& features,
-                       const vi::la::matrix& targets,
-                       vi::nn::cost_function& cost_function);
+                       const vi::la::matrix& targets, vi::nn::cost_function& cost_function);
 
 private:
   size_t _max_epoch_count;
   double _learning_rate;
 };
-
 }
 }
 
 #endif
-

@@ -6,27 +6,23 @@ namespace vi {
 namespace la {
 namespace opencl {
 
-matrix::matrix(opencl_context& context, size_t rows, size_t columns,
-               const double* initial_values)
-    : _context(context), _row_count(rows), _column_count(columns),
-      _host_buffer(nullptr) {
+matrix::matrix(opencl_context& context, size_t rows, size_t columns, const double* initial_values)
+    : _context(context), _row_count(rows), _column_count(columns), _host_buffer(nullptr) {
   size_t value_count = rows * columns;
   if (initial_values) {
-    _device_buffer = new cl::Buffer(
-        context.context(), CL_MEM_COPY_HOST_PTR | CL_MEM_READ_WRITE,
-        value_count * sizeof(cl_double), (void*)initial_values);
+    _device_buffer = new cl::Buffer(context.context(), CL_MEM_COPY_HOST_PTR | CL_MEM_READ_WRITE,
+                                    value_count * sizeof(cl_double), (void*)initial_values);
   } else {
-    _device_buffer = new cl::Buffer(context.context(),
-                                    CL_MEM_ALLOC_HOST_PTR | CL_MEM_READ_WRITE,
+    _device_buffer = new cl::Buffer(context.context(), CL_MEM_ALLOC_HOST_PTR | CL_MEM_READ_WRITE,
                                     value_count * sizeof(cl_double), nullptr);
   }
 
-  _host_buffer = static_cast<double *>(context.command_queue().enqueueMapBuffer(*_device_buffer, CL_TRUE, CL_MAP_READ | CL_MAP_WRITE, 0U, value_count * sizeof(cl_double)));
+  _host_buffer = static_cast<double*>(context.command_queue().enqueueMapBuffer(
+      *_device_buffer, CL_TRUE, CL_MAP_READ | CL_MAP_WRITE, 0U, value_count * sizeof(cl_double)));
 }
 
-
 matrix::~matrix() {
-  _context.command_queue().enqueueUnmapMemObject(*_device_buffer, static_cast<void *>(_host_buffer));
+  _context.command_queue().enqueueUnmapMemObject(*_device_buffer, static_cast<void*>(_host_buffer));
   delete _device_buffer;
 }
 
@@ -34,21 +30,13 @@ size_t matrix::row_count() const { return _row_count; }
 
 size_t matrix::column_count() const { return _column_count; }
 
-vi::la::context& matrix::owning_context() const {
-  return _context;
-}
+vi::la::context& matrix::owning_context() const { return _context; }
 
-double* matrix::raw_data() {
-  return _host_buffer;
-}
+double* matrix::raw_data() { return _host_buffer; }
 
-cl::Buffer* matrix::get() {
-  return _device_buffer;
-}
+cl::Buffer* matrix::get() { return _device_buffer; }
 
 size_t matrix::value_count() const { return _row_count * _column_count; }
-
 }
 }
 }
-

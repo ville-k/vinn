@@ -11,24 +11,23 @@
 namespace vi {
 namespace nn {
 
-minibatch_gradient_descent::minibatch_gradient_descent(
-    const size_t max_epoch_count, const double learning_rate,
-    const size_t batch_size, const size_t batch_iteration_count)
-    : _learning_rate(learning_rate), _max_epoch_count(max_epoch_count),
-      _batch_size(batch_size), _batch_iteration_count(batch_iteration_count) {
+minibatch_gradient_descent::minibatch_gradient_descent(const size_t max_epoch_count,
+                                                       const double learning_rate,
+                                                       const size_t batch_size,
+                                                       const size_t batch_iteration_count)
+    : _learning_rate(learning_rate), _max_epoch_count(max_epoch_count), _batch_size(batch_size),
+      _batch_iteration_count(batch_iteration_count) {
   assert(_learning_rate > 0.0);
   assert(_max_epoch_count > 0U);
   assert(_batch_size > 0U);
   assert(_batch_iteration_count > 0U);
 }
 
-double minibatch_gradient_descent::train(vi::nn::network& network,
-                                         const vi::la::matrix& features,
+double minibatch_gradient_descent::train(vi::nn::network& network, const vi::la::matrix& features,
                                          const vi::la::matrix& targets,
                                          vi::nn::cost_function& cost_function) {
   assert(_batch_size <= features.row_count());
-  const size_t effective_batch_size =
-      std::min(_batch_size, features.row_count());
+  const size_t effective_batch_size = std::min(_batch_size, features.row_count());
   const size_t batch_count(features.row_count() / effective_batch_size);
 
   const size_t batches_to_average(std::min(20LU, batch_count));
@@ -44,8 +43,7 @@ double minibatch_gradient_descent::train(vi::nn::network& network,
       vi::la::matrix batch_features = features.rows(batch_start, batch_end);
       vi::la::matrix batch_targets = targets.rows(batch_start, batch_end);
 
-      const double batch_cost =
-          gd.train(network, batch_features, batch_targets, cost_function);
+      const double batch_cost = gd.train(network, batch_features, batch_targets, cost_function);
       average.add_value(batch_cost);
     }
 
@@ -57,7 +55,5 @@ double minibatch_gradient_descent::train(vi::nn::network& network,
 
   return average.calculate();
 }
-
 }
 }
-

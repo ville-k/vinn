@@ -10,8 +10,8 @@ namespace nn {
 /// Measures for binary classification
 class confusion_table {
 public:
-  confusion_table(size_t true_positives, size_t false_negatives,
-                  size_t false_positives, size_t true_negatives);
+  confusion_table(size_t true_positives, size_t false_negatives, size_t false_positives,
+                  size_t true_negatives);
   confusion_table(const confusion_table& other);
   confusion_table& operator=(const confusion_table& other);
 
@@ -42,9 +42,7 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& os, const confusion_table& table);
-
 }
 }
 
 #endif
-

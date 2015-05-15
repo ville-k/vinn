@@ -18,8 +18,7 @@ label_map::label_map(const size_t label_count) {
 
 label_map::label_map(std::vector<long> labels) { create_mappings(labels); }
 
-vi::la::matrix
-label_map::activations_to_labels(const vi::la::matrix& activations) const {
+vi::la::matrix label_map::activations_to_labels(const vi::la::matrix& activations) const {
   vi::la::matrix labels(activations.owning_context(), activations.row_count(), 1U);
 
   for (size_t m = 0U; m < activations.row_count(); ++m) {
@@ -38,17 +37,15 @@ label_map::activations_to_labels(const vi::la::matrix& activations) const {
   return labels;
 }
 
-vi::la::matrix
-label_map::labels_to_activations(const vi::la::matrix& labels) const {
-  vi::la::matrix vectors(labels.owning_context(), labels.row_count(),
-                         _active_unit_to_label.size(), 0.0);
+vi::la::matrix label_map::labels_to_activations(const vi::la::matrix& labels) const {
+  vi::la::matrix vectors(labels.owning_context(), labels.row_count(), _active_unit_to_label.size(),
+                         0.0);
 
   for (size_t m = 0U; m < vectors.row_count(); ++m) {
     bool label_found(false);
     double label = labels[m][0U];
     for (size_t n = 0U; n < vectors.column_count(); ++n) {
-      if (std::fabs(_active_unit_to_label[n] - label) <
-          std::numeric_limits<double>::epsilon()) {
+      if (std::fabs(_active_unit_to_label[n] - label) < std::numeric_limits<double>::epsilon()) {
         vectors[m][n] = 1.0;
         label_found = true;
         break;
@@ -66,9 +63,7 @@ label_map::labels_to_activations(const vi::la::matrix& labels) const {
   return vectors;
 }
 
-const std::vector<long>& label_map::labels() const {
-  return _active_unit_to_label;
-}
+const std::vector<long>& label_map::labels() const { return _active_unit_to_label; }
 
 void label_map::create_mappings(const std::vector<long>& labels) {
   std::set<long> duplicates;
@@ -86,7 +81,5 @@ void label_map::create_mappings(const std::vector<long>& labels) {
 
   _active_unit_to_label = labels;
 }
-
 }
 }
-

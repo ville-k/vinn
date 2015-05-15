@@ -20,10 +20,8 @@ private:
   bool is_file(const std::string& path) const;
   std::string _source_root;
 };
-
 }
 }
 }
 
 #endif
-

@@ -7,11 +7,9 @@ using namespace std;
 using namespace vi::la;
 using namespace vi::nn;
 
-class cost_function_tests : public ::testing::TestWithParam<vi::la::context*> {
-};
+class cost_function_tests : public ::testing::TestWithParam<vi::la::context*> {};
 
-INSTANTIATE_TEST_CASE_P(context, cost_function_tests,
-                        ::testing::ValuesIn(test::all_contexts()));
+INSTANTIATE_TEST_CASE_P(context, cost_function_tests, ::testing::ValuesIn(test::all_contexts()));
 
 TEST_P(cost_function_tests, calculates_squared_error_cost) {
   matrix expected(*GetParam(), {{1.0, 2.0}, {3.0, 4.0}});
@@ -59,12 +57,10 @@ TEST_P(cost_function_tests, calculates_cross_entropy_cost_derivative) {
   cross_entropy_cost cross_entropy;
   matrix cost_derivative = cross_entropy.cost_derivative(expected, actual);
   EXPECT_DOUBLE_EQ(correct_derivative.row_count(), cost_derivative.row_count());
-  EXPECT_DOUBLE_EQ(correct_derivative.column_count(),
-                   cost_derivative.column_count());
+  EXPECT_DOUBLE_EQ(correct_derivative.column_count(), cost_derivative.column_count());
   for (size_t m = 0U; m < correct_derivative.row_count(); ++m) {
     for (size_t n = 0U; n < correct_derivative.column_count(); ++n) {
       EXPECT_NEAR(correct_derivative[m][n], cost_derivative[m][n], max_error);
     }
   }
 }
-

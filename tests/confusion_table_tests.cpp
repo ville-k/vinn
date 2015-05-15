@@ -48,4 +48,3 @@ TEST(confusion_table, calculates_performance_measures) {
   EXPECT_DOUBLE_EQ(0.0, e.specificity());
   EXPECT_DOUBLE_EQ(0.0, e.auc());
 }
-

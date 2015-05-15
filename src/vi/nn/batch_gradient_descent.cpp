@@ -9,15 +9,13 @@
 namespace vi {
 namespace nn {
 
-batch_gradient_descent::batch_gradient_descent(size_t max_epoch_count,
-                                               double learning_rate)
+batch_gradient_descent::batch_gradient_descent(size_t max_epoch_count, double learning_rate)
     : _max_epoch_count(max_epoch_count), _learning_rate(learning_rate) {
   assert(_max_epoch_count > 0U);
   assert(_learning_rate > 0.0);
 }
 
-double batch_gradient_descent::train(vi::nn::network& network,
-                                     const vi::la::matrix& features,
+double batch_gradient_descent::train(vi::nn::network& network, const vi::la::matrix& features,
                                      const vi::la::matrix& targets,
                                      vi::nn::cost_function& cost_function) {
   double cost(std::numeric_limits<double>::max());
@@ -39,7 +37,5 @@ double batch_gradient_descent::train(vi::nn::network& network,
 
   return cost;
 }
-
 }
 }
-

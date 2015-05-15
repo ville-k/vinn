@@ -5,7 +5,7 @@
 #include <vi/la/matrix_implementation.h>
 
 namespace cl {
-    class Buffer;
+class Buffer;
 }
 
 namespace vi {
@@ -15,8 +15,7 @@ namespace opencl {
 /// Matrix implementation for OpenCL context
 class matrix : public vi::la::matrix_implementation {
 public:
-  matrix(opencl_context& context, size_t rows, size_t columns,
-         const double* initial_values);
+  matrix(opencl_context& context, size_t rows, size_t columns, const double* initial_values);
   virtual ~matrix();
 
   virtual size_t row_count() const;
@@ -36,10 +35,8 @@ private:
   cl::Buffer* _device_buffer;
   double* _host_buffer;
 };
-
 }
 }
 }
 
 #endif
-

@@ -10,7 +10,7 @@
 #include <vector>
 
 namespace cl {
-    class Context;
+class Context;
 }
 
 namespace vi {
@@ -43,10 +43,8 @@ private:
   std::set<std::string> _source_paths;
   std::set<std::string> _build_options;
 };
-
 }
 }
 }
 
 #endif
-

@@ -8,21 +8,16 @@
 #include <stdexcept>
 #include <vector>
 
-
 namespace vi {
 namespace la {
 
 class matrix {
 public:
   matrix();
-  matrix(context& context,
-         const std::initializer_list<std::initializer_list<double>>& rows);
-  matrix(context& context, size_t rows, size_t columns,
-         double initial_value = 0.0);
-  matrix(context& context, const std::pair<size_t, size_t>& size,
-         double initial_value = 0.0);
-  matrix(context& context, size_t rows, size_t columns,
-         const std::shared_ptr<double> values);
+  matrix(context& context, const std::initializer_list<std::initializer_list<double>>& rows);
+  matrix(context& context, size_t rows, size_t columns, double initial_value = 0.0);
+  matrix(context& context, const std::pair<size_t, size_t>& size, double initial_value = 0.0);
+  matrix(context& context, size_t rows, size_t columns, const std::shared_ptr<double> values);
 
   matrix clone() const;
 
@@ -48,8 +43,7 @@ public:
   matrix rows(size_t start_row, size_t end_row) const;
   matrix row(size_t row_index) const;
 
-  matrix sub_matrix(size_t start_row, size_t end_row, size_t start_column,
-                    size_t end_column) const;
+  matrix sub_matrix(size_t start_row, size_t end_row, size_t start_column, size_t end_column) const;
 
   matrix transpose() const;
 
@@ -72,8 +66,7 @@ private:
 
 class incompatible_dimensions : public std::runtime_error {
 public:
-  incompatible_dimensions(const matrix& a, const matrix& b,
-                          const std::string& operator_name);
+  incompatible_dimensions(const matrix& a, const matrix& b, const std::string& operator_name);
   incompatible_dimensions(const std::string& error);
 
 private:
@@ -82,7 +75,6 @@ private:
 };
 
 std::ostream& operator<<(std::ostream&, const vi::la::matrix&);
-
 }
 }
 

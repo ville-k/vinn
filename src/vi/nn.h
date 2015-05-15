@@ -12,4 +12,3 @@
 #include <vi/nn/result_measurements.h>
 
 #endif
-

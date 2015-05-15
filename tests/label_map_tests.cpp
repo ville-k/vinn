@@ -26,8 +26,7 @@ protected:
   }
 };
 
-INSTANTIATE_TEST_CASE_P(context, label_map_tests,
-                        ::testing::ValuesIn(test::all_contexts()));
+INSTANTIATE_TEST_CASE_P(context, label_map_tests, ::testing::ValuesIn(test::all_contexts()));
 
 TEST_P(label_map_tests, creates_mapping_from_label_count) {
   const size_t label_count(3U);
@@ -96,7 +95,5 @@ TEST_P(label_map_tests, mapping_unknown_label_throws) {
 
   matrix label_matrix(*GetParam(), 1, 3);
   label_matrix[0U][2U] = 1;
-  EXPECT_THROW(map.labels_to_activations(label_matrix),
-               unknown_label_exception);
+  EXPECT_THROW(map.labels_to_activations(label_matrix), unknown_label_exception);
 }
-

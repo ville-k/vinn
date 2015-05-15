@@ -18,9 +18,7 @@ public:
 
   virtual double* raw_data() = 0;
 };
-
 }
 }
 
 #endif
-

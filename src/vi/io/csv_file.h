@@ -18,9 +18,7 @@ public:
 private:
   std::iostream& _stream;
 };
-
 }
 }
 
 #endif
-

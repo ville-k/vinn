@@ -8,8 +8,7 @@
 using vi::io::libsvm_file;
 
 class libsvm_file_tests : public ::testing::TestWithParam<vi::la::context*> {};
-INSTANTIATE_TEST_CASE_P(context, libsvm_file_tests,
-                        ::testing::ValuesIn(test::all_contexts()));
+INSTANTIATE_TEST_CASE_P(context, libsvm_file_tests, ::testing::ValuesIn(test::all_contexts()));
 
 TEST_P(libsvm_file_tests, constructs) {
   std::stringstream stream;
@@ -130,4 +129,3 @@ TEST_P(libsvm_file_tests, load_data_with_comments) {
   EXPECT_EQ(0.159, labels_and_features.second[1][158]);
   EXPECT_EQ(0.160, labels_and_features.second[1][159]);
 }
-

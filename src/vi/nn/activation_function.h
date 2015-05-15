@@ -41,9 +41,7 @@ public:
   void activate(vi::la::matrix& inputs) const;
   vi::la::matrix gradient(const vi::la::matrix& activations) const;
 };
-
 }
 }
 
 #endif
-

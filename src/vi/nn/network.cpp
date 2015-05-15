@@ -14,9 +14,9 @@ network::network(vi::la::context& context, const std::vector<layer>& layers)
   for (size_t i = 1U; i < _layers.size(); ++i) {
     if (_layers[i - 1].get_output_count() != _layers[i].get_input_count()) {
       std::ostringstream details;
-      details << "Layer " << i << " has different number of inputs("
-              << _layers[i].get_input_count() << ") than layer " << i - 1
-              << " has outputs (" << _layers[i - 1].get_output_count() << ").";
+      details << "Layer " << i << " has different number of inputs(" << _layers[i].get_input_count()
+              << ") than layer " << i - 1 << " has outputs (" << _layers[i - 1].get_output_count()
+              << ").";
       throw invalid_configuration(details.str());
     }
   }
@@ -30,9 +30,9 @@ la::matrix network::forward(const la::matrix& inputs) const {
   return activation;
 }
 
-std::pair<double, std::vector<la::matrix>>
-network::backward(const la::matrix& features, const la::matrix& targets,
-                  cost_function& cost_function) {
+std::pair<double, std::vector<la::matrix>> network::backward(const la::matrix& features,
+                                                             const la::matrix& targets,
+                                                             cost_function& cost_function) {
   std::vector<vi::la::matrix> activations;
   activations.push_back(features);
   for (const layer& l : _layers) {
@@ -63,6 +63,4 @@ network::backward(const la::matrix& features, const la::matrix& targets,
 
 std::vector<layer>& network::layers() { return _layers; }
 }
-
 }
-

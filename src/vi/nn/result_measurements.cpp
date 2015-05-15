@@ -7,8 +7,7 @@ using vi::la::matrix;
 namespace {
 
 /// create a std::vector representation of column vector/matrix
-std::vector<long>
-column_vector_to_vector(const vi::la::matrix& column_vector_labels) {
+std::vector<long> column_vector_to_vector(const vi::la::matrix& column_vector_labels) {
   std::vector<long> vector;
   vector.reserve(column_vector_labels.row_count());
   for (size_t m = 0U; m < column_vector_labels.row_count(); ++m) {
@@ -18,16 +17,13 @@ column_vector_to_vector(const vi::la::matrix& column_vector_labels) {
 
   return vector;
 }
-
 }
 
 namespace vi {
 namespace nn {
 
-result_measurements::result_measurements(vi::la::context& context,
-                                         const std::vector<long>& labels)
-    : _confusion_matrix(context, labels.size(), labels.size(), 0.0),
-      _labels(labels) {}
+result_measurements::result_measurements(vi::la::context& context, const std::vector<long>& labels)
+    : _confusion_matrix(context, labels.size(), labels.size(), 0.0), _labels(labels) {}
 
 void result_measurements::add_results(const std::vector<long>& expected,
                                       const std::vector<long>& actual) {
@@ -36,13 +32,11 @@ void result_measurements::add_results(const std::vector<long>& expected,
 
 void result_measurements::add_results(const vi::la::matrix& expected,
                                       const vi::la::matrix& actual) {
-  add_results(column_vector_to_vector(expected),
-              column_vector_to_vector(actual));
+  add_results(column_vector_to_vector(expected), column_vector_to_vector(actual));
 }
 
-void
-result_measurements::update_confusion_matrix(const std::vector<long>& expected,
-                                             const std::vector<long>& actual) {
+void result_measurements::update_confusion_matrix(const std::vector<long>& expected,
+                                                  const std::vector<long>& actual) {
   for (size_t m = 0U; m < actual.size(); ++m) {
     const size_t actual_index(label_index_for_label(actual[m]));
     const size_t expected_index(label_index_for_label(expected[m]));
@@ -158,12 +152,9 @@ size_t result_measurements::label_index_for_label(long label) const {
   return label_index;
 }
 
-vi::la::matrix result_measurements::confusion_matrix() const {
-  return _confusion_matrix;
-}
+vi::la::matrix result_measurements::confusion_matrix() const { return _confusion_matrix; }
 
-confusion_table
-result_measurements::confusion_table_for_label(long label) const {
+confusion_table result_measurements::confusion_table_for_label(long label) const {
   double true_positives(0.0);
   double true_negatives(0.0);
   double false_positives(0.0);
@@ -190,8 +181,7 @@ result_measurements::confusion_table_for_label(long label) const {
     }
   }
 
-  return confusion_table(true_positives, false_negatives, false_positives,
-                         true_negatives);
+  return confusion_table(true_positives, false_negatives, false_positives, true_negatives);
 }
 
 const std::vector<long>& result_measurements::labels() const { return _labels; }
@@ -220,7 +210,5 @@ std::ostream& operator<<(std::ostream& os, const result_measurements& m) {
 
   return os;
 }
-
 }
 }
-

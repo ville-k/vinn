@@ -9,14 +9,11 @@ namespace nn {
 
 class minibatch_gradient_descent : public trainer {
 public:
-  minibatch_gradient_descent(const size_t max_epoch_count,
-                             const double learning_rate,
-                             const size_t batch_size,
-                             const size_t batch_iteration_count = 1);
+  minibatch_gradient_descent(const size_t max_epoch_count, const double learning_rate,
+                             const size_t batch_size, const size_t batch_iteration_count = 1);
 
   virtual double train(vi::nn::network& network, const vi::la::matrix& features,
-                       const vi::la::matrix& targets,
-                       vi::nn::cost_function& cost_function);
+                       const vi::la::matrix& targets, vi::nn::cost_function& cost_function);
 
 private:
   double _learning_rate;
@@ -24,9 +21,7 @@ private:
   size_t _batch_size;
   size_t _batch_iteration_count;
 };
-
 }
 }
 
 #endif
-

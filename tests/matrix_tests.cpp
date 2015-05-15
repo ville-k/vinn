@@ -5,8 +5,7 @@ using namespace std;
 using namespace vi::la;
 
 class matrix_tests : public ::testing::TestWithParam<vi::la::context*> {};
-INSTANTIATE_TEST_CASE_P(context, matrix_tests,
-                        ::testing::ValuesIn(test::all_contexts()));
+INSTANTIATE_TEST_CASE_P(context, matrix_tests, ::testing::ValuesIn(test::all_contexts()));
 
 TEST_P(matrix_tests, invalid_construction) {
   EXPECT_THROW(matrix(*GetParam(), 0U, 0U), incompatible_dimensions);
@@ -34,8 +33,7 @@ TEST_P(matrix_tests, costruct_with_initial_value) {
   EXPECT_EQ(300U, a.column_count());
   for (size_t m = 0U; m < a.row_count(); ++m) {
     for (size_t n = 0U; n < a.column_count(); ++n) {
-      EXPECT_EQ(initial_value, a[m][n]) << "should be initialized to "
-                                        << initial_value;
+      EXPECT_EQ(initial_value, a[m][n]) << "should be initialized to " << initial_value;
     }
   }
 }
@@ -201,16 +199,15 @@ TEST_P(matrix_tests, matrix_scalar_subtraction) {
 
 TEST_P(matrix_tests, elementwise_product) {
   matrix a(*GetParam(), {
-                         {1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}, {7.0, 8.0, 9.0},
+                            {1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}, {7.0, 8.0, 9.0},
                         });
   matrix b(*GetParam(), {
-                         {1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}, {7.0, 8.0, 9.0},
+                            {1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}, {7.0, 8.0, 9.0},
                         });
   matrix c = a.elementwise_product(b);
-  matrix expected(*GetParam(),
-                 {
-                  {1.0, 4.0, 9.0}, {16.0, 25.0, 36.0}, {49.0, 64.0, 81.0},
-                 });
+  matrix expected(*GetParam(), {
+                                   {1.0, 4.0, 9.0}, {16.0, 25.0, 36.0}, {49.0, 64.0, 81.0},
+                               });
   EXPECT_MATRIX_EQ(expected, c);
 
   matrix d(*GetParam(), a.row_count() + 1U, a.column_count());
@@ -243,12 +240,10 @@ TEST_P(matrix_tests, merge) {
   matrix a(*GetParam(), 4U, 3U, 1.0);
   matrix b(*GetParam(), 4U, 2U, 2.0);
   matrix c = a << b;
-  matrix expected(*GetParam(), {
-      {1.0, 1.0, 1.0, 2.0, 2.0},
-      {1.0, 1.0, 1.0, 2.0, 2.0},
-      {1.0, 1.0, 1.0, 2.0, 2.0},
-      {1.0, 1.0, 1.0, 2.0, 2.0}
-  });
+  matrix expected(*GetParam(), {{1.0, 1.0, 1.0, 2.0, 2.0},
+                                {1.0, 1.0, 1.0, 2.0, 2.0},
+                                {1.0, 1.0, 1.0, 2.0, 2.0},
+                                {1.0, 1.0, 1.0, 2.0, 2.0}});
   EXPECT_MATRIX_EQ(expected, c);
 }
 
@@ -269,8 +264,7 @@ TEST_P(matrix_tests, splice_columns_with_invalid_indices) {
   matrix a(*GetParam(), 3U, 5U);
   EXPECT_THROW(a.columns(1U, a.column_count()), incompatible_dimensions);
   EXPECT_THROW(a.columns(2U, 1U), incompatible_dimensions);
-  EXPECT_THROW(a.columns(a.column_count(), a.column_count()),
-               incompatible_dimensions);
+  EXPECT_THROW(a.columns(a.column_count(), a.column_count()), incompatible_dimensions);
 }
 
 TEST_P(matrix_tests, splice_columns) {
@@ -313,12 +307,12 @@ TEST_P(matrix_tests, splice_rows) {
 
 TEST_P(matrix_tests, sub_matrix_succeeds) {
   matrix a(*GetParam(), {
-      { 1.0, 1.0,  2.0, 2.0 },
-      { 1.0, 1.0,  2.0, 2.0 },
+                            {1.0, 1.0, 2.0, 2.0},
+                            {1.0, 1.0, 2.0, 2.0},
 
-      { 3.0, 3.0,  4.0, 4.0 },
-      { 3.0, 3.0,  4.0, 4.0 },
-  });
+                            {3.0, 3.0, 4.0, 4.0},
+                            {3.0, 3.0, 4.0, 4.0},
+                        });
 
   matrix ones = a.sub_matrix(0, 1, 0, 1);
   EXPECT_MATRIX_EQ(matrix(*GetParam(), 2U, 2U, 1.0), ones);
@@ -333,11 +327,8 @@ TEST_P(matrix_tests, sub_matrix_succeeds) {
 TEST_P(matrix_tests, sub_matrix_fails) {
   matrix a(*GetParam(), 6U, 6U);
   EXPECT_THROW(a.sub_matrix(0, a.row_count(), 0, 1), incompatible_dimensions);
-  EXPECT_THROW(a.sub_matrix(0, 1, 0, a.column_count()),
-               incompatible_dimensions);
-  EXPECT_THROW(a.sub_matrix(0, a.row_count(), 0, a.column_count()),
-               incompatible_dimensions);
-
+  EXPECT_THROW(a.sub_matrix(0, 1, 0, a.column_count()), incompatible_dimensions);
+  EXPECT_THROW(a.sub_matrix(0, a.row_count(), 0, a.column_count()), incompatible_dimensions);
 }
 
 // Convolutions are WIP - not working on OSX CPU based OpenCL due to missing
@@ -345,37 +336,26 @@ TEST_P(matrix_tests, sub_matrix_fails) {
 class DISABLED_matrix_convolution_tests : public ::testing::TestWithParam<vi::la::context*> {};
 TEST_P(DISABLED_matrix_convolution_tests, convolve_2d_odd_mask) {
   matrix a(*GetParam(), 4U, 4U, 1.0f);
-  matrix mask(*GetParam(), {
-    {1.0, 1.0, 1.0},
-    {1.0, 2.0, 1.0},
-    {1.0, 1.0, 1.0}
-  });
-  matrix expected(*GetParam(), {
-    {5.0, 7.0, 7.0, 5.0},
-    {7.0, 10.0, 10.0, 7.0},
-    {7.0, 10.0, 10.0, 7.0},
-    {5.0, 7.0, 7.0, 5.0}
-  });
+  matrix mask(*GetParam(), {{1.0, 1.0, 1.0}, {1.0, 2.0, 1.0}, {1.0, 1.0, 1.0}});
+  matrix expected(
+      *GetParam(),
+      {{5.0, 7.0, 7.0, 5.0}, {7.0, 10.0, 10.0, 7.0}, {7.0, 10.0, 10.0, 7.0}, {5.0, 7.0, 7.0, 5.0}});
   matrix result(*GetParam(), a.size(), 0.0f);
   GetParam()->convolve_2d(result, mask, a, 1);
   EXPECT_MATRIX_EQ(expected, result);
 }
 
 TEST_P(DISABLED_matrix_convolution_tests, convolve_2d_2channels_odd_mask) {
-  matrix a(*GetParam(),
-           {{1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 10.0, 20.0, 10.0, 20.0},
-            {1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 10.0, 20.0, 10.0, 20.0},
-            {1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 10.0, 20.0, 10.0, 20.0},
-            {1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 10.0, 20.0, 10.0, 20.0}});
+  matrix a(*GetParam(), {{1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 10.0, 20.0, 10.0, 20.0},
+                         {1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 10.0, 20.0, 10.0, 20.0},
+                         {1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 10.0, 20.0, 10.0, 20.0},
+                         {1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 10.0, 20.0, 10.0, 20.0}});
   matrix mask(*GetParam(), {{1.0, 1.0, 1.0}, {1.0, 2.0, 1.0}, {1.0, 1.0, 1.0}});
-  matrix expected(*GetParam(), {{5.0, 10.0, 7.0, 14.0, 7.0, 14.0, 25.0, 50.0,
-                                52.0, 104.0, 50.0, 100.0},
-                               {7.0, 14.0, 10.0, 20.0, 10.0, 20.0, 37.0, 74.0,
-                                73.0, 146.0, 70.0, 140.0},
-                               {7.0, 14.0, 10.0, 20.0, 10.0, 20.0, 37.0, 74.0,
-                                73.0, 146.0, 70.0, 140.0},
-                               {5.0, 10.0, 7.0, 14.0, 7.0, 14.0, 25.0, 50.0,
-                                52.0, 104.0, 50.0, 100.0}});
+  matrix expected(*GetParam(),
+                  {{5.0, 10.0, 7.0, 14.0, 7.0, 14.0, 25.0, 50.0, 52.0, 104.0, 50.0, 100.0},
+                   {7.0, 14.0, 10.0, 20.0, 10.0, 20.0, 37.0, 74.0, 73.0, 146.0, 70.0, 140.0},
+                   {7.0, 14.0, 10.0, 20.0, 10.0, 20.0, 37.0, 74.0, 73.0, 146.0, 70.0, 140.0},
+                   {5.0, 10.0, 7.0, 14.0, 7.0, 14.0, 25.0, 50.0, 52.0, 104.0, 50.0, 100.0}});
   matrix result(*GetParam(), a.size(), 0.0f);
   GetParam()->convolve_2d(result, mask, a, 2);
   EXPECT_MATRIX_EQ(expected, result);
@@ -383,16 +363,10 @@ TEST_P(DISABLED_matrix_convolution_tests, convolve_2d_2channels_odd_mask) {
 
 TEST_P(DISABLED_matrix_convolution_tests, convolve_2d_even_rows_mask) {
   matrix a(*GetParam(), 4U, 4U, 1.0f);
-  matrix mask(*GetParam(), {
-    {1.0, 2.0, 1.0},
-    {1.0, 2.0, 1.0}
-  });
-  matrix expected(*GetParam(), {
-    {3.0, 4.0, 4.0, 3.0},
-    {6.0, 8.0, 8.0, 6.0},
-    {6.0, 8.0, 8.0, 6.0},
-    {6.0, 8.0, 8.0, 6.0}
-  });
+  matrix mask(*GetParam(), {{1.0, 2.0, 1.0}, {1.0, 2.0, 1.0}});
+  matrix expected(
+      *GetParam(),
+      {{3.0, 4.0, 4.0, 3.0}, {6.0, 8.0, 8.0, 6.0}, {6.0, 8.0, 8.0, 6.0}, {6.0, 8.0, 8.0, 6.0}});
 
   matrix result(*GetParam(), a.size(), 0.0f);
   GetParam()->convolve_2d(result, mask, a, 1);
@@ -402,17 +376,10 @@ TEST_P(DISABLED_matrix_convolution_tests, convolve_2d_even_rows_mask) {
 // WIP, even column mask is broken
 TEST_P(DISABLED_matrix_convolution_tests, convolve_2d_even_colums_mask) {
   matrix a(*GetParam(), 4U, 4U, 1.0f);
-  matrix mask(*GetParam(), {
-    {1.0, 2.0},
-    {1.0, 2.0},
-    {1.0, 2.0}
-  });
-  matrix expected(*GetParam(), {
-    {4.0,  6.0,  6.0, 6.0},
-    {6.0,  9.0,  9.0, 9.0},
-    {6.0,  9.0,  9.0, 9.0},
-    {4.0,  6.0,  6.0, 6.0}
-  });
+  matrix mask(*GetParam(), {{1.0, 2.0}, {1.0, 2.0}, {1.0, 2.0}});
+  matrix expected(
+      *GetParam(),
+      {{4.0, 6.0, 6.0, 6.0}, {6.0, 9.0, 9.0, 9.0}, {6.0, 9.0, 9.0, 9.0}, {4.0, 6.0, 6.0, 6.0}});
   matrix result(*GetParam(), a.size(), 0.0f);
   GetParam()->convolve_2d(result, mask, a, 1);
   cout << result << endl;
@@ -420,19 +387,12 @@ TEST_P(DISABLED_matrix_convolution_tests, convolve_2d_even_colums_mask) {
 }
 
 TEST_P(DISABLED_matrix_convolution_tests, convolve_2d_even_mask) {
-    matrix a(*GetParam(), 4U, 4U, 1.0f);
-    matrix mask(*GetParam(), {
-        {1.0, 2.0},
-        {1.0, 2.0}
-    });
-    matrix expected(*GetParam(), {
-        {2.0,  3.0,  3.0, 3.0},
-        {4.0,  6.0,  6.0, 6.0},
-        {4.0,  6.0,  6.0, 6.0},
-        {4.0,  6.0,  6.0, 6.0}
-    });
-    matrix result(*GetParam(), a.size(), 0.0f);
-    GetParam()->convolve_2d(result, mask, a, 1);
-    EXPECT_MATRIX_EQ(expected, result);
+  matrix a(*GetParam(), 4U, 4U, 1.0f);
+  matrix mask(*GetParam(), {{1.0, 2.0}, {1.0, 2.0}});
+  matrix expected(
+      *GetParam(),
+      {{2.0, 3.0, 3.0, 3.0}, {4.0, 6.0, 6.0, 6.0}, {4.0, 6.0, 6.0, 6.0}, {4.0, 6.0, 6.0, 6.0}});
+  matrix result(*GetParam(), a.size(), 0.0f);
+  GetParam()->convolve_2d(result, mask, a, 1);
+  EXPECT_MATRIX_EQ(expected, result);
 }
-

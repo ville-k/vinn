@@ -18,8 +18,7 @@ class network {
 public:
   class invalid_configuration : public std::runtime_error {
   public:
-    invalid_configuration(const std::string& error)
-        : std::runtime_error(error) {}
+    invalid_configuration(const std::string& error) : std::runtime_error(error) {}
   };
 
   /// Construct network, throwing invalid_configuration if layer dimensions
@@ -32,9 +31,9 @@ public:
 
   /// Forward and backward pass through network
   /// return cost and gradients for each layer
-  std::pair<double, std::vector<vi::la::matrix>>
-  backward(const vi::la::matrix& features, const vi::la::matrix& targets,
-           cost_function& cost_function);
+  std::pair<double, std::vector<vi::la::matrix>> backward(const vi::la::matrix& features,
+                                                          const vi::la::matrix& targets,
+                                                          cost_function& cost_function);
 
   std::vector<layer>& layers();
 
@@ -42,9 +41,7 @@ private:
   vi::la::context& _context;
   std::vector<layer> _layers;
 };
-
 }
 }
 
 #endif
-

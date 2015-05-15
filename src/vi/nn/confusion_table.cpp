@@ -9,9 +9,7 @@ confusion_table::confusion_table(size_t true_positives, size_t false_negatives,
     : _true_positives(true_positives), _true_negatives(true_negatives),
       _false_positives(false_positives), _false_negatives(false_negatives) {}
 
-confusion_table::confusion_table(const confusion_table& other) {
-  *this = other;
-}
+confusion_table::confusion_table(const confusion_table& other) { *this = other; }
 
 confusion_table& confusion_table::operator=(const confusion_table& other) {
   _true_positives = other._true_positives;
@@ -30,21 +28,13 @@ size_t confusion_table::false_positives() const { return _false_positives; }
 
 size_t confusion_table::false_negatives() const { return _false_negatives; }
 
-double confusion_table::tp() const {
-  return static_cast<double>(_true_positives);
-}
+double confusion_table::tp() const { return static_cast<double>(_true_positives); }
 
-double confusion_table::tn() const {
-  return static_cast<double>(_true_negatives);
-}
+double confusion_table::tn() const { return static_cast<double>(_true_negatives); }
 
-double confusion_table::fp() const {
-  return static_cast<double>(_false_positives);
-}
+double confusion_table::fp() const { return static_cast<double>(_false_positives); }
 
-double confusion_table::fn() const {
-  return static_cast<double>(_false_negatives);
-}
+double confusion_table::fn() const { return static_cast<double>(_false_negatives); }
 
 double confusion_table::accuracy() const {
   const double denominator(results());
@@ -80,8 +70,7 @@ double confusion_table::recall() const {
 
 double confusion_table::fscore(double beta) const {
   const double beta_squared(std::pow(beta, 2));
-  const double denominator((beta_squared + 1) * tp() + beta_squared * fn() +
-                           fp());
+  const double denominator((beta_squared + 1) * tp() + beta_squared * fn() + fp());
   if (denominator > 0.0) {
     return ((beta_squared + 1) * tp()) / denominator;
   }
@@ -107,7 +96,5 @@ std::ostream& operator<<(std::ostream& os, const confusion_table& t) {
   os << "FScore:    " << t.fscore() << std::endl;
   return os;
 }
-
 }
 }
-

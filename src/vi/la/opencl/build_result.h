@@ -5,7 +5,7 @@
 #include <string>
 
 namespace cl {
-    class Program;
+class Program;
 }
 
 namespace vi {
@@ -18,7 +18,7 @@ public:
   bool success() const;
   void set_success(bool success);
 
-  cl::Program & program();
+  cl::Program& program();
   void set_program(cl::Program& program);
 
   std::string log() const;
@@ -29,7 +29,6 @@ private:
   bool _success;
   std::string _log;
 };
-
 }
 }
 }

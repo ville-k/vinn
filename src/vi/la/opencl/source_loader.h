@@ -13,10 +13,8 @@ public:
   virtual source load(const std::string& relative_path) = 0;
   virtual bool can_load(const std::string& relative_path) const = 0;
 };
-
 }
 }
 }
 
 #endif
-

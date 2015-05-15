@@ -9,20 +9,16 @@ namespace la {
 /// CPU/C++ based reference implementation of linear algebra operations
 class cpu_context : public context {
 public:
-  std::shared_ptr<vi::la::matrix_implementation>
-  implement_matrix(size_t rows, size_t columns, const double* initial_values);
+  std::shared_ptr<vi::la::matrix_implementation> implement_matrix(size_t rows, size_t columns,
+                                                                  const double* initial_values);
 
-  void multiply(matrix& product, const matrix& operand_1,
-                const matrix& operand_2);
-  void multiply(matrix& product, const matrix& operand_1,
-                const double operand_2);
-  void multiply_elementwise(matrix& product, const matrix& operand_1,
-                            const matrix& operand_2);
+  void multiply(matrix& product, const matrix& operand_1, const matrix& operand_2);
+  void multiply(matrix& product, const matrix& operand_1, const double operand_2);
+  void multiply_elementwise(matrix& product, const matrix& operand_1, const matrix& operand_2);
 
   void add(matrix& sum, const matrix& operand_1, const double operand_2);
   void add(matrix& sum, const matrix& operand_1, const matrix& operand_2);
-  void subtract(matrix& difference, const matrix& operand_1,
-                const matrix& operand_2);
+  void subtract(matrix& difference, const matrix& operand_1, const matrix& operand_2);
 
   void sigmoid(matrix& operand);
   void sigmoid_gradient(matrix& gradient, const matrix& operand);
@@ -37,15 +33,12 @@ public:
   matrix sum_columns(const matrix& matrix);
   void log(matrix& result, const matrix& original);
 
-  void sub_matrix(matrix& target, const matrix& original, size_t start_row,
-                  size_t end_row, size_t start_column, size_t end_column);
+  void sub_matrix(matrix& target, const matrix& original, size_t start_row, size_t end_row,
+                  size_t start_column, size_t end_column);
 
-  void convolve_2d(matrix& result, const matrix& mask, const matrix& original,
-                   size_t channels);
+  void convolve_2d(matrix& result, const matrix& mask, const matrix& original, size_t channels);
 };
-
 }
 }
 
 #endif
-
