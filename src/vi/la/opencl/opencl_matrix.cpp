@@ -1,5 +1,6 @@
 #include "vi/la/opencl/opencl_matrix.h"
 #include <cassert>
+#include <CL/cl.hpp>
 
 namespace vi {
 namespace la {

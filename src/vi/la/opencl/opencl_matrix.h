@@ -4,6 +4,10 @@
 #include <vi/la/opencl/opencl_context.h>
 #include <vi/la/matrix_implementation.h>
 
+namespace cl {
+    class Buffer;
+}
+
 namespace vi {
 namespace la {
 namespace opencl {

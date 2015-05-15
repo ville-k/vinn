@@ -9,6 +9,10 @@
 #include <list>
 #include <vector>
 
+namespace cl {
+    class Context;
+}
+
 namespace vi {
 namespace la {
 namespace opencl {

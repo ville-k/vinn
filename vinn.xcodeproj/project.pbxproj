@@ -93,6 +93,9 @@
 		9AF7CFFD1ACC457400E57B93 /* libvinn.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9ACA78BF1ABBDF70008E8668 /* libvinn.dylib */; };
 		9AF7CFFE1ACC458100E57B93 /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9ACA78DE1ABBE065008E8668 /* OpenCL.framework */; };
 		9AFC17C41ADEB78B00834877 /* opencl_source_tests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AFC17C31ADEB78B00834877 /* opencl_source_tests.cpp */; };
+		CE3375D01B05BA2E00905BD6 /* io.h in Headers */ = {isa = PBXBuildFile; fileRef = CE3375CD1B05BA2E00905BD6 /* io.h */; };
+		CE3375D11B05BA2E00905BD6 /* la.h in Headers */ = {isa = PBXBuildFile; fileRef = CE3375CE1B05BA2E00905BD6 /* la.h */; };
+		CE3375D21B05BA2E00905BD6 /* nn.h in Headers */ = {isa = PBXBuildFile; fileRef = CE3375CF1B05BA2E00905BD6 /* nn.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -280,6 +283,9 @@
 		9AE0CAE51ACCF6DA0075A90C /* get_data.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = get_data.sh; path = examples/mnist/get_data.sh; sourceTree = SOURCE_ROOT; };
 		9AE0CAE61ACD95370075A90C /* opencl_loader_tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = opencl_loader_tests.cpp; sourceTree = "<group>"; };
 		9AFC17C31ADEB78B00834877 /* opencl_source_tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = opencl_source_tests.cpp; sourceTree = "<group>"; };
+		CE3375CD1B05BA2E00905BD6 /* io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = io.h; path = src/vi/io.h; sourceTree = SOURCE_ROOT; };
+		CE3375CE1B05BA2E00905BD6 /* la.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = la.h; path = src/vi/la.h; sourceTree = SOURCE_ROOT; };
+		CE3375CF1B05BA2E00905BD6 /* nn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = nn.h; path = src/vi/nn.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -389,9 +395,12 @@
 		9ADE501F1A89D93700860D71 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				CE3375CD1B05BA2E00905BD6 /* io.h */,
+				CE3375CE1B05BA2E00905BD6 /* la.h */,
+				CE3375CF1B05BA2E00905BD6 /* nn.h */,
 				9ADE50881A8BBA0E00860D71 /* io */,
-				9ADE50281A89DA8300860D71 /* nn */,
 				9ADE50271A89DA7D00860D71 /* la */,
+				9ADE50281A89DA8300860D71 /* nn */,
 			);
 			name = src;
 			path = vinn;
@@ -561,12 +570,15 @@
 				9A10BA591AEFDC6D00484DE7 /* activation_functions_cl__source.h in Headers */,
 				9A10BA421AEFDC2400484DE7 /* opencl_matrix.h in Headers */,
 				9A10BA121AEFDBC800484DE7 /* result_measurements.h in Headers */,
+				CE3375D11B05BA2E00905BD6 /* la.h in Headers */,
 				9A10B9E91AEFDBAC00484DE7 /* csv_file.h in Headers */,
 				9A10BA1B1AEFDBE000484DE7 /* matrix_implementation.h in Headers */,
 				9A10BA0E1AEFDBC800484DE7 /* minibatch_gradient_descent.h in Headers */,
 				9A10BA021AEFDBC800484DE7 /* activation_function.h in Headers */,
+				CE3375D21B05BA2E00905BD6 /* nn.h in Headers */,
 				9A10BA5D1AEFDC6D00484DE7 /* generated_opencl_sources.h in Headers */,
 				9A10BA3C1AEFDC2400484DE7 /* memory_source_loader.h in Headers */,
+				CE3375D01B05BA2E00905BD6 /* io.h in Headers */,
 				9A10BA041AEFDBC800484DE7 /* batch_gradient_descent.h in Headers */,
 				9A10B9EB1AEFDBAC00484DE7 /* libsvm_file.h in Headers */,
 				9A10BA081AEFDBC800484DE7 /* cost_function.h in Headers */,

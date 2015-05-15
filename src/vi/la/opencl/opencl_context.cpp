@@ -8,20 +8,52 @@
 #include "vi/la/opencl/kernels_generated/generated_opencl_sources.h"
 
 #include <cassert>
+#include <CL/cl.hpp>
 #include <cmath>
 
 namespace vi {
 namespace la {
 
-opencl_context::opencl_context(const cl::Context& context) : _context(context) {
+opencl_context::opencl_context(const std::vector<cl_device_id> & device_ids) {
+    std::vector<cl::Device> devices;
+    for (cl_device_id device_id : device_ids) {
+        devices.push_back(cl::Device(device_id));
+    }
+  _context = new cl::Context(devices);
+  _command_queue = new cl::CommandQueue(*_context, CL_QUEUE_PROFILING_ENABLE);
   load_kernels();
-  _command_queue = new cl::CommandQueue(_context, CL_QUEUE_PROFILING_ENABLE);
 }
 
-opencl_context::~opencl_context() { delete _command_queue; }
+opencl_context::~opencl_context() {
+  delete _command_queue;
+  delete _context;
+}
+
+std::vector<cl_device_id> 
+opencl_context::supported_devices(cl_device_type device_type) {
+  std::vector<cl_device_id> supported_devices;
+  vi::la::opencl::disk_source_loader loader("/");
+  vi::la::opencl::builder builder(loader);
+  builder.add_extension_requirements({"cl_khr_fp64"});
+
+  std::vector<cl::Platform> platforms;
+  cl::Platform::get(&platforms);
+  for (auto& platform : platforms) {
+    std::vector<cl::Device> available_devices;
+    platform.getDevices(device_type, &available_devices);
+    for (cl::Device& device : available_devices) {
+      cl::Context context(device);
+      if (builder.can_build(context)) {
+        supported_devices.push_back(device());
+      }
+    }
+  }
+
+  return supported_devices;
+}
+
 
 void opencl_context::load_kernels() {
-
 #if CONFIGURATION == Debug
   const std::string program_dir(std::string(SRCROOT) +
                                 "/src/vi/la/opencl/kernels");
@@ -34,7 +66,7 @@ void opencl_context::load_kernels() {
   builder.add_source_paths(
       {"matrix.cl", "activation_functions.cl", "convolution.cl"});
   builder.add_extension_requirements({"cl_khr_fp64"});
-  opencl::build_result result = builder.build(_context);
+  opencl::build_result result = builder.build(*_context);
   if (!result.success()) {
     throw std::runtime_error(result.log());
   }
@@ -65,7 +97,7 @@ void opencl_context::load_kernels() {
   _convolve_2d = new cl::Kernel(program, "matrix_convolve_2d");
 }
 
-cl::Context& opencl_context::context() { return _context; }
+cl::Context& opencl_context::context() { return *_context; }
 
 cl::CommandQueue& opencl_context::command_queue() { return *_command_queue; }
 

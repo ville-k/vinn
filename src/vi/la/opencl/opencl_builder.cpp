@@ -2,6 +2,7 @@
 #include "vi/la/opencl/opencl_ostream.h"
 
 #include <algorithm>
+#include <CL/cl.hpp>
 #include <iterator>
 #include <sstream>
 #include <stdexcept>

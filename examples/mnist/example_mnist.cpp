@@ -14,28 +14,6 @@ using namespace vi::nn;
 
 namespace {
 
-vector<cl::Device> supported_devices(cl_device_type device_type) {
-  vector<cl::Device> supported_devices;
-  vi::la::opencl::disk_source_loader loader("/");
-  vi::la::opencl::builder builder(loader);
-  builder.add_extension_requirements({"cl_khr_fp64"});
-
-  vector<cl::Platform> platforms;
-  cl::Platform::get(&platforms);
-  for (auto& platform : platforms) {
-    vector<cl::Device> available_devices;
-    platform.getDevices(device_type, &available_devices);
-    for (cl::Device& device : available_devices) {
-      cl::Context context(device);
-      if (builder.can_build(context)) {
-        supported_devices.push_back(device);
-      }
-    }
-  }
-
-  return supported_devices;
-}
-
 vector<size_t> generate_random_indices(size_t index_count) {
   vector<size_t> randomized_indices(index_count);
   for (size_t i = 0U; i < index_count; ++i) {
@@ -56,22 +34,20 @@ load_svm_dataset(vi::la::context& context, const string& path,
 }
 
 int main(int, const char**) {
-  auto devices = supported_devices(CL_DEVICE_TYPE_ALL);
+  auto devices = vi::la::opencl_context::supported_devices();
   if (devices.size() == 0) {
     cerr << "No supported OpenCL devices available" << endl;
     exit(1);
   }
-  cl::Device selected_device = devices[0];
-
+  std::vector<cl_device_id> selected_devices = { devices[0] };
+    
   // Load data
-  const string training_set_path(string(SRCROOT) +
-                                 "/examples/mnist/mnist.scale");
+  const string training_set_path(string(SRCROOT) + "/examples/mnist/mnist.scale");
   const string test_set_path(string(SRCROOT) + "/examples/mnist/mnist.scale.t");
   const size_t feature_count = 780U;
   const double training_fraction = 0.9;
 
-  cl::Context cl_context(selected_device);
-  vi::la::opencl_context context(cl_context);
+  vi::la::opencl_context context(selected_devices);
 
   cout << "Loading training dataset from: " << training_set_path << endl;
   const auto labels_and_features =
@@ -104,10 +80,8 @@ int main(int, const char**) {
   cout << "training examples:   " << training_features.row_count() << endl;
   cout << "validation examples: " << validation_features.row_count() << endl;
   cout << "training input features: " << all_features.column_count() << endl;
-  ;
   cout << "test examples:       " << testing_features.row_count() << endl;
   cout << "test input features: " << testing_features.column_count() << endl;
-  ;
 
   // Build network
   layer l1(context, new hyperbolic_tangent(), 25, feature_count);
