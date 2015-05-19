@@ -4,6 +4,8 @@ project(vinn)
 set(vinn_VERSION_MAJOR 0)
 set(vinn_VERSION_MINOR 1)
 set(vinn_VERSION_PATCH 0)
+set(vinn_VERSION "${vinn_VERSION_MAJOR}.${vinn_VERSION_MINOR}.${vinn_VERSION_PATCH}")
+
 
 find_package(OpenCL REQUIRED)
 include_directories(${OpenCL_INCLUDE_DIRS})
@@ -17,7 +19,7 @@ add_definitions(-DCONFIGURATION=${CMAKE_BUILD_TYPE})
 add_definitions(-DSRCROOT="${PROJECT_SOURCE_DIR}")
 add_definitions(-D__CL_ENABLE_EXCEPTIONS=1)
 add_definitions(-std=c++11)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g3 -Wall -Wextra -pedantic")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
@@ -33,11 +35,6 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${COVERAGE_COMPILE_FLAGS}")
 set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} ${COVERAGE_LINK_FLAGS}")
 set(CMAKE_SHARED_LINKER_FLAGS_DEBUG "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} ${COVERAGE_LINK_FLAGS}")
 
-
-configure_file(
-  "${PROJECT_SOURCE_DIR}/src/config.h.in"
-  "${PROJECT_BINARY_DIR}/config.h"
-)
 include_directories("${PROJECT_BINARY_DIR}")
 include_directories("${PROJECT_SOURCE_DIR}/src")
 
@@ -48,8 +45,6 @@ enable_testing()
 add_subdirectory(src)
 add_subdirectory(lib/googletest)
 add_subdirectory(tests)
-add_subdirectory(examples/mnist)
-
 
 add_custom_target(format
   COMMENT Format source code using clang-format

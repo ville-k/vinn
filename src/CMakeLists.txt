@@ -40,26 +40,84 @@ set(GLOBAL_SOURCES_TO_FORMAT
   PARENT_SCOPE
 )
 
-add_library(vinn_STATIC STATIC ${vinn_SOURCES} ${vinn_GENERATED_OPENCL_SOURCES})
-set_target_properties(vinn_STATIC PROPERTIES
+add_library(ViNN_STATIC STATIC 
+  ${vinn_SOURCES} 
+  ${vinn_GENERATED_OPENCL_SOURCES}
+)
+set_target_properties(ViNN_STATIC
+  PROPERTIES
   OUTPUT_NAME vinn
   CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror"
 )
+target_compile_options(ViNN_STATIC
+  PUBLIC -std=c++11
+)
 
-add_library(vinn_SHARED SHARED ${vinn_SOURCES} ${vinn_GENERATED_OPENCL_SOURCES})
-set_target_properties(vinn_SHARED PROPERTIES
+add_library(ViNN SHARED
+  ${vinn_SOURCES}
+  ${vinn_GENERATED_OPENCL_SOURCES}
+)
+set_target_properties(ViNN
+  PROPERTIES
   OUTPUT_NAME vinn
   CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror"
 )
+target_compile_options(ViNN
+  PUBLIC -std=c++11
+)
 
-target_link_libraries(vinn_STATIC ${OpenCL_LIBRARIES})
-target_link_libraries(vinn_SHARED ${OpenCL_LIBRARIES})
+set(LIBRARIES ${OpenCL_LIBRARIES})
+target_link_libraries(ViNN_STATIC PUBLIC ${LIBRARIES})
+target_link_libraries(ViNN PUBLIC ${LIBRARIES})
 
-install(TARGETS vinn_STATIC DESTINATION lib)
-install(TARGETS vinn_SHARED DESTINATION lib)
+set(INCLUDE_INSTALL_DIR include CACHE PATH "Header installation directory")
+set(LIBRARY_INSTALL_DIR lib CACHE PATH "Library installation directory")
+
+
+install(TARGETS ViNN_STATIC DESTINATION ${LIBRARY_INSTALL_DIR})
+install(TARGETS ViNN DESTINATION ${LIBRARY_INSTALL_DIR})
 install(DIRECTORY "${PROJECT_SOURCE_DIR}/src/"
-  DESTINATION include
+  DESTINATION ${INCLUDE_INSTALL_DIR}
   FILES_MATCHING PATTERN "*.h"
   PATTERN "*/kernels_generated/*" EXCLUDE
+)
+
+
+include(CMakePackageConfigHelpers)
+set(ConfigPackageLocation lib/cmake/ViNN)
+
+# Target export set
+install(TARGETS ViNN ViNN_STATIC
+  EXPORT ViNNTargets
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
+  RUNTIME DESTINATION bin
+  INCLUDES DESTINATION include
+)
+
+install(EXPORT ViNNTargets
+  FILE ViNNTargets.cmake
+  NAMESPACE ViNN::
+  DESTINATION ${ConfigPackageLocation}
+)
+
+configure_package_config_file(
+  ${PROJECT_SOURCE_DIR}/cmake/ViNNConfig.cmake.in 
+  "${CMAKE_CURRENT_BINARY_DIR}/ViNN/ViNNConfig.cmake"
+  INSTALL_DESTINATION ${LIBRARY_INSTALL_DIR}/cmake/ViNN
+  PATH_VARS INCLUDE_INSTALL_DIR LIBRARY_INSTALL_DIR LIBRARIES
+)
+
+write_basic_package_version_file(
+  "${CMAKE_CURRENT_BINARY_DIR}/ViNN/ViNNConfigVersion.cmake"
+  VERSION ${vinn_VERSION}
+  COMPATIBILITY SameMajorVersion
+)
+
+install(FILES
+  ${CMAKE_CURRENT_BINARY_DIR}/ViNN/ViNNConfig.cmake
+  ${CMAKE_CURRENT_BINARY_DIR}/ViNN/ViNNConfigVersion.cmake
+  DESTINATION ${ConfigPackageLocation}
+  COMPONENT Development
 )
 

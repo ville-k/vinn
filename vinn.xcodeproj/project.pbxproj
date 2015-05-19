@@ -70,10 +70,7 @@
 		9A10BA5D1AEFDC6D00484DE7 /* generated_opencl_sources.h in Headers */ = {isa = PBXBuildFile; fileRef = 9A10BA551AEFDC6D00484DE7 /* generated_opencl_sources.h */; };
 		9A10BA5E1AEFDC6D00484DE7 /* matrix_cl__source.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A10BA561AEFDC6D00484DE7 /* matrix_cl__source.cpp */; };
 		9A10BA5F1AEFDC6D00484DE7 /* matrix_cl__source.h in Headers */ = {isa = PBXBuildFile; fileRef = 9A10BA571AEFDC6D00484DE7 /* matrix_cl__source.h */; };
-		9ACA78B21ABAA546008E8668 /* example_mnist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9ACA78B11ABAA546008E8668 /* example_mnist.cpp */; };
 		9ACA78DF1ABBE065008E8668 /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9ACA78DE1ABBE065008E8668 /* OpenCL.framework */; };
-		9ACA78E01ABBE077008E8668 /* libvinn.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9ACA78BF1ABBDF70008E8668 /* libvinn.dylib */; };
-		9ACA78E31ABBE443008E8668 /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9ACA78DE1ABBE065008E8668 /* OpenCL.framework */; };
 		9ADE50341A89DB0000860D71 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9ADE50331A89DB0000860D71 /* main.cpp */; };
 		9ADE50721A89E7E500860D71 /* gtest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9ADE50601A89E73100860D71 /* gtest.framework */; };
 		9AE0CAE41ACCE8B40075A90C /* trainer_tests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9AE0CAE31ACCE8B40075A90C /* trainer_tests.cpp */; };
@@ -99,13 +96,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		9ACA78E11ABBE090008E8668 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9ADE50151A89D93700860D71 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 9ACA78BE1ABBDF70008E8668;
-			remoteInfo = libvinn;
-		};
 		9ADE505F1A89E73100860D71 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9ADE50531A89E73100860D71 /* gtest.xcodeproj */;
@@ -172,15 +162,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		9ACA78A01ABAA4CF008E8668 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
 		9ADE502F1A89DB0000860D71 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -266,8 +247,6 @@
 		9A9A656C1A956E4300246B85 /* confusion_table_tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = confusion_table_tests.cpp; sourceTree = "<group>"; };
 		9A9A65771A95BB0400246B85 /* cpu_matrix_tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cpu_matrix_tests.cpp; sourceTree = "<group>"; };
 		9A9A65791A95C66D00246B85 /* fixtures */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fixtures; sourceTree = "<group>"; };
-		9ACA78A21ABAA4CF008E8668 /* example_mnist */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = example_mnist; sourceTree = BUILT_PRODUCTS_DIR; };
-		9ACA78B11ABAA546008E8668 /* example_mnist.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = example_mnist.cpp; path = examples/mnist/example_mnist.cpp; sourceTree = SOURCE_ROOT; };
 		9ACA78B91ABB1F27008E8668 /* libsvm_file_tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = libsvm_file_tests.cpp; sourceTree = "<group>"; };
 		9ACA78BF1ABBDF70008E8668 /* libvinn.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libvinn.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		9ACA78DE1ABBE065008E8668 /* OpenCL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenCL.framework; path = System/Library/Frameworks/OpenCL.framework; sourceTree = SDKROOT; };
@@ -280,7 +259,6 @@
 		9ADE50781A89EB3D00860D71 /* layer_tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = layer_tests.cpp; sourceTree = "<group>"; };
 		9ADE50861A8BB7CE00860D71 /* network_tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = network_tests.cpp; sourceTree = "<group>"; };
 		9AE0CAE31ACCE8B40075A90C /* trainer_tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = trainer_tests.cpp; sourceTree = "<group>"; };
-		9AE0CAE51ACCF6DA0075A90C /* get_data.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = get_data.sh; path = examples/mnist/get_data.sh; sourceTree = SOURCE_ROOT; };
 		9AE0CAE61ACD95370075A90C /* opencl_loader_tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = opencl_loader_tests.cpp; sourceTree = "<group>"; };
 		9AFC17C31ADEB78B00834877 /* opencl_source_tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = opencl_source_tests.cpp; sourceTree = "<group>"; };
 		CE3375CD1B05BA2E00905BD6 /* io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = io.h; path = src/vi/io.h; sourceTree = SOURCE_ROOT; };
@@ -289,15 +267,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		9ACA789F1ABAA4CF008E8668 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9ACA78E31ABBE443008E8668 /* OpenCL.framework in Frameworks */,
-				9ACA78E01ABBE077008E8668 /* libvinn.dylib in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		9ACA78BC1ABBDF70008E8668 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -350,24 +319,6 @@
 			name = kernels_generated;
 			sourceTree = "<group>";
 		};
-		9ACA78A31ABAA4CF008E8668 /* mnist */ = {
-			isa = PBXGroup;
-			children = (
-				9AE0CAE51ACCF6DA0075A90C /* get_data.sh */,
-				9ACA78B11ABAA546008E8668 /* example_mnist.cpp */,
-			);
-			name = mnist;
-			path = example_mnist;
-			sourceTree = "<group>";
-		};
-		9ACA78B31ABAA552008E8668 /* examples */ = {
-			isa = PBXGroup;
-			children = (
-				9ACA78A31ABAA4CF008E8668 /* mnist */,
-			);
-			name = examples;
-			sourceTree = "<group>";
-		};
 		9ADE50141A89D93700860D71 = {
 			isa = PBXGroup;
 			children = (
@@ -377,7 +328,6 @@
 				9A4A1D821ADCAB9D0090FF8D /* bin */,
 				9ADE50321A89DB0000860D71 /* tests */,
 				9ADE501F1A89D93700860D71 /* src */,
-				9ACA78B31ABAA552008E8668 /* examples */,
 				9ADE501E1A89D93700860D71 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -386,7 +336,6 @@
 			isa = PBXGroup;
 			children = (
 				9ADE50311A89DB0000860D71 /* tests */,
-				9ACA78A21ABAA4CF008E8668 /* example_mnist */,
 				9ACA78BF1ABBDF70008E8668 /* libvinn.dylib */,
 			);
 			name = Products;
@@ -594,24 +543,6 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		9ACA78A11ABAA4CF008E8668 /* example_mnist */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 9ACA78B01ABAA4CF008E8668 /* Build configuration list for PBXNativeTarget "example_mnist" */;
-			buildPhases = (
-				9ACA789E1ABAA4CF008E8668 /* Sources */,
-				9ACA789F1ABAA4CF008E8668 /* Frameworks */,
-				9ACA78A01ABAA4CF008E8668 /* CopyFiles */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				9ACA78E21ABBE090008E8668 /* PBXTargetDependency */,
-			);
-			name = example_mnist;
-			productName = example_mnist;
-			productReference = 9ACA78A21ABAA4CF008E8668 /* example_mnist */;
-			productType = "com.apple.product-type.tool";
-		};
 		9ACA78BE1ABBDF70008E8668 /* vinn */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9ACA78C71ABBDF70008E8668 /* Build configuration list for PBXNativeTarget "vinn" */;
@@ -658,9 +589,6 @@
 				LastUpgradeCheck = 0620;
 				ORGANIZATIONNAME = "Ville Kallioniemi";
 				TargetAttributes = {
-					9ACA78A11ABAA4CF008E8668 = {
-						CreatedOnToolsVersion = 6.2;
-					};
 					9ACA78BE1ABBDF70008E8668 = {
 						CreatedOnToolsVersion = 6.2;
 					};
@@ -689,7 +617,6 @@
 			targets = (
 				9ACA78BE1ABBDF70008E8668 /* vinn */,
 				9ADE50301A89DB0000860D71 /* tests */,
-				9ACA78A11ABAA4CF008E8668 /* example_mnist */,
 			);
 		};
 /* End PBXProject section */
@@ -764,14 +691,6 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		9ACA789E1ABAA4CF008E8668 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9ACA78B21ABAA546008E8668 /* example_mnist.cpp in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		9ACA78BB1ABBDF70008E8668 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -836,11 +755,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		9ACA78E21ABBE090008E8668 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 9ACA78BE1ABBDF70008E8668 /* vinn */;
-			targetProxy = 9ACA78E11ABBE090008E8668 /* PBXContainerItemProxy */;
-		};
 		9ADE50711A89E7DF00860D71 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "gtest-framework";
@@ -854,27 +768,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		9ACA78A61ABAA4CF008E8668 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		9ACA78A71ABAA4CF008E8668 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				COPY_PHASE_STRIP = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
 		9ACA78C81ABBDF70008E8668 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1035,15 +928,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9ACA78B01ABAA4CF008E8668 /* Build configuration list for PBXNativeTarget "example_mnist" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9ACA78A61ABAA4CF008E8668 /* Debug */,
-				9ACA78A71ABAA4CF008E8668 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		9ACA78C71ABBDF70008E8668 /* Build configuration list for PBXNativeTarget "vinn" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
