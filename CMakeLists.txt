@@ -3,7 +3,7 @@ project(vinn)
 
 set(vinn_VERSION_MAJOR 0)
 set(vinn_VERSION_MINOR 1)
-set(vinn_VERSION_PATCH 0)
+set(vinn_VERSION_PATCH 1)
 set(vinn_VERSION "${vinn_VERSION_MAJOR}.${vinn_VERSION_MINOR}.${vinn_VERSION_PATCH}")
 
 
