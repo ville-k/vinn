@@ -7,41 +7,107 @@
 namespace vi {
 namespace io {
 
-csv_file::csv_file(std::iostream& stream) : _stream(stream) {}
+csv_file::csv_file(std::iostream& stream, char delimiter)
+  :_delimiter(delimiter)
+  ,_stream(stream) {
+}
 
 csv_file::~csv_file() {}
 
-vi::la::matrix csv_file::load(vi::la::context& context) {
+void csv_file::load(vi::la::matrix& matrix) {
+  load(matrix, nullptr);
+}
+
+void csv_file::load(vi::la::matrix& matrix, std::vector<std::string>& header) {
+  load(matrix, &header);
+}
+  
+void csv_file::load(vi::la::matrix& matrix, std::vector<std::string>* header) {
   _stream.exceptions(std::iostream::badbit);
   std::vector<std::vector<double>> matrix_values;
   size_t max_columns(0U);
-
+  
+  bool first_line(true);
   std::string line;
   while (std::getline(_stream, line, '\n')) {
-    std::vector<double> row;
-
-    std::istringstream row_stream(line);
-    std::string value;
-    while (std::getline(row_stream, value, ',')) {
-      row.push_back(atof(value.c_str()));
+    if (first_line && header) {
+      first_line = false;
+      parse_header(line, *header);
+      continue;
     }
+    
+    std::vector<double> row;
+    parse_row(line, row);
     max_columns = std::max(max_columns, row.size());
     matrix_values.push_back(row);
   }
+  
+  matrix = vi::la::matrix(matrix.owning_context(), matrix_values.size(), max_columns, make_buffer(matrix_values, max_columns));
+}
 
+void csv_file::parse_header(const std::string& line, std::vector<std::string>& header) const {
+  std::istringstream row_stream(line);
+  std::string value;
+  while (std::getline(row_stream, value, _delimiter)) {
+    header.push_back(value);
+  }
+}
+
+void csv_file::parse_row(const std::string& line, std::vector<double>& row) const {
+  std::istringstream row_stream(line);
+  std::string value;
+  while (std::getline(row_stream, value, _delimiter)) {
+    row.push_back(atof(value.c_str()));
+  }
+}
+  
+std::shared_ptr<double> csv_file::make_buffer(const std::vector<std::vector<double>>& matrix_values, size_t max_columns) const {
   double* values = new double[matrix_values.size() * max_columns];
   size_t offset = 0U;
   for (auto row : matrix_values) {
     for (size_t column = 0U; column < row.size(); ++column) {
       values[offset + column] = row[column];
     }
-
+    
     offset += max_columns;
   }
-  // matrix copies values - ensure they get released
-  std::shared_ptr<double> shared_values(values, [](double* p) { delete[] p; });
 
-  return vi::la::matrix(context, matrix_values.size(), max_columns, shared_values);
+  return std::shared_ptr<double>(values, [](double* p) { delete[] p; });
 }
+
+void csv_file::store(const vi::la::matrix& matrix) {
+  store(matrix, nullptr);
+}
+  
+void csv_file::store(const vi::la::matrix& matrix, std::vector<std::string>& header) {
+  store(matrix, &header);
+}
+  
+void csv_file::store(const vi::la::matrix& matrix, std::vector<std::string>* header) {
+  if (header) {
+    for (size_t i = 0U; i < header->size(); ++i) {
+      const std::string & column = header->at(i);
+      _stream << column;
+      
+      if (i != header->size() - 1U) {
+        _stream << _delimiter;
+      }
+    }
+    _stream << "\n";
+  }
+  
+  for (size_t row = 0U; row < matrix.row_count(); ++row) {
+    for (size_t column = 0U; column < matrix.column_count(); ++column) {
+      _stream << matrix[row][column];
+      if (column != matrix.column_count() - 1U) {
+        _stream << _delimiter;
+      }
+    }
+    _stream << "\n";
+  }
+  
+  _stream.flush();
+}
+
 }
 }
