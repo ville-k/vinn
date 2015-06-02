@@ -15,23 +15,23 @@ protected:
   matrix calculate_numerical_gradient(const layer& l, cost_function& cost_function,
                                       const matrix& input, const matrix& expected_output,
                                       double e) {
-    matrix perturbed_theta(l.get_theta());
-    matrix numerical_gradient(*GetParam(), l.get_theta().size(), 0.0);
-    for (size_t m = 0U; m < perturbed_theta.row_count(); ++m) {
-      for (size_t n = 0U; n < perturbed_theta.column_count(); ++n) {
-        double original = perturbed_theta[m][n];
+    matrix perturbed_weights(l.get_weights());
+    matrix numerical_gradient(*GetParam(), l.get_weights().size(), 0.0);
+    for (size_t m = 0U; m < perturbed_weights.row_count(); ++m) {
+      for (size_t n = 0U; n < perturbed_weights.column_count(); ++n) {
+        double original = perturbed_weights[m][n];
 
-        perturbed_theta[m][n] = original - e;
+        perturbed_weights[m][n] = original - e;
         layer pl1(l);
-        pl1.set_theta(perturbed_theta);
+        pl1.set_weights(perturbed_weights);
 
         auto hypothesis = pl1.forward(input);
         matrix cost1 = cost_function.cost(expected_output, hypothesis);
         double loss1 = cost1[0][0];
 
-        perturbed_theta[m][n] = original + e;
+        perturbed_weights[m][n] = original + e;
         layer pl2(l);
-        pl2.set_theta(perturbed_theta);
+        pl2.set_weights(perturbed_weights);
 
         auto hypothesis2 = pl2.forward(input);
         matrix cost2 = cost_function.cost(expected_output, hypothesis2);
@@ -39,7 +39,7 @@ protected:
 
         numerical_gradient[m][n] = (loss2 - loss1) / (2.0 * e);
 
-        perturbed_theta[m][n] = original;
+        perturbed_weights[m][n] = original;
       }
     }
     return numerical_gradient;
@@ -96,7 +96,7 @@ TEST_P(layer_tests, backward) {
   matrix& delta(delta_and_gradient.first);
   EXPECT_EQ(input.size(), delta.size());
   matrix& gradient(delta_and_gradient.second);
-  EXPECT_EQ(l.get_theta().size(), gradient.size());
+  EXPECT_EQ(l.get_weights().size(), gradient.size());
 }
 
 TEST_P(layer_tests, gradient_check_sigmoid_activation) {

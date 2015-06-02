@@ -74,8 +74,8 @@ TEST_P(network_tests, backward_succeeds_with_valid_inputs) {
 
   ASSERT_LT(0.0, cost_and_gradients.first);
   ASSERT_EQ(2U, cost_and_gradients.second.size());
-  ASSERT_EQ(l1.get_theta().size(), cost_and_gradients.second[0].size());
-  ASSERT_EQ(l2.get_theta().size(), cost_and_gradients.second[1].size());
+  ASSERT_EQ(l1.get_weights().size(), cost_and_gradients.second[0].size());
+  ASSERT_EQ(l2.get_weights().size(), cost_and_gradients.second[1].size());
 }
 
 TEST_P(network_tests, backward_fails_with_invalid_feature_dimensions) {

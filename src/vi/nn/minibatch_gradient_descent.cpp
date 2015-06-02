@@ -26,6 +26,20 @@ minibatch_gradient_descent::minibatch_gradient_descent(const size_t max_epoch_co
 double minibatch_gradient_descent::train(vi::nn::network& network, const vi::la::matrix& features,
                                          const vi::la::matrix& targets,
                                          vi::nn::cost_function& cost_function) {
+  return train(network, features, targets, cost_function, nullptr);
+}
+
+double minibatch_gradient_descent::train(vi::nn::network& network, const vi::la::matrix& features,
+                                         const vi::la::matrix& targets,
+                                         vi::nn::cost_function& cost_function,
+                                         const vi::nn::l2_regularizer& regularizer) {
+  return train(network, features, targets, cost_function, &regularizer);
+}
+
+double minibatch_gradient_descent::train(vi::nn::network& network, const vi::la::matrix& features,
+                                         const vi::la::matrix& targets,
+                                         vi::nn::cost_function& cost_function,
+                                         const vi::nn::l2_regularizer* regularizer) {
   assert(_batch_size <= features.row_count());
   const size_t effective_batch_size = std::min(_batch_size, features.row_count());
   const size_t batch_count(features.row_count() / effective_batch_size);
@@ -43,7 +57,12 @@ double minibatch_gradient_descent::train(vi::nn::network& network, const vi::la:
       vi::la::matrix batch_features = features.rows(batch_start, batch_end);
       vi::la::matrix batch_targets = targets.rows(batch_start, batch_end);
 
-      const double batch_cost = gd.train(network, batch_features, batch_targets, cost_function);
+      double batch_cost(0.0);
+      if (regularizer) {
+        batch_cost = gd.train(network, batch_features, batch_targets, cost_function, *regularizer);
+      } else {
+        batch_cost = gd.train(network, batch_features, batch_targets, cost_function);
+      }
       average.add_value(batch_cost);
     }
 

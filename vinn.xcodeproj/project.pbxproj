@@ -93,6 +93,8 @@
 		CE3375D01B05BA2E00905BD6 /* io.h in Headers */ = {isa = PBXBuildFile; fileRef = CE3375CD1B05BA2E00905BD6 /* io.h */; };
 		CE3375D11B05BA2E00905BD6 /* la.h in Headers */ = {isa = PBXBuildFile; fileRef = CE3375CE1B05BA2E00905BD6 /* la.h */; };
 		CE3375D21B05BA2E00905BD6 /* nn.h in Headers */ = {isa = PBXBuildFile; fileRef = CE3375CF1B05BA2E00905BD6 /* nn.h */; };
+		CE68930A1B19252100982011 /* l2_regularizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE6893081B19252100982011 /* l2_regularizer.cpp */; };
+		CE68930B1B19252100982011 /* l2_regularizer.h in Headers */ = {isa = PBXBuildFile; fileRef = CE6893091B19252100982011 /* l2_regularizer.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -181,7 +183,7 @@
 		9A10B9E71AEFDBAC00484DE7 /* libsvm_file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = libsvm_file.h; path = src/vi/io/libsvm_file.h; sourceTree = SOURCE_ROOT; };
 		9A10B9EC1AEFDBC800484DE7 /* activation_function.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = activation_function.cpp; path = src/vi/nn/activation_function.cpp; sourceTree = SOURCE_ROOT; };
 		9A10B9ED1AEFDBC800484DE7 /* activation_function.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = activation_function.h; path = src/vi/nn/activation_function.h; sourceTree = SOURCE_ROOT; };
-		9A10B9EE1AEFDBC800484DE7 /* batch_gradient_descent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = batch_gradient_descent.cpp; path = src/vi/nn/batch_gradient_descent.cpp; sourceTree = SOURCE_ROOT; };
+		9A10B9EE1AEFDBC800484DE7 /* batch_gradient_descent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; name = batch_gradient_descent.cpp; path = src/vi/nn/batch_gradient_descent.cpp; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		9A10B9EF1AEFDBC800484DE7 /* batch_gradient_descent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = batch_gradient_descent.h; path = src/vi/nn/batch_gradient_descent.h; sourceTree = SOURCE_ROOT; };
 		9A10B9F01AEFDBC800484DE7 /* confusion_table.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = confusion_table.cpp; path = src/vi/nn/confusion_table.cpp; sourceTree = SOURCE_ROOT; };
 		9A10B9F11AEFDBC800484DE7 /* confusion_table.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = confusion_table.h; path = src/vi/nn/confusion_table.h; sourceTree = SOURCE_ROOT; };
@@ -189,11 +191,11 @@
 		9A10B9F31AEFDBC800484DE7 /* cost_function.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cost_function.h; path = src/vi/nn/cost_function.h; sourceTree = SOURCE_ROOT; };
 		9A10B9F41AEFDBC800484DE7 /* label_map.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = label_map.cpp; path = src/vi/nn/label_map.cpp; sourceTree = SOURCE_ROOT; };
 		9A10B9F51AEFDBC800484DE7 /* label_map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = label_map.h; path = src/vi/nn/label_map.h; sourceTree = SOURCE_ROOT; };
-		9A10B9F61AEFDBC800484DE7 /* layer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = layer.cpp; path = src/vi/nn/layer.cpp; sourceTree = SOURCE_ROOT; };
-		9A10B9F71AEFDBC800484DE7 /* layer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = layer.h; path = src/vi/nn/layer.h; sourceTree = SOURCE_ROOT; };
+		9A10B9F61AEFDBC800484DE7 /* layer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; name = layer.cpp; path = src/vi/nn/layer.cpp; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		9A10B9F71AEFDBC800484DE7 /* layer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = layer.h; path = src/vi/nn/layer.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		9A10B9F81AEFDBC800484DE7 /* minibatch_gradient_descent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = minibatch_gradient_descent.cpp; path = src/vi/nn/minibatch_gradient_descent.cpp; sourceTree = SOURCE_ROOT; };
 		9A10B9F91AEFDBC800484DE7 /* minibatch_gradient_descent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = minibatch_gradient_descent.h; path = src/vi/nn/minibatch_gradient_descent.h; sourceTree = SOURCE_ROOT; };
-		9A10B9FA1AEFDBC800484DE7 /* network.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = network.cpp; path = src/vi/nn/network.cpp; sourceTree = SOURCE_ROOT; };
+		9A10B9FA1AEFDBC800484DE7 /* network.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; name = network.cpp; path = src/vi/nn/network.cpp; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		9A10B9FB1AEFDBC800484DE7 /* network.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = network.h; path = src/vi/nn/network.h; sourceTree = SOURCE_ROOT; };
 		9A10B9FC1AEFDBC800484DE7 /* result_measurements.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = result_measurements.cpp; path = src/vi/nn/result_measurements.cpp; sourceTree = SOURCE_ROOT; };
 		9A10B9FD1AEFDBC800484DE7 /* result_measurements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = result_measurements.h; path = src/vi/nn/result_measurements.h; sourceTree = SOURCE_ROOT; };
@@ -256,14 +258,16 @@
 		9ADE50731A89E84A00860D71 /* matrix_tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = matrix_tests.cpp; sourceTree = "<group>"; };
 		9ADE50751A89E96800860D71 /* test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = test.cpp; sourceTree = "<group>"; };
 		9ADE50761A89E96800860D71 /* test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = test.h; sourceTree = "<group>"; };
-		9ADE50781A89EB3D00860D71 /* layer_tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = layer_tests.cpp; sourceTree = "<group>"; };
-		9ADE50861A8BB7CE00860D71 /* network_tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = network_tests.cpp; sourceTree = "<group>"; };
+		9ADE50781A89EB3D00860D71 /* layer_tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = layer_tests.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		9ADE50861A8BB7CE00860D71 /* network_tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = network_tests.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		9AE0CAE31ACCE8B40075A90C /* trainer_tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = trainer_tests.cpp; sourceTree = "<group>"; };
 		9AE0CAE61ACD95370075A90C /* opencl_loader_tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = opencl_loader_tests.cpp; sourceTree = "<group>"; };
 		9AFC17C31ADEB78B00834877 /* opencl_source_tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = opencl_source_tests.cpp; sourceTree = "<group>"; };
 		CE3375CD1B05BA2E00905BD6 /* io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = io.h; path = src/vi/io.h; sourceTree = SOURCE_ROOT; };
 		CE3375CE1B05BA2E00905BD6 /* la.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = la.h; path = src/vi/la.h; sourceTree = SOURCE_ROOT; };
 		CE3375CF1B05BA2E00905BD6 /* nn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = nn.h; path = src/vi/nn.h; sourceTree = SOURCE_ROOT; };
+		CE6893081B19252100982011 /* l2_regularizer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = l2_regularizer.cpp; path = src/vi/nn/l2_regularizer.cpp; sourceTree = SOURCE_ROOT; };
+		CE6893091B19252100982011 /* l2_regularizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = l2_regularizer.h; path = src/vi/nn/l2_regularizer.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -392,6 +396,8 @@
 				9A10B9FE1AEFDBC800484DE7 /* running_average.cpp */,
 				9A10B9FF1AEFDBC800484DE7 /* running_average.h */,
 				9A10BA001AEFDBC800484DE7 /* trainer.h */,
+				CE6893081B19252100982011 /* l2_regularizer.cpp */,
+				CE6893091B19252100982011 /* l2_regularizer.h */,
 			);
 			name = nn;
 			sourceTree = "<group>";
@@ -521,6 +527,7 @@
 				9A10BA121AEFDBC800484DE7 /* result_measurements.h in Headers */,
 				CE3375D11B05BA2E00905BD6 /* la.h in Headers */,
 				9A10B9E91AEFDBAC00484DE7 /* csv_file.h in Headers */,
+				CE68930B1B19252100982011 /* l2_regularizer.h in Headers */,
 				9A10BA1B1AEFDBE000484DE7 /* matrix_implementation.h in Headers */,
 				9A10BA0E1AEFDBC800484DE7 /* minibatch_gradient_descent.h in Headers */,
 				9A10BA021AEFDBC800484DE7 /* activation_function.h in Headers */,
@@ -723,6 +730,7 @@
 				9A10BA0B1AEFDBC800484DE7 /* layer.cpp in Sources */,
 				9A10BA131AEFDBC800484DE7 /* running_average.cpp in Sources */,
 				9A10BA371AEFDC2400484DE7 /* build_result.cpp in Sources */,
+				CE68930A1B19252100982011 /* l2_regularizer.cpp in Sources */,
 				9A10BA461AEFDC2400484DE7 /* source.cpp in Sources */,
 				9A10BA581AEFDC6D00484DE7 /* activation_functions_cl__source.cpp in Sources */,
 			);

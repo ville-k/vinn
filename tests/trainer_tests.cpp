@@ -2,11 +2,19 @@
 #include "vi/nn/layer.h"
 #include "vi/nn/activation_function.h"
 #include "vi/nn/cost_function.h"
-#include "vi/nn/trainer.h"
+#include "vi/nn/l2_regularizer.h"
 #include "vi/nn/network.h"
+#include "vi/nn/trainer.h"
+
 
 class trainer_tests
     : public ::testing::TestWithParam<testing::tuple<vi::la::context*, vi::nn::trainer*>> {
+      
+public:
+    trainer_tests()
+      :_l2_regularizer(0.5) {
+      }
+      
 protected:
   virtual void SetUp() {
     vi::la::context* context = std::get<0>(GetParam());
@@ -30,17 +38,23 @@ protected:
   vi::nn::trainer* _trainer;
   vi::nn::network* _network;
   vi::nn::cross_entropy_cost _cost_function;
+  vi::nn::l2_regularizer _l2_regularizer;
   vi::la::matrix* _features;
   vi::la::matrix* _targets;
   size_t _max_epochs;
 };
 
-TEST_P(trainer_tests, batch_train_succeeds) {
+TEST_P(trainer_tests, train_succeeds) {
   double final_cost = _trainer->train(*_network, *_features, *_targets, _cost_function);
   EXPECT_LT(0.0, final_cost);
 }
 
-TEST_P(trainer_tests, batch_train_calls_early_stopping_callback) {
+TEST_P(trainer_tests, train_with_l2_regularizer_succeeds) {
+  double final_cost = _trainer->train(*_network, *_features, *_targets, _cost_function, _l2_regularizer);
+  EXPECT_LT(0.0, final_cost);
+}
+
+TEST_P(trainer_tests, train_calls_early_stopping_callback) {
   size_t early_stopping_called(0U);
   _trainer->set_stop_early(
       [&early_stopping_called](const vi::nn::network&, size_t, double) -> bool {
@@ -54,7 +68,7 @@ TEST_P(trainer_tests, batch_train_calls_early_stopping_callback) {
   EXPECT_EQ(_max_epochs, early_stopping_called);
 }
 
-TEST_P(trainer_tests, batch_train_stops_training_early) {
+TEST_P(trainer_tests, train_stops_training_early) {
   size_t early_stopping_called(0U);
   _trainer->set_stop_early(
       [&early_stopping_called](const vi::nn::network&, size_t, double) -> bool {

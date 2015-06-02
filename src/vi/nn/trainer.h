@@ -11,13 +11,18 @@ class matrix;
 
 namespace nn {
 
-class network;
 class cost_function;
+class network;
+class l2_regularizer;
 
 class trainer {
 public:
   virtual double train(vi::nn::network& network, const vi::la::matrix& features,
                        const vi::la::matrix& targets, vi::nn::cost_function& cost_function) = 0;
+
+  virtual double train(vi::nn::network& network, const vi::la::matrix& features,
+                       const vi::la::matrix& targets, vi::nn::cost_function& cost_function,
+                       const vi::nn::l2_regularizer& regularizer) = 0;
 
   /// early stopping callback should return true to stop training, false to
   /// continue

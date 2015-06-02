@@ -9,6 +9,7 @@
 #include <vi/nn/layer.h>
 #include <vi/nn/minibatch_gradient_descent.h>
 #include <vi/nn/network.h>
+#include <vi/nn/l2_regularizer.h>
 #include <vi/nn/result_measurements.h>
 
 #endif

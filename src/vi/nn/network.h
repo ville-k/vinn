@@ -36,6 +36,7 @@ public:
                                                           cost_function& cost_function);
 
   std::vector<layer>& layers();
+  const std::vector<layer>& layers() const;
 
 private:
   vi::la::context& _context;

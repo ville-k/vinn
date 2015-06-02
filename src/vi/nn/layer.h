@@ -13,7 +13,7 @@ class layer {
 public:
   layer(vi::la::context& context, activation_function* activation, size_t output_count,
         size_t input_count);
-  layer(vi::la::context& context, activation_function* activation, const vi::la::matrix& theta);
+  layer(vi::la::context& context, activation_function* activation, const vi::la::matrix& weights);
   layer(const layer& other);
 
   vi::la::matrix forward(const vi::la::matrix& input) const;
@@ -25,12 +25,12 @@ public:
   size_t get_input_count() const;
   size_t get_output_count() const;
 
-  const vi::la::matrix& get_theta() const;
-  void set_theta(const vi::la::matrix& theta);
+  const vi::la::matrix& get_weights() const;
+  void set_weights(const vi::la::matrix& weights);
 
 private:
   activation_function* _activation;
-  vi::la::matrix _theta;
+  vi::la::matrix _weights;
   vi::la::context& _context;
 };
 }

@@ -34,6 +34,7 @@ and machine learning applications.
 
 * Batch gradient descent with early stopping
 * Stochastic/Minibatch gradient descent with early stopping
+* L2 regularization
 
 
 ### Result Measurements

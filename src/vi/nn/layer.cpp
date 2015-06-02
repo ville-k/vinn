@@ -20,26 +20,27 @@ namespace nn {
 
 layer::layer(vi::la::context& context, activation_function* activation, size_t output_count,
              size_t input_count)
-    : _activation(activation), _theta(context, output_count, input_count + 1, 1.0),
+    : _activation(activation), _weights(context, output_count, input_count + 1, 1.0),
       _context(context) {
-  // random initialization
+  // initialize weights randomly to break symmetry
   double epsilon = sqrt(6.0) / sqrt(input_count + output_count);
-  for (size_t m = 0U; m < _theta.row_count(); ++m) {
-    for (size_t n = 0U; n < _theta.column_count(); ++n) {
-      _theta[m][n] = random(-epsilon, epsilon);
+  for (size_t m = 0U; m < _weights.row_count(); ++m) {
+    for (size_t n = 0U; n < _weights.column_count(); ++n) {
+      _weights[m][n] = random(-epsilon, epsilon);
     }
   }
 }
 
-layer::layer(vi::la::context& context, activation_function* activation, const vi::la::matrix& theta)
-    : _activation(activation), _theta(theta), _context(context) {}
+layer::layer(vi::la::context& context, activation_function* activation,
+             const vi::la::matrix& weights)
+    : _activation(activation), _weights(weights), _context(context) {}
 
 layer::layer(const layer& other)
-    : _activation(other._activation), _theta(other._theta), _context(other._context) {}
+    : _activation(other._activation), _weights(other._weights), _context(other._context) {}
 
 vi::la::matrix layer::forward(const vi::la::matrix& input) const {
   const vi::la::matrix bias(_context, input.row_count(), 1U, 1.0);
-  vi::la::matrix z((bias << input) * _theta.transpose());
+  vi::la::matrix z((bias << input) * get_weights().transpose());
   _activation->activate(z);
   return z;
 }
@@ -52,22 +53,21 @@ std::pair<vi::la::matrix, vi::la::matrix> layer::backward(const vi::la::matrix& 
 
   const vi::la::matrix input_bias(activations.owning_context(), inputs.row_count(), 1U, 1.0);
   const vi::la::matrix biased_inputs((input_bias << inputs));
-  const vi::la::matrix gradient =
-      (delta.transpose() * biased_inputs) / (-1.0 * activations.row_count());
+  const vi::la::matrix gradient = (delta.transpose() * biased_inputs) / -1.0;
 
-  const vi::la::matrix delta_out = delta * _theta;
+  const vi::la::matrix delta_out = delta * get_weights();
   return std::make_pair(delta_out.columns(1U, delta_out.column_count() - 1U), gradient);
 }
 
 size_t layer::get_input_count() const {
   // bias unit is internal to the layer
-  return _theta.column_count() - 1;
+  return get_weights().column_count() - 1;
 }
 
-size_t layer::get_output_count() const { return _theta.row_count(); }
+size_t layer::get_output_count() const { return get_weights().row_count(); }
 
-const vi::la::matrix& layer::get_theta() const { return _theta; }
+const vi::la::matrix& layer::get_weights() const { return _weights; }
 
-void layer::set_theta(const vi::la::matrix& theta) { _theta = theta; }
+void layer::set_weights(const vi::la::matrix& weights) { _weights = weights; }
 }
 }

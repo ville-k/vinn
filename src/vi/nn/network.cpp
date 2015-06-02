@@ -1,5 +1,6 @@
 #include "vi/nn/network.h"
 #include "vi/nn/cost_function.h"
+#include "vi/la/context.h"
 
 #include <algorithm>
 #include <sstream>
@@ -42,7 +43,7 @@ std::pair<double, std::vector<la::matrix>> network::backward(const la::matrix& f
 
   const vi::la::matrix& hypotheses(activations.back());
   const vi::la::matrix costs(cost_function.cost(targets, hypotheses));
-  const double cost = _context.sum_rows(costs)[0][0] / costs.row_count();
+  const double cost = _context.sum_rows(costs)[0][0];
 
   vi::la::matrix errors(cost_function.cost_derivative(targets, hypotheses));
 
@@ -55,12 +56,15 @@ std::pair<double, std::vector<la::matrix>> network::backward(const la::matrix& f
     activations.pop_back();
 
     errors = error_and_gradient.first;
-    gradients.insert(gradients.begin(), error_and_gradient.second);
+    la::matrix& gradient = error_and_gradient.second;
+    gradients.insert(gradients.begin(), gradient);
   });
 
   return make_pair(cost, gradients);
 }
 
 std::vector<layer>& network::layers() { return _layers; }
+
+const std::vector<layer>& network::layers() const { return _layers; }
 }
 }
