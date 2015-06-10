@@ -21,10 +21,6 @@ std::vector<vi::la::context*> all_contexts() {
   if (contexts.size() == 0) {
     contexts.push_back(new vi::la::cpu_context());
 
-    vi::la::opencl::disk_source_loader loader("/");
-    vi::la::opencl::builder builder(loader);
-    builder.add_extension_requirements({"cl_khr_fp64"});
-
     std::vector<cl_device_id> device_ids = vi::la::opencl_context::supported_devices();
     for (cl_device_id device_id : device_ids) {
       contexts.push_back(new vi::la::opencl_context({device_id}));

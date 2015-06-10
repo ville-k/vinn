@@ -6,15 +6,12 @@
 #include "vi/nn/network.h"
 #include "vi/nn/trainer.h"
 
-
 class trainer_tests
     : public ::testing::TestWithParam<testing::tuple<vi::la::context*, vi::nn::trainer*>> {
-      
+
 public:
-    trainer_tests()
-      :_l2_regularizer(0.5) {
-      }
-      
+  trainer_tests() : _l2_regularizer(0.5) {}
+
 protected:
   virtual void SetUp() {
     vi::la::context* context = std::get<0>(GetParam());
@@ -50,7 +47,8 @@ TEST_P(trainer_tests, train_succeeds) {
 }
 
 TEST_P(trainer_tests, train_with_l2_regularizer_succeeds) {
-  double final_cost = _trainer->train(*_network, *_features, *_targets, _cost_function, _l2_regularizer);
+  double final_cost =
+      _trainer->train(*_network, *_features, *_targets, _cost_function, _l2_regularizer);
   EXPECT_LT(0.0, final_cost);
 }
 

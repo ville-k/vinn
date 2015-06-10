@@ -44,7 +44,9 @@ set(GLOBAL_SOURCES_TO_FORMAT "")
 enable_testing()
 add_subdirectory(src)
 add_subdirectory(lib/googletest)
+add_subdirectory(lib/benchmark)
 add_subdirectory(tests)
+add_subdirectory(benchmarks)
 
 add_custom_target(format
   COMMENT Format source code using clang-format
