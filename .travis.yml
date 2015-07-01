@@ -12,6 +12,7 @@ before_script:
   - sudo apt-get install -y cuda
   - export PATH=/usr/local/cuda-7.0/bin:$PATH 
   - export LD_LIBRARY_PATH=/usr/local/cuda-7.0/lib64:$LD_LIBRARY_PATH
+  - export CUDA_PATH=/usr/local/cuda-7.0
   - mkdir build
   - cd build
   - cmake ..
