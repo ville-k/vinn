@@ -7,6 +7,6 @@ before_script:
   - export PATH=/tmp/cmake-3.2.3-Linux-i386/bin:$PATH
   - mkdir build
   - cd build
-  - cmake ..
+  - /tmp/cmake-3.2.3-Linux-i386/bin/cmake ..
 
 script: make
