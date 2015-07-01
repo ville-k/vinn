@@ -4,9 +4,9 @@ compiler: clang
 before_script:
   - wget http://www.cmake.org/files/v3.2/cmake-3.2.3-Linux-i386.tar.gz -O /tmp/cmake-3.2.3-Linux-i386.tar.gz
   - tar -xvf /tmp/cmake-3.2.3-Linux-i386.tar.gz
-  - export PATH=/tmp/cmake-3.2.3-Linux-i386/bin:$PATH
+  - export PATH=$PWD/cmake-3.2.3-Linux-i386/bin:$PATH
   - mkdir build
   - cd build
-  - /tmp/cmake-3.2.3-Linux-i386/bin/cmake ..
+  - cmake ..
 
 script: make
