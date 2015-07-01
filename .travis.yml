@@ -5,8 +5,6 @@ before_script:
   - wget http://www.cmake.org/files/v3.2/cmake-3.2.3-Linux-x86_64.tar.gz -O /tmp/cmake-3.2.3-Linux-x86_64.tar.gz
   - tar -xvf /tmp/cmake-3.2.3-Linux-x86_64.tar.gz
   - export PATH=$PWD/cmake-3.2.3-Linux-x86_64/bin:$PATH
-  - sudo apt-get install -y amd-libopencl1
-  - sudo apt-get install -y amd-opencl-icd
   - sudo apt-get install -y opencl-headers
   - mkdir build
   - cd build
