@@ -3,6 +3,7 @@ language: cpp
 compiler: clang
 
 before_script:
+  - brew install cmake
   - mkdir build
   - cd build
   - cmake ..
