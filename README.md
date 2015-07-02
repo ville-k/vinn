@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/ville-k/vinn.svg?branch=develop)](https://travis-ci.org/ville-k/vinn)
+[![Coverage Status](https://coveralls.io/repos/ville-k/vinn/badge.svg?branch=develop)](https://coveralls.io/r/ville-k/vinn?branch=develop)
+
 # ViNN - A modular OpenCL accelerated library for Deep Learning
 
 ViNN is a cross platform MIT-licensed C++ library for training and evaluating artificial neural networks using OpenCL. ViNN parallelizes computationally intensive linear algebra routines using OpenCL, which provides significant performance gains over a single threaded CPU based implementation. 

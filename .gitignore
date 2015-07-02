@@ -46,3 +46,6 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
+
+# Python
+.env/

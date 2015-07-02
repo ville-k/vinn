@@ -2,11 +2,27 @@ os: osx
 language: cpp
 compiler: clang
 
-before_script:
+before_install:
   - brew update
   - brew outdated cmake || brew upgrade cmake
+  - brew outdated pyenv || brew upgrade pyenv
+  - brew install lcov
+  - eval "$(pyenv init -)"
+  - pyenv install 2.7.6
+  - pyenv global 2.7.6
+  - pyenv rehash
+  - pip install cpp-coveralls
+  - pyenv rehash
+
+before_script:
   - mkdir build
   - cd build
-  - cmake ..
+  - cmake -DCMAKE_BUILD_TYPE=Debug ..
 
-script: make
+script:
+  - make
+  - tests/unit_tests
+
+after_success:
+  - cd ..
+  - coveralls -e lib -e tests -e benchmarks -e build/CMakeFiles --gcov-options '\-lp'

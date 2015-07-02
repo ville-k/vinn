@@ -227,7 +227,7 @@
 		9A10BA341AEFDC2400484DE7 /* source_loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = source_loader.h; path = src/vi/la/opencl/source_loader.h; sourceTree = SOURCE_ROOT; };
 		9A10BA351AEFDC2400484DE7 /* source.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = source.cpp; path = src/vi/la/opencl/source.cpp; sourceTree = SOURCE_ROOT; };
 		9A10BA361AEFDC2400484DE7 /* source.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = source.h; path = src/vi/la/opencl/source.h; sourceTree = SOURCE_ROOT; };
-		9A10BA481AEFDC3E00484DE7 /* cl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = cl.hpp; path = src/vi/la/opencl/darwin/cl.hpp; sourceTree = SOURCE_ROOT; };
+		9A10BA481AEFDC3E00484DE7 /* cl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = cl.hpp; path = src/vi/la/opencl/darwin/CL/cl.hpp; sourceTree = SOURCE_ROOT; };
 		9A10BA4A1AEFDC5100484DE7 /* activation_functions.cl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.opencl; name = activation_functions.cl; path = src/vi/la/opencl/kernels/activation_functions.cl; sourceTree = SOURCE_ROOT; };
 		9A10BA4B1AEFDC5100484DE7 /* convolution.cl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.opencl; name = convolution.cl; path = src/vi/la/opencl/kernels/convolution.cl; sourceTree = SOURCE_ROOT; };
 		9A10BA4C1AEFDC5100484DE7 /* matrix.cl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.opencl; name = matrix.cl; path = src/vi/la/opencl/kernels/matrix.cl; sourceTree = SOURCE_ROOT; };

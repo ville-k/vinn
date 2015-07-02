@@ -59,7 +59,7 @@ void opencl_context::load_kernels() {
   opencl::memory_source_loader loader(vi::la::opencl::paths_to_sources());
 #endif
   opencl::builder builder(loader);
-  builder.add_build_options({"-DDOUBLE_SUPPORT_AVAILABLE", "-cl-std=CL1.2"});
+  builder.add_build_options({"-DDOUBLE_SUPPORT_AVAILABLE"});
   builder.add_source_paths({"matrix.cl", "activation_functions.cl", "convolution.cl"});
   builder.add_extension_requirements({"cl_khr_fp64"});
   opencl::build_result result = builder.build(*_context);
