@@ -1,0 +1,12 @@
+os: osx
+language: cpp
+compiler: clang
+
+before_script:
+  - brew update
+  - brew outdated cmake || brew upgrade cmake
+  - mkdir build
+  - cd build
+  - cmake ..
+
+script: make
