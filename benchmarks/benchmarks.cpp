@@ -19,4 +19,4 @@ std::vector<vi::la::context*> all_contexts() {
 }
 }
 
-BENCHMARK_MAIN();
+BENCHMARK_MAIN()

@@ -57,7 +57,7 @@ and machine learning applications.
 ### Depencies
 
 Integrating with a project:
-* c++ compiler with c++11 support (clang or gcc)
+* c++ compiler with c++11 support (clang or gcc >= 4.8)
 * OpenCL 1.2 driver and development headers
 
 Additional dependencies when building from source:
@@ -76,6 +76,11 @@ Additional dependencies for committers:
 
     sudo apt-get install build-essential ocl-icd-libopencl1 opencl-headers ruby
 
+#### On Debian Wheezy or Raspbian
+
+    sudo apt-get install gcc-4.8
+    sudo apt-get install g++-4.8
+    sudo apt-get install libgl1-mesa-dev
 
 ### Building from Source
 
@@ -83,7 +88,11 @@ Additional dependencies for committers:
 
     mkdir build
     cd build
+    # On Ubuntu 15 and Mac OS X:
     cmake -DCMAKE_BUILD_TYPE=Debug ..
+
+    # On Debian Wheezy or Raspbian
+    CC=gcc-4.8 CXX=g++-4.8 cmake -DCMAKE_BUILD_TYPE=Debug ..
 
 2. Build library and unit tests
 

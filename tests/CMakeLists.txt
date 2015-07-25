@@ -13,6 +13,7 @@ set(GLOBAL_SOURCES_TO_FORMAT
 add_executable(unit_tests ${unit_test_SOURCES})
 target_link_libraries(unit_tests ViNN_STATIC)
 target_link_libraries(unit_tests gtest_main)
+target_compile_definitions(unit_tests PRIVATE -DCL_USE_DEPRECATED_OPENCL_1_1_APIS=1)
 
 add_test(AllUnitTestsInViNN unit_tests)
 

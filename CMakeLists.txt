@@ -25,6 +25,9 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
   # Treat the missing c++ wrapper as a system include to avoid warnings 
   include_directories(SYSTEM "${PROJECT_SOURCE_DIR}/src/vi/la/opencl/darwin")
+else()
+  # gcc 4.8 has TR1 tuple
+  add_definitions(-DGTEST_USE_OWN_TR1_TUPLE=0)
 endif()
 
 

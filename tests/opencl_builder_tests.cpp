@@ -7,7 +7,6 @@
 #include <vector>
 
 using namespace vi::la::opencl;
-
 class opencl_builder_tests : public ::testing::TestWithParam<cl::Context> {
   void SetUp() { source_root = SRCROOT; }
 
@@ -15,8 +14,28 @@ protected:
   std::string source_root;
 };
 
-std::vector<cl::Context> opencl_contexts = {cl::Context(CL_DEVICE_TYPE_CPU)};
-INSTANTIATE_TEST_CASE_P(opencl_context, opencl_builder_tests, ::testing::ValuesIn(opencl_contexts));
+std::vector<cl::Context> testing_contexts() {
+  std::vector<cl::Context> contexts;
+
+  std::vector<cl::Platform> platforms;
+  try {
+    cl::Platform::get(&platforms);
+  } catch (cl::Error& error) {
+    // can throw when no drivers are installed - ignore
+  }
+
+  for (auto& platform : platforms) {
+    std::vector<cl::Device> available_devices;
+    platform.getDevices(CL_DEVICE_TYPE_ALL, &available_devices);
+    for (cl::Device& device : available_devices) {
+      contexts.push_back(cl::Context({device}));
+    }
+  }
+
+  return contexts;
+}
+
+INSTANTIATE_TEST_CASE_P(opencl_context, opencl_builder_tests, ::testing::ValuesIn(testing_contexts()));
 
 TEST_P(opencl_builder_tests, construction_succeeds_for_valid_source_root) {
   disk_source_loader loader(source_root);

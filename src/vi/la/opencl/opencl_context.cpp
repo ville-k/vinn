@@ -20,7 +20,7 @@ opencl_context::opencl_context(const std::vector<cl_device_id>& device_ids) {
     devices.push_back(cl::Device(device_id));
   }
   _context = new cl::Context(devices);
-  _command_queue = new cl::CommandQueue(*_context, CL_QUEUE_PROFILING_ENABLE);
+  _command_queue = new cl::CommandQueue(*_context, devices[0]);
   load_kernels();
 }
 
@@ -36,12 +36,17 @@ std::vector<cl_device_id> opencl_context::supported_devices(cl_device_type devic
   builder.add_extension_requirements({"cl_khr_fp64"});
 
   std::vector<cl::Platform> platforms;
-  cl::Platform::get(&platforms);
+  try {
+    cl::Platform::get(&platforms);
+  } catch (cl::Error& error) {
+    // can throw when no drivers are installed - ignore
+  }
+
   for (auto& platform : platforms) {
     std::vector<cl::Device> available_devices;
     platform.getDevices(device_type, &available_devices);
     for (cl::Device& device : available_devices) {
-      cl::Context context(device);
+      cl::Context context({device});
       if (builder.can_build(context)) {
         supported_devices.push_back(device());
       }
@@ -429,7 +434,6 @@ void opencl_context::convolve_2d(matrix& result, const matrix& mask, const matri
   //                std::cout << "workgroup size: " << workgroup_size <<
   //                std::endl;
   //            }
-
   _convolve_2d->setArg(0U, *result_impl->get());
   _convolve_2d->setArg(1U, *original_impl->get());
   _convolve_2d->setArg(2U, original.row_count());
@@ -438,10 +442,9 @@ void opencl_context::convolve_2d(matrix& result, const matrix& mask, const matri
   _convolve_2d->setArg(5U, *mask_impl->get());
   _convolve_2d->setArg(6U, mask.row_count());
   _convolve_2d->setArg(7U, mask.column_count());
-  _convolve_2d->setArg(8U, cl::Local(INPUT_TILE_HEIGHT * INPUT_TILE_WIDTH * sizeof(cl_double)));
+  _convolve_2d->setArg(8U, cl::__local(INPUT_TILE_HEIGHT * INPUT_TILE_WIDTH * sizeof(cl_double)));
   _convolve_2d->setArg(9U, OUTPUT_TILE_HEIGHT);
   _convolve_2d->setArg(10U, OUTPUT_TILE_WIDTH);
-
   const size_t data_width = original.column_count();
   const size_t data_height = original.row_count();
 

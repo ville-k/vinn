@@ -5,7 +5,6 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include <regex>
 #include <cassert>
 
 namespace vi {
@@ -71,13 +70,15 @@ libsvm_file::parse_contents(size_t& largest_label_index, size_t& largest_feature
 libsvm_file::labels_and_features_row libsvm_file::parse_row(const std::string& line,
                                                             size_t& largest_feature_index,
                                                             const size_t max_feature_count) const {
-  labels_and_features_row labels_and_features;
+  // chop off trailing comments
+  std::string row;
+  std::istringstream line_stream(line);
+  std::getline(line_stream, row, '#');
 
-  bool label_section(true);
-  std::istringstream row_stream(line);
-  const std::regex feature_matcher("(.*):(.*)");
-
+  std::istringstream row_stream(row);
   std::string element;
+  labels_and_features_row labels_and_features;
+  bool label_section(true);
   while (std::getline(row_stream, element, ' ')) {
     if (label_section) {
       std::istringstream label_stream(element);
@@ -88,20 +89,28 @@ libsvm_file::labels_and_features_row libsvm_file::parse_row(const std::string& l
       }
       label_section = false;
     } else {
-      std::smatch match;
-      if (std::regex_search(element, match, feature_matcher) && match.size() == 3U) {
-        // indices are stored starting from 1
-        const size_t index = std::stoull(match[1].str()) - 1;
-        const double value = std::stod(match[2].str());
-        if (max_feature_count != 0U && index >= max_feature_count) {
-          // user limited number of features to load
-          continue;
-        }
+      std::istringstream value_stream(element);
+      std::string value_string;
+      bool is_index(true);
+      size_t index(0);
+      double value(0.0);
 
-        largest_feature_index = std::max(largest_feature_index, index);
-        sparse_entry feature(index, value);
-        labels_and_features.second.push_back(feature);
+      while (std::getline(value_stream, value_string, ':')) {
+        if (is_index) {
+          index = std::stoull(value_string) - 1;
+          is_index = false;
+        } else {
+          value = std::stold(value_string);
+        }      
       }
+
+      if (max_feature_count != 0U && index >= max_feature_count) {
+        // user limited number of features to load
+        continue;
+      }
+      largest_feature_index = std::max(largest_feature_index, index);
+      sparse_entry feature(index, value);
+      labels_and_features.second.push_back(feature);
     }
   }
 

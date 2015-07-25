@@ -43,8 +43,8 @@ double minibatch_gradient_descent::train(vi::nn::network& network, const vi::la:
   assert(_batch_size <= features.row_count());
   const size_t effective_batch_size = std::min(_batch_size, features.row_count());
   const size_t batch_count(features.row_count() / effective_batch_size);
-
-  const size_t batches_to_average(std::min(20LU, batch_count));
+  const size_t maximum_batches_to_average(20U);
+  const size_t batches_to_average(std::min(maximum_batches_to_average, batch_count));
   running_average average(batches_to_average);
 
   for (size_t epoch = 1U; epoch <= _max_epoch_count; ++epoch) {
