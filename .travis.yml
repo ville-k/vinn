@@ -7,6 +7,7 @@ before_install:
   - brew outdated cmake || brew upgrade cmake
   - brew outdated pyenv || brew upgrade pyenv
   - brew install lcov
+  - brew install boost
   - eval "$(pyenv init -)"
   - pyenv install 2.7.6
   - pyenv global 2.7.6

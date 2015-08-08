@@ -49,3 +49,6 @@ DerivedData
 
 # Python
 .env/
+
+# CLion
+.idea/

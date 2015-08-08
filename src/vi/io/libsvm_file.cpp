@@ -101,7 +101,7 @@ libsvm_file::labels_and_features_row libsvm_file::parse_row(const std::string& l
           is_index = false;
         } else {
           value = std::stold(value_string);
-        }      
+        }
       }
 
       if (max_feature_count != 0U && index >= max_feature_count) {

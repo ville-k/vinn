@@ -10,6 +10,9 @@ set(vinn_VERSION "${vinn_VERSION_MAJOR}.${vinn_VERSION_MINOR}.${vinn_VERSION_PAT
 find_package(OpenCL REQUIRED)
 include_directories(${OpenCL_INCLUDE_DIRS})
 
+find_package(Boost COMPONENTS system filesystem REQUIRED)
+include_directories(${Boost_INCLUDE_DIRS})
+
 if (NOT CMAKE_BUILD_TYPE)
   message(STATUS "Build type not specified, defaulting to Debug")
   set(CMAKE_BUILD_TYPE "Debug")

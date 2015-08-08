@@ -3,6 +3,7 @@
 
 #include <vi/la/matrix.h>
 #include <vi/la/context.h>
+#include "activation_function.h"
 
 namespace vi {
 namespace nn {
@@ -25,8 +26,13 @@ public:
   size_t get_input_count() const;
   size_t get_output_count() const;
 
+  const activation_function& activation() const;
+  void activation(const activation_function& activation);
+
   const vi::la::matrix& get_weights() const;
   void set_weights(const vi::la::matrix& weights);
+
+  vi::la::context& context();
 
 private:
   activation_function* _activation;

@@ -54,7 +54,7 @@ void csv_file::parse_row(const std::string& line, std::vector<double>& row) cons
   std::istringstream row_stream(line);
   std::string value;
   while (std::getline(row_stream, value, _delimiter)) {
-    row.push_back(atof(value.c_str()));
+    row.push_back(std::stod(value));
   }
 }
 
@@ -80,6 +80,7 @@ void csv_file::store(const vi::la::matrix& matrix, std::vector<std::string>& hea
 }
 
 void csv_file::store(const vi::la::matrix& matrix, std::vector<std::string>* header) {
+  _stream.precision(17);
   if (header) {
     for (size_t i = 0U; i < header->size(); ++i) {
       const std::string& column = header->at(i);

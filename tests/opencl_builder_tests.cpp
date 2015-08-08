@@ -35,7 +35,8 @@ std::vector<cl::Context> testing_contexts() {
   return contexts;
 }
 
-INSTANTIATE_TEST_CASE_P(opencl_context, opencl_builder_tests, ::testing::ValuesIn(testing_contexts()));
+INSTANTIATE_TEST_CASE_P(opencl_context, opencl_builder_tests,
+                        ::testing::ValuesIn(testing_contexts()));
 
 TEST_P(opencl_builder_tests, construction_succeeds_for_valid_source_root) {
   disk_source_loader loader(source_root);

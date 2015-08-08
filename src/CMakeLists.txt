@@ -66,7 +66,11 @@ target_compile_options(ViNN
   PUBLIC -std=c++11
 )
 
-set(LIBRARIES ${OpenCL_LIBRARIES})
+set(LIBRARIES
+  ${OpenCL_LIBRARIES}
+  ${Boost_FILESYSTEM_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+)
 target_link_libraries(ViNN_STATIC PUBLIC ${LIBRARIES})
 target_compile_definitions(ViNN_STATIC PRIVATE -DCL_USE_DEPRECATED_OPENCL_1_1_APIS=1)
 target_link_libraries(ViNN PUBLIC ${LIBRARIES})

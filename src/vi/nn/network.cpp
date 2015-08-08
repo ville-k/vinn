@@ -66,5 +66,7 @@ std::pair<double, std::vector<la::matrix>> network::backward(const la::matrix& f
 std::vector<layer>& network::layers() { return _layers; }
 
 const std::vector<layer>& network::layers() const { return _layers; }
+
+vi::la::context& network::context() { return _context; }
 }
 }

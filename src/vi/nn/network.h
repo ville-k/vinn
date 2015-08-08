@@ -38,6 +38,8 @@ public:
   std::vector<layer>& layers();
   const std::vector<layer>& layers() const;
 
+  vi::la::context& context();
+
 private:
   vi::la::context& _context;
   std::vector<layer> _layers;

@@ -66,8 +66,17 @@ size_t layer::get_input_count() const {
 
 size_t layer::get_output_count() const { return get_weights().row_count(); }
 
+const activation_function& layer::activation() const { return *_activation; }
+
+void layer::activation(const activation_function& activation) {
+  delete _activation;
+  _activation = activation.clone();
+}
+
 const vi::la::matrix& layer::get_weights() const { return _weights; }
 
 void layer::set_weights(const vi::la::matrix& weights) { _weights = weights; }
+
+vi::la::context& layer::context() { return _context; }
 }
 }
