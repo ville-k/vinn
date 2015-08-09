@@ -1,5 +1,6 @@
 #include "benchmarks.h"
 #include "vi/la.h"
+#include <cmath>
 
 namespace benchmarks {
 
@@ -17,6 +18,16 @@ std::vector<vi::la::context*> all_contexts() {
 
   return contexts;
 }
+
+void all_contexts_16_to_512(benchmark::internal::Benchmark* benchmark) {
+  for (size_t context_index = 0U; context_index < benchmarks::all_contexts().size();
+       ++context_index) {
+    for (size_t exponent = 4; exponent < 10; ++exponent) {
+      benchmark = benchmark->ArgPair(context_index, std::pow(2, exponent));
+    }
+  }
 }
 
-BENCHMARK_MAIN()
+}
+
+BENCHMARK_MAIN();

@@ -11,6 +11,7 @@ class context;
 
 namespace benchmarks {
 std::vector<vi::la::context*> all_contexts();
+void all_contexts_16_to_512(benchmark::internal::Benchmark* benchmark);
 }
 
 #endif
