@@ -31,7 +31,7 @@ public:
 
   /// Forward and backward pass through network
   /// return cost and gradients for each layer
-  std::pair<double, std::vector<vi::la::matrix>> backward(const vi::la::matrix& features,
+  std::pair<float, std::vector<vi::la::matrix>> backward(const vi::la::matrix& features,
                                                           const vi::la::matrix& targets,
                                                           cost_function& cost_function);
 

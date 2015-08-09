@@ -44,7 +44,7 @@ void libsvm_file::fill_from_sparse_data(labels_and_features_vector sparse_data,
 
     for (const sparse_entry& entry : row.second) {
       size_t column = entry.first;
-      double value = entry.second;
+      float value = entry.second;
       features[m][column] = value;
     }
   }
@@ -84,7 +84,7 @@ libsvm_file::labels_and_features_row libsvm_file::parse_row(const std::string& l
       std::istringstream label_stream(element);
       std::string label_string;
       while (std::getline(label_stream, label_string, ',')) {
-        double label = std::stod(label_string);
+        float label = std::stof(label_string);
         labels_and_features.first.push_back(label);
       }
       label_section = false;
@@ -93,14 +93,14 @@ libsvm_file::labels_and_features_row libsvm_file::parse_row(const std::string& l
       std::string value_string;
       bool is_index(true);
       size_t index(0);
-      double value(0.0);
+      float value(0.0);
 
       while (std::getline(value_stream, value_string, ':')) {
         if (is_index) {
           index = std::stoull(value_string) - 1;
           is_index = false;
         } else {
-          value = std::stold(value_string);
+          value = std::stof(value_string);
         }
       }
 

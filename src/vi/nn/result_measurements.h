@@ -18,37 +18,37 @@ namespace nn {
 /// Measures for multi-class classification
 class result_measurements {
 public:
-  result_measurements(vi::la::context& context, const std::vector<long>& labels);
+  result_measurements(vi::la::context& context, const std::vector<int>& labels);
 
-  void add_results(const std::vector<long>& expected, const std::vector<long>& actual);
+  void add_results(const std::vector<int>& expected, const std::vector<int>& actual);
   void add_results(const vi::la::matrix& expected, const vi::la::matrix& actual);
 
-  double accuracy() const;
+  float accuracy() const;
 
   /// Macro averages - treat all classes the same
-  double average_accuracy() const;
-  double error_rate() const;
-  double precision() const;
-  double recall() const;
-  double fscore(double beta = 1.0) const;
+  float average_accuracy() const;
+  float error_rate() const;
+  float precision() const;
+  float recall() const;
+  float fscore(float beta = 1.0) const;
 
   /// Micro averages - favor large classes
-  double micro_precision() const;
-  double micro_recall() const;
-  double micro_fscore(double beta = 1.0) const;
+  float micro_precision() const;
+  float micro_recall() const;
+  float micro_fscore(float beta = 1.0) const;
 
   vi::la::matrix confusion_matrix() const;
 
-  confusion_table confusion_table_for_label(long label) const;
+  confusion_table confusion_table_for_label(int label) const;
 
-  const std::vector<long>& labels() const;
+  const std::vector<int>& labels() const;
 
 private:
-  size_t label_index_for_label(long label) const;
-  void update_confusion_matrix(const std::vector<long>& expected, const std::vector<long>& actual);
+  size_t label_index_for_label(int label) const;
+  void update_confusion_matrix(const std::vector<int>& expected, const std::vector<int>& actual);
 
   vi::la::matrix _confusion_matrix;
-  const std::vector<long> _labels;
+  const std::vector<int> _labels;
 };
 
 std::ostream& operator<<(std::ostream& os, const result_measurements& measurements);

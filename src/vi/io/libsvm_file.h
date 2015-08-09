@@ -20,8 +20,8 @@ public:
                                                                      size_t max_feature_count = 0U);
 
 private:
-  typedef std::pair<size_t, double> sparse_entry;
-  typedef std::pair<std::vector<double>, std::vector<sparse_entry>> labels_and_features_row;
+  typedef std::pair<size_t, float> sparse_entry;
+  typedef std::pair<std::vector<float>, std::vector<sparse_entry>> labels_and_features_row;
   typedef std::vector<labels_and_features_row> labels_and_features_vector;
 
   void fill_from_sparse_data(labels_and_features_vector sparse_data, vi::la::matrix& labels,

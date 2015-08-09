@@ -13,7 +13,7 @@ static void BM_matrix_scalar_multiply(benchmark::State& state) {
   }
 
   size_t flops_per_iteration = size * size;
-  size_t bytes_per_iteration = flops_per_iteration * sizeof(double);
+  size_t bytes_per_iteration = flops_per_iteration * sizeof(float);
   state.SetBytesProcessed(state.iterations() * bytes_per_iteration);
   state.SetItemsProcessed(state.iterations() * flops_per_iteration);
 }
@@ -31,7 +31,7 @@ static void BM_matrix_matrix_multiply(benchmark::State& state) {
 
   // x^2 * (x multiplies + x additions)
   size_t flops_per_iteration = (size + size) * size * size;
-  size_t bytes_per_iteration = flops_per_iteration * sizeof(double);
+  size_t bytes_per_iteration = flops_per_iteration * sizeof(float);
   state.SetBytesProcessed(state.iterations() * bytes_per_iteration);
   state.SetItemsProcessed(state.iterations() * flops_per_iteration);
 }
@@ -49,7 +49,7 @@ static void BM_matrix_sub_matrix(benchmark::State& state) {
   }
 
   size_t flops_per_iteration = size * size;
-  size_t bytes_per_iteration = flops_per_iteration * sizeof(double);
+  size_t bytes_per_iteration = flops_per_iteration * sizeof(float);
   state.SetBytesProcessed(state.iterations() * bytes_per_iteration);
   state.SetItemsProcessed(state.iterations() * flops_per_iteration);
 }
@@ -65,7 +65,7 @@ static void BM_matrix_transpose(benchmark::State& state) {
   }
 
   size_t flops_per_iteration = size * size;
-  size_t bytes_per_iteration = flops_per_iteration * sizeof(double);
+  size_t bytes_per_iteration = flops_per_iteration * sizeof(float);
   state.SetBytesProcessed(state.iterations() * bytes_per_iteration);
   state.SetItemsProcessed(state.iterations() * flops_per_iteration);
 }

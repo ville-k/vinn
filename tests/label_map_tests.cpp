@@ -38,13 +38,13 @@ TEST_P(label_map_tests, creates_mapping_from_label_count) {
   EXPECT_EQ(label_count, labels.row_count());
 
   for (size_t m = 0U; m < label_count; ++m) {
-    double expected_label(static_cast<double>(m));
-    EXPECT_DOUBLE_EQ(expected_label, labels[m][0U]);
+    float expected_label(static_cast<float>(m));
+    EXPECT_FLOAT_EQ(expected_label, labels[m][0U]);
   }
 }
 
 TEST_P(label_map_tests, creates_mapping_from_labels) {
-  vector<long> labels = {42, 7};
+  vector<int> labels = {42, 7};
   label_map map(labels);
 
   const size_t label_count(labels.size());
@@ -55,13 +55,13 @@ TEST_P(label_map_tests, creates_mapping_from_labels) {
   EXPECT_EQ(label_count, mapped_labels.row_count());
 
   for (size_t m = 0U; m < label_count; ++m) {
-    double expected_label(static_cast<double>(labels[m]));
-    EXPECT_DOUBLE_EQ(expected_label, mapped_labels[m][0U]);
+    float expected_label(static_cast<float>(labels[m]));
+    EXPECT_FLOAT_EQ(expected_label, mapped_labels[m][0U]);
   }
 }
 
 TEST_P(label_map_tests, maps_labels_to_vectors) {
-  vector<long> labels = {42, 7};
+  vector<int> labels = {42, 7};
   label_map map(labels);
 
   const matrix label_matrix(*GetParam(), labels.size(), 1U);
@@ -76,21 +76,21 @@ TEST_P(label_map_tests, maps_labels_to_vectors) {
   for (size_t m = 0U; m < labels.size(); ++m) {
     for (size_t n = 0U; n < labels.size(); ++n) {
       if (n == m) {
-        EXPECT_DOUBLE_EQ(1.0, mapped_activations[m][n]);
+        EXPECT_FLOAT_EQ(1.0, mapped_activations[m][n]);
       } else {
-        EXPECT_DOUBLE_EQ(0.0, mapped_activations[m][n]);
+        EXPECT_FLOAT_EQ(0.0, mapped_activations[m][n]);
       }
     }
   }
 }
 
 TEST_P(label_map_tests, providing_duplicate_labels_throws) {
-  vector<long> labels = {7, 42, 7};
+  vector<int> labels = {7, 42, 7};
   EXPECT_THROW(label_map map(labels), unknown_label_exception);
 }
 
 TEST_P(label_map_tests, mapping_unknown_label_throws) {
-  vector<long> labels = {42, 7};
+  vector<int> labels = {42, 7};
   label_map map(labels);
 
   matrix label_matrix(*GetParam(), 1, 3);

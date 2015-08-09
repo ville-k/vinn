@@ -8,9 +8,9 @@
 
 namespace {
 
-double random(double start_range, double end_range) {
-  double value(((double)rand()) / ((double)RAND_MAX));
-  double range(end_range - start_range);
+float random(float start_range, float end_range) {
+  float value(((float)rand()) / ((float)RAND_MAX));
+  float range(end_range - start_range);
   return start_range + value * range;
 }
 }
@@ -20,10 +20,10 @@ namespace nn {
 
 layer::layer(vi::la::context& context, activation_function* activation, size_t output_count,
              size_t input_count)
-    : _activation(activation), _weights(context, output_count, input_count + 1, 1.0),
+    : _activation(activation), _weights(context, output_count, input_count + 1, 1.0f),
       _context(context) {
   // initialize weights randomly to break symmetry
-  double epsilon = sqrt(6.0) / sqrt(input_count + output_count);
+  float epsilon = sqrt(6.0f) / sqrt(input_count + output_count);
   for (size_t m = 0U; m < _weights.row_count(); ++m) {
     for (size_t n = 0U; n < _weights.column_count(); ++n) {
       _weights[m][n] = random(-epsilon, epsilon);

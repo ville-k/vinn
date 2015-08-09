@@ -14,12 +14,12 @@ class layer_tests : public ::testing::TestWithParam<vi::la::context*> {
 protected:
   matrix calculate_numerical_gradient(const layer& l, cost_function& cost_function,
                                       const matrix& input, const matrix& expected_output,
-                                      double e) {
+                                      float e) {
     matrix perturbed_weights(l.get_weights());
     matrix numerical_gradient(*GetParam(), l.get_weights().size(), 0.0);
     for (size_t m = 0U; m < perturbed_weights.row_count(); ++m) {
       for (size_t n = 0U; n < perturbed_weights.column_count(); ++n) {
-        double original = perturbed_weights[m][n];
+        float original = perturbed_weights[m][n];
 
         perturbed_weights[m][n] = original - e;
         layer pl1(l);
@@ -27,7 +27,7 @@ protected:
 
         auto hypothesis = pl1.forward(input);
         matrix cost1 = cost_function.cost(expected_output, hypothesis);
-        double loss1 = cost1[0][0];
+        float loss1 = cost1[0][0];
 
         perturbed_weights[m][n] = original + e;
         layer pl2(l);
@@ -35,7 +35,7 @@ protected:
 
         auto hypothesis2 = pl2.forward(input);
         matrix cost2 = cost_function.cost(expected_output, hypothesis2);
-        double loss2 = cost2[0][0];
+        float loss2 = cost2[0][0];
 
         numerical_gradient[m][n] = (loss2 - loss1) / (2.0 * e);
 
@@ -45,13 +45,13 @@ protected:
     return numerical_gradient;
   }
 
-  double random(double start_range, double end_range) {
-    double value(((double)std::rand()) / ((double)RAND_MAX));
-    double range(end_range - start_range);
+  float random(float start_range, float end_range) {
+    float value(((float)std::rand()) / ((float)RAND_MAX));
+    float range(end_range - start_range);
     return start_range + value * range;
   }
 
-  void randomize(matrix& matrix, double start = 0.0, double end = 1.0) {
+  void randomize(matrix& matrix, float start = 0.0, float end = 1.0) {
     for (size_t m = 0U; m < matrix.row_count(); ++m) {
       for (size_t n = 0U; n < matrix.column_count(); ++n) {
         matrix[m][n] = random(start, end);
@@ -115,8 +115,8 @@ TEST_P(layer_tests, gradient_check_sigmoid_activation) {
   matrix next_error = cost_function.cost_derivative(expected_output, activations);
 
   std::pair<matrix, matrix> delta_and_gradient = l.backward(input, activations, next_error);
-  const double e = 0.01;
-  const double max_error = 0.001;
+  const float e = 0.01;
+  const float max_error = 0.001;
   const matrix numerical_gradient =
       calculate_numerical_gradient(l, cost_function, input, expected_output, e);
   const matrix& gradient(delta_and_gradient.second);
@@ -146,8 +146,8 @@ TEST_P(layer_tests, gradient_check_hyperbolic_tangent_activation) {
 
   std::pair<matrix, matrix> delta_and_gradient = l.backward(input, activations, next_error);
 
-  const double e = 0.01;
-  const double max_error = 0.001;
+  const float e = 0.01;
+  const float max_error = 0.001;
   const matrix numerical_gradient =
       calculate_numerical_gradient(l, cost_function, input, expected_output, e);
   const matrix& gradient(delta_and_gradient.second);
@@ -175,8 +175,8 @@ TEST_P(layer_tests, gradient_check_softmax_activation) {
   matrix next_error = cost_function.cost_derivative(expected_output, activations);
   std::pair<matrix, matrix> delta_and_gradient = l.backward(input, activations, next_error);
 
-  const double e = 0.01;
-  const double max_error = 0.001;
+  const float e = 0.01;
+  const float max_error = 0.001;
   const matrix numerical_gradient =
       calculate_numerical_gradient(l, cost_function, input, expected_output, e);
 

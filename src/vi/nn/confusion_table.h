@@ -20,20 +20,20 @@ public:
   size_t false_positives() const;
   size_t false_negatives() const;
 
-  double accuracy() const;
-  double error_rate() const;
-  double precision() const;
-  double recall() const;
-  double fscore(double beta = 1.0) const;
-  double specificity() const;
-  double auc() const;
+  float accuracy() const;
+  float error_rate() const;
+  float precision() const;
+  float recall() const;
+  float fscore(float beta = 1.0) const;
+  float specificity() const;
+  float auc() const;
 
 private:
-  double results() const;
-  double tp() const;
-  double tn() const;
-  double fp() const;
-  double fn() const;
+  float results() const;
+  float tp() const;
+  float tn() const;
+  float fp() const;
+  float fn() const;
 
   size_t _true_positives;
   size_t _true_negatives;

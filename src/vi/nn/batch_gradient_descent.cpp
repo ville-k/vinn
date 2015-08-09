@@ -9,34 +9,34 @@
 namespace vi {
 namespace nn {
 
-batch_gradient_descent::batch_gradient_descent(size_t max_epoch_count, double learning_rate)
+batch_gradient_descent::batch_gradient_descent(size_t max_epoch_count, float learning_rate)
     : _max_epoch_count(max_epoch_count), _learning_rate(learning_rate) {
   assert(_max_epoch_count > 0U);
   assert(_learning_rate > 0.0);
 }
 
-double batch_gradient_descent::train(vi::nn::network& network, const vi::la::matrix& features,
+float batch_gradient_descent::train(vi::nn::network& network, const vi::la::matrix& features,
                                      const vi::la::matrix& targets,
                                      vi::nn::cost_function& cost_function) {
   return train(network, features, targets, cost_function, nullptr);
 }
 
-double batch_gradient_descent::train(vi::nn::network& network, const vi::la::matrix& features,
+float batch_gradient_descent::train(vi::nn::network& network, const vi::la::matrix& features,
                                      const vi::la::matrix& targets,
                                      vi::nn::cost_function& cost_function,
                                      const vi::nn::l2_regularizer& regularizer) {
   return train(network, features, targets, cost_function, &regularizer);
 }
 
-double batch_gradient_descent::train(vi::nn::network& network, const vi::la::matrix& features,
+float batch_gradient_descent::train(vi::nn::network& network, const vi::la::matrix& features,
                                      const vi::la::matrix& targets,
                                      vi::nn::cost_function& cost_function,
                                      const vi::nn::l2_regularizer* regularizer) {
-  double cost(std::numeric_limits<double>::max());
+  float cost(std::numeric_limits<float>::max());
   const size_t example_count = features.row_count();
 
   for (size_t epoch = 1U; epoch <= _max_epoch_count; ++epoch) {
-    std::pair<double, std::vector<vi::la::matrix>> cost_and_gradients =
+    std::pair<float, std::vector<vi::la::matrix>> cost_and_gradients =
         network.backward(features, targets, cost_function);
 
     cost = cost_and_gradients.first / example_count;
@@ -46,7 +46,7 @@ double batch_gradient_descent::train(vi::nn::network& network, const vi::la::mat
       vi::la::matrix gradient = gradients[i] / example_count;
 
       if (regularizer) {
-        std::pair<double, vi::la::matrix> cost_and_gradient_penalty =
+        std::pair<float, vi::la::matrix> cost_and_gradient_penalty =
             regularizer->penalty(l.get_weights());
         cost += cost_and_gradient_penalty.first / example_count;
         gradient = gradient + (cost_and_gradient_penalty.second / example_count);

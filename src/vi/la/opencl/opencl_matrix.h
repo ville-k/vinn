@@ -15,7 +15,7 @@ namespace opencl {
 /// Matrix implementation for OpenCL context
 class matrix : public vi::la::matrix_implementation {
 public:
-  matrix(opencl_context& context, size_t rows, size_t columns, const double* initial_values);
+  matrix(opencl_context& context, size_t rows, size_t columns, const float* initial_values);
   virtual ~matrix();
 
   virtual size_t row_count() const;
@@ -23,7 +23,7 @@ public:
 
   virtual vi::la::context& owning_context() const;
 
-  virtual double* raw_data();
+  virtual float * raw_data();
 
   cl::Buffer* get();
 
@@ -33,7 +33,7 @@ private:
   size_t _row_count;
   size_t _column_count;
   cl::Buffer* _device_buffer;
-  double* _host_buffer;
+  float* _host_buffer;
 };
 }
 }

@@ -15,7 +15,7 @@ namespace vi {
 namespace la {
 
 std::shared_ptr<vi::la::matrix_implementation>
-cpu_context::implement_matrix(size_t rows, size_t columns, const double* initial_values) {
+cpu_context::implement_matrix(size_t rows, size_t columns, const float *initial_values) {
   matrix_implementation* impl = new cpu::matrix(*this, rows, columns, initial_values);
   return std::shared_ptr<matrix_implementation>(impl);
 }
@@ -27,7 +27,7 @@ void cpu_context::multiply(matrix& product, const matrix& operand_1, const matri
 
   for (size_t m = 0U; m < product.row_count(); ++m) {
     for (size_t n = 0U; n < product.column_count(); ++n) {
-      double value(0.0);
+      float value(0.0);
       for (size_t j = 0U; j < operand_1.column_count(); ++j) {
         value += operand_1_impl->get()[m * operand_1.column_count() + j] *
                  operand_2_impl->get()[j * operand_2.column_count() + n];
@@ -37,7 +37,7 @@ void cpu_context::multiply(matrix& product, const matrix& operand_1, const matri
   }
 }
 
-void cpu_context::multiply(matrix& product, const matrix& operand_1, const double operand_2) {
+void cpu_context::multiply(matrix &product, const matrix &operand_1, const float operand_2) {
   cpu::matrix* product_impl = dynamic_cast<cpu::matrix*>(product.implementation());
   cpu::matrix* operand_1_impl = dynamic_cast<cpu::matrix*>(operand_1.implementation());
 
@@ -57,20 +57,20 @@ void cpu_context::multiply_elementwise(matrix& product, const matrix& operand_1,
 
   for (size_t m = 0U; m < product.row_count(); ++m) {
     for (size_t n = 0U; n < product.column_count(); ++n) {
-      const double value = operand_1_impl->get()[m * operand_1.column_count() + n] *
+      const float value = operand_1_impl->get()[m * operand_1.column_count() + n] *
                            operand_2_impl->get()[m * operand_2.column_count() + n];
       product_impl->get()[m * product.column_count() + n] = value;
     }
   }
 }
 
-void cpu_context::add(matrix& sum, const matrix& operand_1, const double operand_2) {
+void cpu_context::add(matrix &sum, const matrix &operand_1, const float operand_2) {
   cpu::matrix* sum_impl = dynamic_cast<cpu::matrix*>(sum.implementation());
   cpu::matrix* operand_1_impl = dynamic_cast<cpu::matrix*>(operand_1.implementation());
 
   for (size_t m = 0U; m < sum.row_count(); ++m) {
     for (size_t n = 0U; n < sum.column_count(); ++n) {
-      const double value = operand_1_impl->get()[m * operand_1.column_count() + n];
+      const float value = operand_1_impl->get()[m * operand_1.column_count() + n];
       sum_impl->get()[m * sum.column_count() + n] = value + operand_2;
     }
   }
@@ -83,7 +83,7 @@ void cpu_context::add(matrix& sum, const matrix& operand_1, const matrix& operan
 
   for (size_t m = 0U; m < sum.row_count(); ++m) {
     for (size_t n = 0U; n < sum.column_count(); ++n) {
-      const double value = operand_1_impl->get()[m * operand_1.column_count() + n] +
+      const float value = operand_1_impl->get()[m * operand_1.column_count() + n] +
                            operand_2_impl->get()[m * operand_2.column_count() + n];
       sum_impl->get()[m * sum.column_count() + n] = value;
     }
@@ -97,7 +97,7 @@ void cpu_context::subtract(matrix& difference, const matrix& operand_1, const ma
 
   for (size_t m = 0U; m < difference.row_count(); ++m) {
     for (size_t n = 0U; n < difference.column_count(); ++n) {
-      const double value = operand_1_impl->get()[m * operand_1.column_count() + n] -
+      const float value = operand_1_impl->get()[m * operand_1.column_count() + n] -
                            operand_2_impl->get()[m * operand_2.column_count() + n];
       difference_impl->get()[m * difference.column_count() + n] = value;
     }
@@ -106,11 +106,11 @@ void cpu_context::subtract(matrix& difference, const matrix& operand_1, const ma
 
 void cpu_context::sigmoid(matrix& operand) {
   cpu::matrix* impl = dynamic_cast<cpu::matrix*>(operand.implementation());
-  double* b = impl->raw_data();
+  float* b = impl->raw_data();
   for (size_t m = 0U; m < operand.row_count(); ++m) {
     for (size_t n = 0U; n < operand.column_count(); ++n) {
-      const double input = b[m * operand.column_count() + n];
-      const double output = 1.0 / (1.0 + ::expf(-1.0 * input));
+      const float input = b[m * operand.column_count() + n];
+      const float output = 1.0 / (1.0 + ::expf(-1.0 * input));
       b[m * operand.column_count() + n] = output;
     }
   }
@@ -122,8 +122,8 @@ void cpu_context::sigmoid_gradient(matrix& gradient, const matrix& operand) {
 
   for (size_t m = 0U; m < gradient.row_count(); ++m) {
     for (size_t n = 0U; n < gradient.column_count(); ++n) {
-      const double input = operand_impl->get()[m * operand.column_count() + n];
-      const double output = input * (1.0 - input);
+      const float input = operand_impl->get()[m * operand.column_count() + n];
+      const float output = input * (1.0 - input);
       gradient_impl->get()[m * gradient.column_count() + n] = output;
     }
   }
@@ -134,8 +134,8 @@ void cpu_context::hyperbolic_tangent(matrix& operand) {
 
   for (size_t m = 0U; m < operand.row_count(); ++m) {
     for (size_t n = 0U; n < operand.column_count(); ++n) {
-      double value = operand_impl->get()[m * operand.column_count() + n];
-      double output = tanh(value);
+      float value = operand_impl->get()[m * operand.column_count() + n];
+      float output = tanh(value);
       operand_impl->get()[m * operand.column_count() + n] = output;
     }
   }
@@ -147,7 +147,7 @@ void cpu_context::hyperbolic_tangent_gradient(matrix& gradient, const matrix& op
 
   for (size_t m = 0U; m < gradient.row_count(); ++m) {
     for (size_t n = 0U; n < gradient.column_count(); ++n) {
-      double value = operand_impl->get()[m * operand.column_count() + n];
+      float value = operand_impl->get()[m * operand.column_count() + n];
       gradient_impl->get()[m * operand.column_count() + n] = 1.0 - (value * value);
     }
   }
@@ -155,12 +155,12 @@ void cpu_context::hyperbolic_tangent_gradient(matrix& gradient, const matrix& op
 
 void cpu_context::softmax(matrix& operand) {
   cpu::matrix* impl = dynamic_cast<cpu::matrix*>(operand.implementation());
-  double* buffer = impl->get();
+  float* buffer = impl->get();
   for (size_t m = 0U; m < operand.row_count(); ++m) {
-    double row_total(0.0);
+    float row_total(0.0);
     for (size_t n = 0U; n < operand.column_count(); ++n) {
-      double input_value = buffer[m * operand.column_count() + n];
-      double value = std::exp(input_value);
+      float input_value = buffer[m * operand.column_count() + n];
+      float value = std::exp(input_value);
       row_total += value;
       buffer[m * operand.column_count() + n] = value;
     }
@@ -173,11 +173,11 @@ void cpu_context::softmax(matrix& operand) {
 
 void cpu_context::merge(matrix& merged, const matrix& operand_1, const matrix& operand_2) {
   cpu::matrix* merged_impl = dynamic_cast<cpu::matrix*>(merged.implementation());
-  double* merged_buffer = merged_impl->get();
+  float* merged_buffer = merged_impl->get();
   cpu::matrix* operand_1_impl = dynamic_cast<cpu::matrix*>(operand_1.implementation());
-  double* operand_1_buffer = operand_1_impl->get();
+  float* operand_1_buffer = operand_1_impl->get();
   cpu::matrix* operand_2_impl = dynamic_cast<cpu::matrix*>(operand_2.implementation());
-  double* operand_2_buffer = operand_2_impl->get();
+  float* operand_2_buffer = operand_2_impl->get();
 
   for (size_t m = 0U; m < merged.row_count(); ++m) {
     for (size_t n = 0U; n < operand_1.column_count(); ++n) {
@@ -194,9 +194,9 @@ void cpu_context::merge(matrix& merged, const matrix& operand_1, const matrix& o
 
 void cpu_context::transpose(matrix& transposed, const matrix& original) {
   cpu::matrix* transposed_impl = dynamic_cast<cpu::matrix*>(transposed.implementation());
-  double* transposed_buffer = transposed_impl->get();
+  float* transposed_buffer = transposed_impl->get();
   cpu::matrix* original_impl = dynamic_cast<cpu::matrix*>(original.implementation());
-  double* original_buffer = original_impl->get();
+  float* original_buffer = original_impl->get();
 
   for (size_t m = 0U; m < original.row_count(); ++m) {
     for (size_t n = 0U; n < original.column_count(); ++n) {
@@ -239,7 +239,7 @@ void cpu_context::log(matrix& result, const matrix& original) {
 
   for (size_t m = 0U; m < result.row_count(); ++m) {
     for (size_t n = 0U; n < result.column_count(); ++n) {
-      double value = original_impl->get()[m * original.column_count() + n];
+      float value = original_impl->get()[m * original.column_count() + n];
       result_impl->get()[m * result.column_count() + n] = logf(value);
     }
   }
@@ -275,12 +275,12 @@ void cpu_context::convolve_2d(matrix& result, const matrix& mask, const matrix& 
   for (size_t m = 0U; m < vertical_steps; ++m) {
     for (size_t n = 0U; n < horizontal_steps; ++n) {
       for (size_t channel = 0U; channel < channels; ++channel) {
-        double value = 0.0;
+        float value = 0.0;
         for (size_t mask_row = 0U; mask_row < mask_height; ++mask_row) {
           for (size_t mask_column = 0U; mask_column < mask_width; ++mask_column) {
 
-            double mask_element = mask[mask_row][mask_column];
-            double source_element = 0.0;
+            float mask_element = mask[mask_row][mask_column];
+            float source_element = 0.0;
             if ((m + mask_row) >= mask_vertical_radius &&
                 (m + mask_row) < (vertical_steps + mask_vertical_radius) &&
                 (n + mask_column) >= mask_horizontal_radius &&

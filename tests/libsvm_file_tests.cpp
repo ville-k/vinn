@@ -32,16 +32,16 @@ TEST_P(libsvm_file_tests, load_single_label_and_features) {
   EXPECT_EQ(2U, labels_and_features.second.row_count());
   EXPECT_EQ(160U, labels_and_features.second.column_count());
 
-  EXPECT_EQ(1.0, labels_and_features.second[0][0]);
-  EXPECT_EQ(2.0, labels_and_features.second[0][1]);
-  EXPECT_EQ(159, labels_and_features.second[0][158]);
-  EXPECT_EQ(160, labels_and_features.second[0][159]);
+  EXPECT_EQ(1.0f, labels_and_features.second[0][0]);
+  EXPECT_EQ(2.0f, labels_and_features.second[0][1]);
+  EXPECT_EQ(159.0f, labels_and_features.second[0][158]);
+  EXPECT_EQ(160.0f, labels_and_features.second[0][159]);
 
-  EXPECT_EQ(0.1, labels_and_features.second[1][0]);
-  EXPECT_EQ(0.22, labels_and_features.second[1][1]);
-  EXPECT_EQ(0.333, labels_and_features.second[1][2]);
-  EXPECT_EQ(0.159, labels_and_features.second[1][158]);
-  EXPECT_EQ(0.160, labels_and_features.second[1][159]);
+  EXPECT_EQ(0.1f, labels_and_features.second[1][0]);
+  EXPECT_EQ(0.22f, labels_and_features.second[1][1]);
+  EXPECT_EQ(0.333f, labels_and_features.second[1][2]);
+  EXPECT_EQ(0.159f, labels_and_features.second[1][158]);
+  EXPECT_EQ(0.160f, labels_and_features.second[1][159]);
 }
 
 TEST_P(libsvm_file_tests, load_with_max_feature_count) {
@@ -55,20 +55,20 @@ TEST_P(libsvm_file_tests, load_with_max_feature_count) {
 
   EXPECT_EQ(2U, labels_and_features.first.row_count());
   EXPECT_EQ(1U, labels_and_features.first.column_count());
-  EXPECT_EQ(5.0, labels_and_features.first[0][0]);
-  EXPECT_EQ(2.0, labels_and_features.first[1][0]);
+  EXPECT_EQ(5.0f, labels_and_features.first[0][0]);
+  EXPECT_EQ(2.0f, labels_and_features.first[1][0]);
 
   EXPECT_EQ(2U, labels_and_features.second.row_count());
   EXPECT_EQ(159U, labels_and_features.second.column_count());
 
-  EXPECT_EQ(1.0, labels_and_features.second[0][0]);
-  EXPECT_EQ(2.0, labels_and_features.second[0][1]);
-  EXPECT_EQ(159, labels_and_features.second[0][158]);
+  EXPECT_EQ(1.0f, labels_and_features.second[0][0]);
+  EXPECT_EQ(2.0f, labels_and_features.second[0][1]);
+  EXPECT_EQ(159.0, labels_and_features.second[0][158]);
 
-  EXPECT_EQ(0.1, labels_and_features.second[1][0]);
-  EXPECT_EQ(0.22, labels_and_features.second[1][1]);
-  EXPECT_EQ(0.333, labels_and_features.second[1][2]);
-  EXPECT_EQ(0.159, labels_and_features.second[1][158]);
+  EXPECT_EQ(0.1f, labels_and_features.second[1][0]);
+  EXPECT_EQ(0.22f, labels_and_features.second[1][1]);
+  EXPECT_EQ(0.333f, labels_and_features.second[1][2]);
+  EXPECT_EQ(0.159f, labels_and_features.second[1][158]);
 }
 
 TEST_P(libsvm_file_tests, load_multiple_labels_and_features) {
@@ -83,22 +83,22 @@ TEST_P(libsvm_file_tests, load_multiple_labels_and_features) {
   EXPECT_EQ(2U, labels_and_features.first.row_count());
   EXPECT_EQ(3U, labels_and_features.first.column_count());
 
-  EXPECT_EQ(5.0, labels_and_features.first[0][0]);
-  EXPECT_EQ(2.0, labels_and_features.first[1][0]);
+  EXPECT_EQ(5.0f, labels_and_features.first[0][0]);
+  EXPECT_EQ(2.0f, labels_and_features.first[1][0]);
 
   EXPECT_EQ(2U, labels_and_features.second.row_count());
   EXPECT_EQ(160U, labels_and_features.second.column_count());
 
-  EXPECT_EQ(1.0, labels_and_features.second[0][0]);
-  EXPECT_EQ(2.0, labels_and_features.second[0][1]);
-  EXPECT_EQ(159, labels_and_features.second[0][158]);
-  EXPECT_EQ(160, labels_and_features.second[0][159]);
+  EXPECT_EQ(1.0f, labels_and_features.second[0][0]);
+  EXPECT_EQ(2.0f, labels_and_features.second[0][1]);
+  EXPECT_EQ(159.0f, labels_and_features.second[0][158]);
+  EXPECT_EQ(160.0f, labels_and_features.second[0][159]);
 
-  EXPECT_EQ(0.1, labels_and_features.second[1][0]);
-  EXPECT_EQ(0.22, labels_and_features.second[1][1]);
-  EXPECT_EQ(0.333, labels_and_features.second[1][2]);
-  EXPECT_EQ(0.159, labels_and_features.second[1][158]);
-  EXPECT_EQ(0.160, labels_and_features.second[1][159]);
+  EXPECT_EQ(0.1f, labels_and_features.second[1][0]);
+  EXPECT_EQ(0.22f, labels_and_features.second[1][1]);
+  EXPECT_EQ(0.333f, labels_and_features.second[1][2]);
+  EXPECT_EQ(0.159f, labels_and_features.second[1][158]);
+  EXPECT_EQ(0.160f, labels_and_features.second[1][159]);
 }
 
 TEST_P(libsvm_file_tests, load_data_with_comments) {
@@ -112,20 +112,20 @@ TEST_P(libsvm_file_tests, load_data_with_comments) {
 
   EXPECT_EQ(2U, labels_and_features.first.row_count());
   EXPECT_EQ(1U, labels_and_features.first.column_count());
-  EXPECT_EQ(5.0, labels_and_features.first[0][0]);
-  EXPECT_EQ(2.0, labels_and_features.first[1][0]);
+  EXPECT_EQ(5.0f, labels_and_features.first[0][0]);
+  EXPECT_EQ(2.0f, labels_and_features.first[1][0]);
 
   EXPECT_EQ(2U, labels_and_features.second.row_count());
   EXPECT_EQ(160U, labels_and_features.second.column_count());
 
-  EXPECT_EQ(1.0, labels_and_features.second[0][0]);
-  EXPECT_EQ(2.0, labels_and_features.second[0][1]);
-  EXPECT_EQ(159, labels_and_features.second[0][158]);
-  EXPECT_EQ(160, labels_and_features.second[0][159]);
+  EXPECT_EQ(1.0f, labels_and_features.second[0][0]);
+  EXPECT_EQ(2.0f, labels_and_features.second[0][1]);
+  EXPECT_EQ(159.0f, labels_and_features.second[0][158]);
+  EXPECT_EQ(160.0f, labels_and_features.second[0][159]);
 
-  EXPECT_EQ(0.1, labels_and_features.second[1][0]);
-  EXPECT_EQ(0.22, labels_and_features.second[1][1]);
-  EXPECT_EQ(0.333, labels_and_features.second[1][2]);
-  EXPECT_EQ(0.159, labels_and_features.second[1][158]);
-  EXPECT_EQ(0.160, labels_and_features.second[1][159]);
+  EXPECT_EQ(0.1f, labels_and_features.second[1][0]);
+  EXPECT_EQ(0.22f, labels_and_features.second[1][1]);
+  EXPECT_EQ(0.333f, labels_and_features.second[1][2]);
+  EXPECT_EQ(0.159f, labels_and_features.second[1][158]);
+  EXPECT_EQ(0.160f, labels_and_features.second[1][159]);
 }

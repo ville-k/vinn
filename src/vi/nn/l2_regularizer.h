@@ -8,12 +8,12 @@ namespace nn {
 
 class l2_regularizer {
 public:
-  l2_regularizer(double weight_decay);
+  l2_regularizer(float weight_decay);
 
-  std::pair<double, vi::la::matrix> penalty(const vi::la::matrix& weights) const;
+  std::pair<float, vi::la::matrix> penalty(const vi::la::matrix& weights) const;
 
 private:
-  double _weight_decay;
+  float _weight_decay;
 };
 }
 }

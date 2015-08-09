@@ -23,7 +23,7 @@ public:
   /// [0, label_count[  -> [0, label_count[
   label_map(const size_t label_count);
   /// [0, labels.size() - 1] -> [labels[0], labels[last]]
-  label_map(std::vector<long> labels);
+  label_map(std::vector<int> labels);
 
   /// map highest probability activation with corresponding label
   vi::la::matrix activations_to_labels(const vi::la::matrix& activations) const;
@@ -32,13 +32,13 @@ public:
   vi::la::matrix labels_to_activations(const vi::la::matrix& labels) const;
 
   /// return all available labels
-  const std::vector<long>& labels() const;
+  const std::vector<int>& labels() const;
 
 private:
-  void create_mappings(const std::vector<long>& labels);
+  void create_mappings(const std::vector<int>& labels);
 
   // vector index of a label indicates active unit
-  std::vector<long> _active_unit_to_label;
+  std::vector<int> _active_unit_to_label;
 };
 }
 }

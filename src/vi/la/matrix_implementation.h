@@ -16,7 +16,7 @@ public:
 
   virtual vi::la::context& owning_context() const = 0;
 
-  virtual double* raw_data() = 0;
+  virtual float * raw_data() = 0;
 };
 }
 }

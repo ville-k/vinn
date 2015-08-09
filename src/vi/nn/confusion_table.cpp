@@ -28,66 +28,66 @@ size_t confusion_table::false_positives() const { return _false_positives; }
 
 size_t confusion_table::false_negatives() const { return _false_negatives; }
 
-double confusion_table::tp() const { return static_cast<double>(_true_positives); }
+float confusion_table::tp() const { return static_cast<float>(_true_positives); }
 
-double confusion_table::tn() const { return static_cast<double>(_true_negatives); }
+float confusion_table::tn() const { return static_cast<float>(_true_negatives); }
 
-double confusion_table::fp() const { return static_cast<double>(_false_positives); }
+float confusion_table::fp() const { return static_cast<float>(_false_positives); }
 
-double confusion_table::fn() const { return static_cast<double>(_false_negatives); }
+float confusion_table::fn() const { return static_cast<float>(_false_negatives); }
 
-double confusion_table::accuracy() const {
-  const double denominator(results());
+float confusion_table::accuracy() const {
+  const float denominator(results());
   if (denominator > 0.0) {
     return (tp() + tn()) / denominator;
   }
   return 0.0;
 }
 
-double confusion_table::error_rate() const {
-  const double denominator(results());
+float confusion_table::error_rate() const {
+  const float denominator(results());
   if (denominator > 0.0) {
     return (fp() + fn()) / denominator;
   }
   return 0.0;
 }
 
-double confusion_table::precision() const {
-  const double denominator(tp() + fp());
+float confusion_table::precision() const {
+  const float denominator(tp() + fp());
   if (denominator > 0) {
     return tp() / denominator;
   }
   return 0.0;
 }
 
-double confusion_table::recall() const {
-  const double denominator(tp() + fn());
+float confusion_table::recall() const {
+  const float denominator(tp() + fn());
   if (denominator > 0.0) {
     return tp() / denominator;
   }
   return 0.0;
 }
 
-double confusion_table::fscore(double beta) const {
-  const double beta_squared(std::pow(beta, 2));
-  const double denominator((beta_squared + 1) * tp() + beta_squared * fn() + fp());
+float confusion_table::fscore(float beta) const {
+  const float beta_squared(std::pow(beta, 2));
+  const float denominator((beta_squared + 1) * tp() + beta_squared * fn() + fp());
   if (denominator > 0.0) {
     return ((beta_squared + 1) * tp()) / denominator;
   }
   return 0.0;
 }
 
-double confusion_table::specificity() const {
-  const double denominator(fp() + tn());
+float confusion_table::specificity() const {
+  const float denominator(fp() + tn());
   if (denominator > 0) {
     return tn() / denominator;
   }
   return 0.0;
 }
 
-double confusion_table::auc() const { return 0.5 * (recall() + specificity()); }
+float confusion_table::auc() const { return 0.5 * (recall() + specificity()); }
 
-double confusion_table::results() const { return tp() + tn() + fp() + fn(); }
+float confusion_table::results() const { return tp() + tn() + fp() + fn(); }
 
 std::ostream& operator<<(std::ostream& os, const confusion_table& t) {
   os << "Accuracy:  " << t.accuracy() << std::endl;

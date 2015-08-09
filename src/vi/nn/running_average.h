@@ -10,12 +10,12 @@ namespace nn {
 class running_average {
 public:
   running_average(size_t max_values);
-  void add_value(double value);
-  double calculate() const;
+  void add_value(float value);
+  float calculate() const;
 
 private:
   size_t _max_values;
-  std::vector<double> _values;
+  std::vector<float> _values;
 };
 }
 }

@@ -27,7 +27,7 @@ TEST_P(matrix_tests, costruct_with_dimensions) {
 }
 
 TEST_P(matrix_tests, costruct_with_initial_value) {
-  const double initial_value(2014.0);
+  const float initial_value(2014.0);
   matrix a(*GetParam(), 400U, 300U, initial_value);
   EXPECT_EQ(400U, a.row_count());
   EXPECT_EQ(300U, a.column_count());
@@ -39,37 +39,37 @@ TEST_P(matrix_tests, costruct_with_initial_value) {
 }
 
 TEST_P(matrix_tests, costruct_with_initial_values_array) {
-  double initial_values[] = {1.0, 2.0, 3.0, 4.0};
-  std::shared_ptr<double> buffer(initial_values, [](double* ptr) { (void)ptr; });
+  float initial_values[] = {1.0, 2.0, 3.0, 4.0};
+  std::shared_ptr<float> buffer(initial_values, [](float* ptr) { (void)ptr; });
   matrix a(*GetParam(), 2U, 2U, buffer);
   EXPECT_EQ(2U, a.row_count());
   EXPECT_EQ(2U, a.column_count());
-  EXPECT_DOUBLE_EQ(1.0, a[0][0]);
-  EXPECT_DOUBLE_EQ(2.0, a[0][1]);
-  EXPECT_DOUBLE_EQ(3.0, a[1][0]);
-  EXPECT_DOUBLE_EQ(4.0, a[1][1]);
+  EXPECT_FLOAT_EQ(1.0, a[0][0]);
+  EXPECT_FLOAT_EQ(2.0, a[0][1]);
+  EXPECT_FLOAT_EQ(3.0, a[1][0]);
+  EXPECT_FLOAT_EQ(4.0, a[1][1]);
 }
 
 TEST_P(matrix_tests, costruct_with_initializer_list) {
   matrix a(*GetParam(), {{1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}});
   EXPECT_EQ(2U, a.row_count());
   EXPECT_EQ(3U, a.column_count());
-  EXPECT_DOUBLE_EQ(1.0, a[0][0]);
-  EXPECT_DOUBLE_EQ(2.0, a[0][1]);
-  EXPECT_DOUBLE_EQ(3.0, a[0][2]);
-  EXPECT_DOUBLE_EQ(4.0, a[1][0]);
-  EXPECT_DOUBLE_EQ(5.0, a[1][1]);
-  EXPECT_DOUBLE_EQ(6.0, a[1][2]);
+  EXPECT_FLOAT_EQ(1.0, a[0][0]);
+  EXPECT_FLOAT_EQ(2.0, a[0][1]);
+  EXPECT_FLOAT_EQ(3.0, a[0][2]);
+  EXPECT_FLOAT_EQ(4.0, a[1][0]);
+  EXPECT_FLOAT_EQ(5.0, a[1][1]);
+  EXPECT_FLOAT_EQ(6.0, a[1][2]);
 
   matrix b(*GetParam(), {{1.0, 2.0}, {3.0, 4.0}, {5.0, 6.0}});
   EXPECT_EQ(3U, b.row_count());
   EXPECT_EQ(2U, b.column_count());
-  EXPECT_DOUBLE_EQ(1.0, b[0][0]);
-  EXPECT_DOUBLE_EQ(2.0, b[0][1]);
-  EXPECT_DOUBLE_EQ(3.0, b[1][0]);
-  EXPECT_DOUBLE_EQ(4.0, b[1][1]);
-  EXPECT_DOUBLE_EQ(5.0, b[2][0]);
-  EXPECT_DOUBLE_EQ(6.0, b[2][1]);
+  EXPECT_FLOAT_EQ(1.0, b[0][0]);
+  EXPECT_FLOAT_EQ(2.0, b[0][1]);
+  EXPECT_FLOAT_EQ(3.0, b[1][0]);
+  EXPECT_FLOAT_EQ(4.0, b[1][1]);
+  EXPECT_FLOAT_EQ(5.0, b[2][0]);
+  EXPECT_FLOAT_EQ(6.0, b[2][1]);
 }
 
 TEST_P(matrix_tests, construct_with_size) {
@@ -83,7 +83,7 @@ TEST_P(matrix_tests, copy_construction) {
   matrix b(a);
   EXPECT_MATRIX_EQ(a, b);
 
-  double current = a[0][0];
+  float current = a[0][0];
   a[0][0] = current + 1.0;
   EXPECT_EQ(current + 1.0, b[0][0])
       << "copied matrix should change when the matrix it refers to changes";
@@ -95,7 +95,7 @@ TEST_P(matrix_tests, assignment) {
   b = a;
   EXPECT_MATRIX_EQ(a, b);
 
-  double current = a[0][0];
+  float current = a[0][0];
   a[0][0] = current + 1.0;
   EXPECT_EQ(current + 1.0, b[0][0])
       << "assigned matrix should change when the matrix it refers to changes";
@@ -107,7 +107,7 @@ TEST_P(matrix_tests, clone) {
   b = a.clone();
   EXPECT_MATRIX_EQ(a, b);
 
-  double current = a[0][0];
+  float current = a[0][0];
   a[0][0] = current + 1.0;
   EXPECT_EQ(current, b[0][0]) << "assigned matrix should not change when the "
                                  "matrix it was cloned from changes";

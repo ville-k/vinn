@@ -3,9 +3,9 @@
 namespace vi {
 namespace nn {
 
-l2_regularizer::l2_regularizer(double weight_decay) : _weight_decay(weight_decay) {}
+l2_regularizer::l2_regularizer(float weight_decay) : _weight_decay(weight_decay) {}
 
-std::pair<double, vi::la::matrix> l2_regularizer::penalty(const vi::la::matrix& weights) const {
+std::pair<float, vi::la::matrix> l2_regularizer::penalty(const vi::la::matrix& weights) const {
   la::context& context = weights.owning_context();
 
   const vi::la::matrix zeros(context, weights.row_count(), 1U, 0.0);
@@ -13,7 +13,7 @@ std::pair<double, vi::la::matrix> l2_regularizer::penalty(const vi::la::matrix& 
       weights.sub_matrix(0U, weights.row_count() - 1U, 1U, weights.column_count() - 1U);
 
   const vi::la::matrix weights_squared = biasless_weights.elementwise_product(biasless_weights);
-  const double cost_penalty =
+  const float cost_penalty =
       (_weight_decay / 2.0) * context.sum_columns(context.sum_rows(weights_squared))[0][0];
 
   const vi::la::matrix gradient_penalty = zeros << (biasless_weights * _weight_decay);

@@ -46,7 +46,7 @@ std::vector<vi::la::context*> all_contexts() {
   for (size_t m = 0U; m < expected.row_count(); ++m) {
     for (size_t n = 0U; n < expected.column_count(); ++n) {
       // using googletest internals, but this class has not changed in years
-      const ::testing::internal::FloatingPoint<double> lhs(expected[m][n]), rhs(actual[m][n]);
+      const ::testing::internal::FloatingPoint<float> lhs(expected[m][n]), rhs(actual[m][n]);
       if (!lhs.AlmostEquals(rhs)) {
         return ::testing::AssertionFailure()
                << "Matrices \"" << expected_expression << "\" and \"" << actual_expression

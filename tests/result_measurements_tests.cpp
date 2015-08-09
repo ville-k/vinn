@@ -17,50 +17,50 @@ protected:
     expected = {Cat, Dog};
   }
 
-  vector<long> labels;
-  vector<long> expected;
+  vector<int> labels;
+  vector<int> expected;
 };
 
 INSTANTIATE_TEST_CASE_P(context, result_measurements_tests,
                         ::testing::ValuesIn(test::all_contexts()));
 
 TEST_P(result_measurements_tests, none_correct) {
-  vector<long> actual = {Dog, Cat};
+  vector<int> actual = {Dog, Cat};
 
   result_measurements measures(*GetParam(), labels);
   measures.add_results(expected, actual);
-  EXPECT_DOUBLE_EQ(0.0, measures.accuracy());
-  EXPECT_DOUBLE_EQ(0.0, measures.average_accuracy());
-  EXPECT_DOUBLE_EQ(1.0, measures.error_rate());
-  EXPECT_DOUBLE_EQ(0.0, measures.precision());
-  EXPECT_DOUBLE_EQ(0.0, measures.recall());
-  EXPECT_DOUBLE_EQ(0.0, measures.fscore());
+  EXPECT_FLOAT_EQ(0.0, measures.accuracy());
+  EXPECT_FLOAT_EQ(0.0, measures.average_accuracy());
+  EXPECT_FLOAT_EQ(1.0, measures.error_rate());
+  EXPECT_FLOAT_EQ(0.0, measures.precision());
+  EXPECT_FLOAT_EQ(0.0, measures.recall());
+  EXPECT_FLOAT_EQ(0.0, measures.fscore());
 }
 
 TEST_P(result_measurements_tests, half_correct) {
-  vector<long> actual = {Cat, Cat};
+  vector<int> actual = {Cat, Cat};
 
   result_measurements measures(*GetParam(), labels);
   measures.add_results(expected, actual);
-  EXPECT_DOUBLE_EQ(0.5, measures.accuracy());
-  EXPECT_DOUBLE_EQ(0.5, measures.average_accuracy());
-  EXPECT_DOUBLE_EQ(0.5, measures.error_rate());
-  EXPECT_DOUBLE_EQ(0.25, measures.precision());
-  EXPECT_DOUBLE_EQ(0.5, measures.recall());
-  EXPECT_DOUBLE_EQ(1.0 / 3.0, measures.fscore());
+  EXPECT_FLOAT_EQ(0.5, measures.accuracy());
+  EXPECT_FLOAT_EQ(0.5, measures.average_accuracy());
+  EXPECT_FLOAT_EQ(0.5, measures.error_rate());
+  EXPECT_FLOAT_EQ(0.25, measures.precision());
+  EXPECT_FLOAT_EQ(0.5, measures.recall());
+  EXPECT_FLOAT_EQ(1.0 / 3.0, measures.fscore());
 }
 
 TEST_P(result_measurements_tests, all_correct) {
-  vector<long> actual = {Cat, Dog};
+  vector<int> actual = {Cat, Dog};
 
   result_measurements measures(*GetParam(), labels);
   measures.add_results(expected, actual);
-  EXPECT_DOUBLE_EQ(1.0, measures.accuracy());
-  EXPECT_DOUBLE_EQ(1.0, measures.average_accuracy());
-  EXPECT_DOUBLE_EQ(0.0, measures.error_rate());
-  EXPECT_DOUBLE_EQ(1.0, measures.precision());
-  EXPECT_DOUBLE_EQ(1.0, measures.recall());
-  EXPECT_DOUBLE_EQ(1.0, measures.fscore());
+  EXPECT_FLOAT_EQ(1.0, measures.accuracy());
+  EXPECT_FLOAT_EQ(1.0, measures.average_accuracy());
+  EXPECT_FLOAT_EQ(0.0, measures.error_rate());
+  EXPECT_FLOAT_EQ(1.0, measures.precision());
+  EXPECT_FLOAT_EQ(1.0, measures.recall());
+  EXPECT_FLOAT_EQ(1.0, measures.fscore());
 }
 
 TEST_P(result_measurements_tests, matrix_results_all_correct) {
@@ -73,10 +73,10 @@ TEST_P(result_measurements_tests, matrix_results_all_correct) {
 
   result_measurements measures(*GetParam(), labels);
   measures.add_results(expected_matrix, actual_matrix);
-  EXPECT_DOUBLE_EQ(1.0, measures.accuracy());
-  EXPECT_DOUBLE_EQ(1.0, measures.average_accuracy());
-  EXPECT_DOUBLE_EQ(0.0, measures.error_rate());
-  EXPECT_DOUBLE_EQ(1.0, measures.precision());
-  EXPECT_DOUBLE_EQ(1.0, measures.recall());
-  EXPECT_DOUBLE_EQ(1.0, measures.fscore());
+  EXPECT_FLOAT_EQ(1.0, measures.accuracy());
+  EXPECT_FLOAT_EQ(1.0, measures.average_accuracy());
+  EXPECT_FLOAT_EQ(0.0, measures.error_rate());
+  EXPECT_FLOAT_EQ(1.0, measures.precision());
+  EXPECT_FLOAT_EQ(1.0, measures.recall());
+  EXPECT_FLOAT_EQ(1.0, measures.fscore());
 }

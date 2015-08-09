@@ -69,7 +69,7 @@ TEST_P(network_tests, backward_succeeds_with_valid_inputs) {
   matrix targets(*GetParam(), 10, 10, 1.0);
 
   vi::nn::cross_entropy_cost cost_function;
-  std::pair<double, std::vector<matrix>> cost_and_gradients =
+  std::pair<float, std::vector<matrix>> cost_and_gradients =
       network.backward(features, targets, cost_function);
 
   ASSERT_LT(0.0, cost_and_gradients.first);

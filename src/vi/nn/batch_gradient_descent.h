@@ -11,22 +11,22 @@ class l2_regularizer;
 
 class batch_gradient_descent : public trainer {
 public:
-  batch_gradient_descent(size_t max_epoch_count, double learning_rate);
+  batch_gradient_descent(size_t max_epoch_count, float learning_rate);
 
-  virtual double train(vi::nn::network& network, const vi::la::matrix& features,
+  virtual float train(vi::nn::network& network, const vi::la::matrix& features,
                        const vi::la::matrix& targets, vi::nn::cost_function& cost_function);
 
-  virtual double train(vi::nn::network& network, const vi::la::matrix& features,
+  virtual float train(vi::nn::network& network, const vi::la::matrix& features,
                        const vi::la::matrix& targets, vi::nn::cost_function& cost_function,
                        const vi::nn::l2_regularizer& regularizer);
 
 private:
-  double train(vi::nn::network& network, const vi::la::matrix& features,
+  float train(vi::nn::network& network, const vi::la::matrix& features,
                const vi::la::matrix& targets, vi::nn::cost_function& cost_function,
                const vi::nn::l2_regularizer* regularizer);
 
   size_t _max_epoch_count;
-  double _learning_rate;
+  float _learning_rate;
 };
 }
 }

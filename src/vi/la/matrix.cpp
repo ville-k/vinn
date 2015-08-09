@@ -14,21 +14,21 @@ matrix::matrix() {}
 matrix::matrix(std::shared_ptr<vi::la::matrix_implementation> implementation)
     : _implementation(implementation) {}
 
-matrix::matrix(vi::la::context& context,
-               const std::initializer_list<std::initializer_list<double>>& rows) {
+matrix::matrix(vi::la::context &context,
+               const std::initializer_list<std::initializer_list<float>> &rows) {
   size_t max_column_count(0U);
-  for (const std::initializer_list<double>& row : rows) {
+  for (const std::initializer_list<float>& row : rows) {
     max_column_count = std::max(max_column_count, row.size());
   }
   if (rows.size() == 0U || max_column_count == 0U) {
     throw incompatible_dimensions("Matrix cannot have have 0 rows or columns");
   }
 
-  double* values = new double[rows.size() * max_column_count];
+  float* values = new float[rows.size() * max_column_count];
   size_t row_offset(0U);
-  for (const std::initializer_list<double>& row : rows) {
+  for (const std::initializer_list<float>& row : rows) {
     size_t colum_offset(0U);
-    for (const double& element : row) {
+    for (const float& element : row) {
       values[row_offset + colum_offset] = element;
       ++colum_offset;
     }
@@ -38,12 +38,12 @@ matrix::matrix(vi::la::context& context,
   delete[] values;
 }
 
-matrix::matrix(vi::la::context& context, size_t rows, size_t columns, double initial_value) {
+matrix::matrix(vi::la::context &context, size_t rows, size_t columns, float initial_value) {
   if (rows == 0U || columns == 0U) {
     throw incompatible_dimensions("Matrix cannot have have 0 rows or columns");
   }
   const size_t value_count(rows * columns);
-  double* values = new double[value_count];
+  float* values = new float[value_count];
   for (size_t i = 0U; i < value_count; ++i) {
     values[i] = initial_value;
   }
@@ -51,12 +51,12 @@ matrix::matrix(vi::la::context& context, size_t rows, size_t columns, double ini
   delete[] values;
 }
 
-matrix::matrix(vi::la::context& context, const std::pair<size_t, size_t>& size,
-               double initial_value)
+matrix::matrix(vi::la::context &context, const std::pair<size_t, size_t> &size,
+               float initial_value)
     : matrix(context, size.first, size.second, initial_value) {}
 
-matrix::matrix(vi::la::context& context, size_t rows, size_t columns,
-               const std::shared_ptr<double> values) {
+matrix::matrix(vi::la::context &context, size_t rows, size_t columns,
+               const std::shared_ptr<float> values) {
   if (rows == 0U || columns == 0U) {
     throw incompatible_dimensions("Matrix cannot have have 0 rows or columns");
   }
@@ -75,7 +75,7 @@ matrix matrix::operator*(matrix const& other) const {
   return product;
 }
 
-matrix matrix::operator*(double const other) const {
+matrix matrix::operator*(float const other) const {
   matrix product(owning_context(), row_count(), column_count());
   owning_context().multiply(product, *this, other);
   return product;
@@ -90,7 +90,7 @@ matrix matrix::elementwise_product(const matrix& other) const {
   return product;
 }
 
-matrix matrix::operator/(double const divisor) const { return *this * (1.0 / divisor); }
+matrix matrix::operator/(float const divisor) const { return *this * (1.0 / divisor); }
 
 matrix matrix::operator+(const matrix& other) const {
   if (row_count() != other.row_count() || column_count() != other.column_count()) {
@@ -102,7 +102,7 @@ matrix matrix::operator+(const matrix& other) const {
   return sum;
 }
 
-matrix matrix::operator+(const double other) const {
+matrix matrix::operator+(const float other) const {
   vi::la::matrix sum(owning_context(), row_count(), column_count());
   owning_context().add(sum, *this, other);
   return sum;
@@ -118,7 +118,7 @@ matrix matrix::operator-(const matrix& other) const {
   return difference;
 }
 
-matrix matrix::operator-(const double other) const {
+matrix matrix::operator-(const float other) const {
   vi::la::matrix difference(owning_context(), row_count(), column_count());
   owning_context().add(difference, *this, -1.0 * other);
   return difference;
@@ -134,13 +134,13 @@ matrix matrix::operator<<(const matrix& other) const {
   return merged;
 }
 
-double* matrix::operator[](size_t row_index) const {
+float* matrix::operator[](size_t row_index) const {
   if (row_index >= row_count()) {
     std::ostringstream details;
     details << "Row index: " << row_index << " out of range:[0," << row_count() - 1 << "]";
     throw incompatible_dimensions(details.str());
   }
-  double* buffer = _implementation->raw_data();
+  float* buffer = _implementation->raw_data();
   return &buffer[row_index * column_count()];
 }
 

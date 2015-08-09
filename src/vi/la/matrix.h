@@ -14,27 +14,27 @@ namespace la {
 class matrix {
 public:
   matrix();
-  matrix(context& context, const std::initializer_list<std::initializer_list<double>>& rows);
-  matrix(context& context, size_t rows, size_t columns, double initial_value = 0.0);
-  matrix(context& context, const std::pair<size_t, size_t>& size, double initial_value = 0.0);
-  matrix(context& context, size_t rows, size_t columns, const std::shared_ptr<double> values);
+  matrix(context &context, const std::initializer_list<std::initializer_list<float>> &rows);
+  matrix(context &context, size_t rows, size_t columns, float initial_value = 0.0);
+  matrix(context &context, const std::pair<size_t, size_t> &size, float initial_value = 0.0);
+  matrix(context &context, size_t rows, size_t columns, const std::shared_ptr<float> values);
 
   matrix clone() const;
 
   matrix operator*(const matrix& other) const;
-  matrix operator*(double const other) const;
+  matrix operator*(const float other) const;
   matrix elementwise_product(const matrix& other) const;
-  matrix operator/(double const divisor) const;
+  matrix operator/(const float divisor) const;
 
   matrix operator+(const matrix& other) const;
-  matrix operator+(const double other) const;
+  matrix operator+(const float other) const;
 
   matrix operator-(const matrix& other) const;
-  matrix operator-(const double other) const;
+  matrix operator-(const float other) const;
 
   matrix operator<<(const matrix& other) const;
 
-  double* operator[](size_t row_index) const;
+  float* operator[](size_t row_index) const;
 
   matrix columns(size_t start_column, size_t end_column) const;
   matrix column(size_t column_index) const;

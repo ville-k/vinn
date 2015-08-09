@@ -29,13 +29,13 @@ public:
   supported_devices(cl_device_type device_type = CL_DEVICE_TYPE_ALL);
 
   std::shared_ptr<vi::la::matrix_implementation> implement_matrix(size_t rows, size_t columns,
-                                                                  const double* initial_values);
+                                                                  const float *initial_values);
 
   void multiply(matrix& product, const matrix& operand_1, const matrix& operand_2);
-  void multiply(matrix& product, const matrix& operand_1, const double operand_2);
+  void multiply(matrix &product, const matrix &operand_1, const float operand_2);
   void multiply_elementwise(matrix& product, const matrix& operand_1, const matrix& operand_2);
 
-  void add(matrix& sum, const matrix& operand_1, const double operand_2);
+  void add(matrix &sum, const matrix &operand_1, const float operand_2);
   void add(matrix& sum, const matrix& operand_1, const matrix& operand_2);
   void subtract(matrix& difference, const matrix& operand_1, const matrix& operand_2);
 

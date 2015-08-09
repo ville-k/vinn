@@ -64,7 +64,7 @@ void opencl_context::load_kernels() {
   opencl::memory_source_loader loader(vi::la::opencl::paths_to_sources());
 #endif
   opencl::builder builder(loader);
-  builder.add_build_options({"-DDOUBLE_SUPPORT_AVAILABLE"});
+  //builder.add_build_options({"-DDOUBLE_SUPPORT_AVAILABLE"});
   builder.add_source_paths({"matrix.cl", "activation_functions.cl", "convolution.cl"});
   builder.add_extension_requirements({"cl_khr_fp64"});
   opencl::build_result result = builder.build(*_context);
@@ -100,7 +100,7 @@ cl::Context& opencl_context::context() { return *_context; }
 cl::CommandQueue& opencl_context::command_queue() { return *_command_queue; }
 
 std::shared_ptr<vi::la::matrix_implementation>
-opencl_context::implement_matrix(size_t rows, size_t columns, const double* initial_values) {
+opencl_context::implement_matrix(size_t rows, size_t columns, const float *initial_values) {
   return std::shared_ptr<vi::la::matrix_implementation>(
       new opencl::matrix(*this, rows, columns, initial_values));
 }
@@ -130,7 +130,7 @@ void opencl_context::multiply(matrix& product, const matrix& operand_1, const ma
   _command_queue->finish();
 }
 
-void opencl_context::multiply(matrix& product, const matrix& operand_1, const double operand_2) {
+void opencl_context::multiply(matrix &product, const matrix &operand_1, const float operand_2) {
   opencl::matrix* product_impl = dynamic_cast<opencl::matrix*>(product.implementation());
   opencl::matrix* operand_1_impl = dynamic_cast<opencl::matrix*>(operand_1.implementation());
 
@@ -166,7 +166,7 @@ void opencl_context::multiply_elementwise(matrix& product, const matrix& operand
   _command_queue->finish();
 }
 
-void opencl_context::add(matrix& sum, const matrix& operand_1, const double operand_2) {
+void opencl_context::add(matrix &sum, const matrix &operand_1, const float operand_2) {
   opencl::matrix* sum_impl = dynamic_cast<opencl::matrix*>(sum.implementation());
   opencl::matrix* operand_1_impl = dynamic_cast<opencl::matrix*>(operand_1.implementation());
 
@@ -386,7 +386,7 @@ void opencl_context::sub_matrix(matrix& target, const matrix& original, size_t s
   opencl::matrix* original_imp = dynamic_cast<opencl::matrix*>(original.implementation());
 
   cl::size_t<3> source_origin;
-  source_origin[0] = start_column * sizeof(double);
+  source_origin[0] = start_column * sizeof(float);
   source_origin[1] = start_row;
   source_origin[2] = 0;
   cl::size_t<3> destination_origin;
@@ -398,13 +398,13 @@ void opencl_context::sub_matrix(matrix& target, const matrix& original, size_t s
   const size_t sub_columns(end_column - start_column + 1U);
 
   cl::size_t<3> region;
-  region[0] = sub_columns * sizeof(double);
+  region[0] = sub_columns * sizeof(float);
   region[1] = sub_rows;
   region[2] = 1;
 
   cl_int error = _command_queue->enqueueCopyBufferRect(
       *original_imp->get(), *target_impl->get(), source_origin, destination_origin, region,
-      original.column_count() * sizeof(double), 0U, target.column_count() * sizeof(double), 0U);
+      original.column_count() * sizeof(float), 0U, target.column_count() * sizeof(float), 0U);
   assert(error == CL_SUCCESS);
   _command_queue->finish();
 }
@@ -442,14 +442,14 @@ void opencl_context::convolve_2d(matrix& result, const matrix& mask, const matri
   _convolve_2d->setArg(5U, *mask_impl->get());
   _convolve_2d->setArg(6U, mask.row_count());
   _convolve_2d->setArg(7U, mask.column_count());
-  _convolve_2d->setArg(8U, cl::__local(INPUT_TILE_HEIGHT * INPUT_TILE_WIDTH * sizeof(cl_double)));
+  _convolve_2d->setArg(8U, cl::__local(INPUT_TILE_HEIGHT * INPUT_TILE_WIDTH * sizeof(cl_float)));
   _convolve_2d->setArg(9U, OUTPUT_TILE_HEIGHT);
   _convolve_2d->setArg(10U, OUTPUT_TILE_WIDTH);
   const size_t data_width = original.column_count();
   const size_t data_height = original.row_count();
 
-  const size_t horizontal_groups = ceil(((double)data_width) / OUTPUT_TILE_WIDTH);
-  const size_t vertical_groups = ceil(((double)data_height) / OUTPUT_TILE_HEIGHT);
+  const size_t horizontal_groups = ceil(((float)data_width) / OUTPUT_TILE_WIDTH);
+  const size_t vertical_groups = ceil(((float)data_height) / OUTPUT_TILE_HEIGHT);
 
   cl::NDRange offset(0, 0);
   cl::NDRange items(vertical_groups * INPUT_TILE_HEIGHT, horizontal_groups * INPUT_TILE_WIDTH);

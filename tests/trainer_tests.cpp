@@ -18,11 +18,15 @@ protected:
     _trainer = std::get<1>(GetParam());
 
     vi::nn::layer l1(*context, new vi::nn::sigmoid_activation(), 25, 20 * 20);
+    //vi::nn::layer l2(*context, new vi::nn::sigmoid_activation(), 10, 25);
     vi::nn::layer l2(*context, new vi::nn::softmax_activation(), 10, 25);
 
     _network = new vi::nn::network(*context, {l1, l2});
-    _features = new vi::la::matrix(*context, 100U, 400, 42.0);
-    _targets = new vi::la::matrix(*context, 100U, 10, 1);
+    _features = new vi::la::matrix(*context, 100U, 400U, 42.0f);
+    _targets = new vi::la::matrix(*context, 100U, 10U, 0.0f);
+    for (size_t row = 0U; row < 100U; ++row) {
+      (*_targets)[row][0] = 1.0;
+    }
     _max_epochs = 5U;
   }
 
@@ -42,26 +46,26 @@ protected:
 };
 
 TEST_P(trainer_tests, train_succeeds) {
-  double final_cost = _trainer->train(*_network, *_features, *_targets, _cost_function);
-  EXPECT_LT(0.0, final_cost);
+  float final_cost = _trainer->train(*_network, *_features, *_targets, _cost_function);
+  EXPECT_LT(0.0f, final_cost);
 }
 
 TEST_P(trainer_tests, train_with_l2_regularizer_succeeds) {
-  double final_cost =
+  float final_cost =
       _trainer->train(*_network, *_features, *_targets, _cost_function, _l2_regularizer);
-  EXPECT_LT(0.0, final_cost);
+  EXPECT_LT(0.0f, final_cost);
 }
 
 TEST_P(trainer_tests, train_calls_early_stopping_callback) {
   size_t early_stopping_called(0U);
   _trainer->set_stop_early(
-      [&early_stopping_called](const vi::nn::network&, size_t, double) -> bool {
+      [&early_stopping_called](const vi::nn::network&, size_t, float) -> bool {
         early_stopping_called++;
         return false;
       });
 
-  double final_cost = _trainer->train(*_network, *_features, *_targets, _cost_function);
-  EXPECT_LT(0.0, final_cost);
+  float final_cost = _trainer->train(*_network, *_features, *_targets, _cost_function);
+  EXPECT_LT(0.0f, final_cost);
   // softmax layer should never find a solution
   EXPECT_EQ(_max_epochs, early_stopping_called);
 }
@@ -69,13 +73,13 @@ TEST_P(trainer_tests, train_calls_early_stopping_callback) {
 TEST_P(trainer_tests, train_stops_training_early) {
   size_t early_stopping_called(0U);
   _trainer->set_stop_early(
-      [&early_stopping_called](const vi::nn::network&, size_t, double) -> bool {
+      [&early_stopping_called](const vi::nn::network&, size_t, float) -> bool {
         early_stopping_called++;
         return true;
       });
 
-  double final_cost = _trainer->train(*_network, *_features, *_targets, _cost_function);
-  EXPECT_LT(0.0, final_cost);
+  float final_cost = _trainer->train(*_network, *_features, *_targets, _cost_function);
+  EXPECT_LT(0.0f, final_cost);
   EXPECT_EQ(1U, early_stopping_called);
 }
 
@@ -85,5 +89,5 @@ TEST_P(trainer_tests, train_stops_training_early) {
 INSTANTIATE_TEST_CASE_P(
     interface, trainer_tests,
     ::testing::Combine(::testing::ValuesIn(test::all_contexts()),
-                       ::testing::Values(new vi::nn::minibatch_gradient_descent(5, 0.3, 10),
-                                         new vi::nn::batch_gradient_descent(5, 0.3))));
+                       ::testing::Values(new vi::nn::minibatch_gradient_descent(5, 0.3f, 10),
+                                         new vi::nn::batch_gradient_descent(5, 0.3f))));

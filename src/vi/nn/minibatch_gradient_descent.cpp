@@ -12,7 +12,7 @@ namespace vi {
 namespace nn {
 
 minibatch_gradient_descent::minibatch_gradient_descent(const size_t max_epoch_count,
-                                                       const double learning_rate,
+                                                       const float learning_rate,
                                                        const size_t batch_size,
                                                        const size_t batch_iteration_count)
     : _learning_rate(learning_rate), _max_epoch_count(max_epoch_count), _batch_size(batch_size),
@@ -23,20 +23,20 @@ minibatch_gradient_descent::minibatch_gradient_descent(const size_t max_epoch_co
   assert(_batch_iteration_count > 0U);
 }
 
-double minibatch_gradient_descent::train(vi::nn::network& network, const vi::la::matrix& features,
+float minibatch_gradient_descent::train(vi::nn::network& network, const vi::la::matrix& features,
                                          const vi::la::matrix& targets,
                                          vi::nn::cost_function& cost_function) {
   return train(network, features, targets, cost_function, nullptr);
 }
 
-double minibatch_gradient_descent::train(vi::nn::network& network, const vi::la::matrix& features,
+float minibatch_gradient_descent::train(vi::nn::network& network, const vi::la::matrix& features,
                                          const vi::la::matrix& targets,
                                          vi::nn::cost_function& cost_function,
                                          const vi::nn::l2_regularizer& regularizer) {
   return train(network, features, targets, cost_function, &regularizer);
 }
 
-double minibatch_gradient_descent::train(vi::nn::network& network, const vi::la::matrix& features,
+float minibatch_gradient_descent::train(vi::nn::network& network, const vi::la::matrix& features,
                                          const vi::la::matrix& targets,
                                          vi::nn::cost_function& cost_function,
                                          const vi::nn::l2_regularizer* regularizer) {
@@ -57,7 +57,7 @@ double minibatch_gradient_descent::train(vi::nn::network& network, const vi::la:
       vi::la::matrix batch_features = features.rows(batch_start, batch_end);
       vi::la::matrix batch_targets = targets.rows(batch_start, batch_end);
 
-      double batch_cost(0.0);
+      float batch_cost(0.0);
       if (regularizer) {
         batch_cost = gd.train(network, batch_features, batch_targets, cost_function, *regularizer);
       } else {
@@ -66,7 +66,7 @@ double minibatch_gradient_descent::train(vi::nn::network& network, const vi::la:
       average.add_value(batch_cost);
     }
 
-    const double current_average = average.calculate();
+    const float current_average = average.calculate();
     if (_stop_early && _stop_early(network, epoch, current_average)) {
       return current_average;
     }

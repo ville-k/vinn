@@ -31,7 +31,7 @@ la::matrix network::forward(const la::matrix& inputs) const {
   return activation;
 }
 
-std::pair<double, std::vector<la::matrix>> network::backward(const la::matrix& features,
+std::pair<float, std::vector<la::matrix>> network::backward(const la::matrix& features,
                                                              const la::matrix& targets,
                                                              cost_function& cost_function) {
   std::vector<vi::la::matrix> activations;
@@ -43,7 +43,7 @@ std::pair<double, std::vector<la::matrix>> network::backward(const la::matrix& f
 
   const vi::la::matrix& hypotheses(activations.back());
   const vi::la::matrix costs(cost_function.cost(targets, hypotheses));
-  const double cost = _context.sum_rows(costs)[0][0];
+  const float cost = _context.sum_rows(costs)[0][0];
 
   vi::la::matrix errors(cost_function.cost_derivative(targets, hypotheses));
 

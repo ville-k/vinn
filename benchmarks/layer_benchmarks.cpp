@@ -16,7 +16,7 @@ static void BM_layer_forward(benchmark::State& state) {
     }
 
     size_t examples_per_iteration = example_count;
-    size_t bytes_per_iteration = examples_per_iteration * input_count * sizeof(double);
+    size_t bytes_per_iteration = examples_per_iteration * input_count * sizeof(float);
     state.SetBytesProcessed(state.iterations() * bytes_per_iteration);
     state.SetItemsProcessed(state.iterations() * examples_per_iteration);
 }
@@ -39,7 +39,7 @@ static void BM_layer_backward(benchmark::State& state) {
     }
 
     size_t examples_per_iteration = example_count;
-    size_t bytes_per_iteration = examples_per_iteration * input_count * sizeof(double);
+    size_t bytes_per_iteration = examples_per_iteration * input_count * sizeof(float);
     state.SetBytesProcessed(state.iterations() * bytes_per_iteration);
     state.SetItemsProcessed(state.iterations() * examples_per_iteration);
 }
