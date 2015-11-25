@@ -24,22 +24,22 @@ minibatch_gradient_descent::minibatch_gradient_descent(const size_t max_epoch_co
 }
 
 float minibatch_gradient_descent::train(vi::nn::network& network, const vi::la::matrix& features,
-                                         const vi::la::matrix& targets,
-                                         vi::nn::cost_function& cost_function) {
+                                        const vi::la::matrix& targets,
+                                        vi::nn::cost_function& cost_function) {
   return train(network, features, targets, cost_function, nullptr);
 }
 
 float minibatch_gradient_descent::train(vi::nn::network& network, const vi::la::matrix& features,
-                                         const vi::la::matrix& targets,
-                                         vi::nn::cost_function& cost_function,
-                                         const vi::nn::l2_regularizer& regularizer) {
+                                        const vi::la::matrix& targets,
+                                        vi::nn::cost_function& cost_function,
+                                        const vi::nn::l2_regularizer& regularizer) {
   return train(network, features, targets, cost_function, &regularizer);
 }
 
 float minibatch_gradient_descent::train(vi::nn::network& network, const vi::la::matrix& features,
-                                         const vi::la::matrix& targets,
-                                         vi::nn::cost_function& cost_function,
-                                         const vi::nn::l2_regularizer* regularizer) {
+                                        const vi::la::matrix& targets,
+                                        vi::nn::cost_function& cost_function,
+                                        const vi::nn::l2_regularizer* regularizer) {
   assert(_batch_size <= features.row_count());
   const size_t effective_batch_size = std::min(_batch_size, features.row_count());
   const size_t batch_count(features.row_count() / effective_batch_size);

@@ -17,22 +17,35 @@ using vi::la::matrix;
 using vi::nn::network;
 using vi::nn::layer;
 
-TEST_P(network_tests, constructing_compatible_layers_succeeds) {
-  layer l1(*GetParam(), new vi::nn::sigmoid_activation(), 25, 400);
-  layer l2(*GetParam(), new vi::nn::softmax_activation(), 10, 25);
-  EXPECT_NO_THROW(network(*GetParam(), {l1, l2}));
+TEST_P(network_tests, constructing_succeeds) { EXPECT_NO_THROW(network(*GetParam())); }
+
+TEST_P(network_tests, adding_compatible_layers_succeeds) {
+  std::list<std::shared_ptr<layer>> layers = {
+      std::make_shared<layer>(*GetParam(), std::make_shared<vi::nn::sigmoid_activation>(), 25, 400),
+      std::make_shared<layer>(*GetParam(), std::make_shared<vi::nn::softmax_activation>(), 10, 25)};
+
+  network net;
+  EXPECT_NO_THROW(net.add(std::make_shared<layer>(
+      *GetParam(), std::make_shared<vi::nn::sigmoid_activation>(), 25, 400)));
+  EXPECT_NO_THROW(net.add(std::make_shared<layer>(
+      *GetParam(), std::make_shared<vi::nn::softmax_activation>(), 10, 25)));
 }
 
-TEST_P(network_tests, constructing_incompatible_layers_fails) {
-  layer l1(*GetParam(), new vi::nn::sigmoid_activation(), 42, 400);
-  layer l2(*GetParam(), new vi::nn::softmax_activation(), 10, 25);
-  EXPECT_THROW(network(*GetParam(), {l1, l2}), vi::nn::network::invalid_configuration);
+TEST_P(network_tests, adding_incompatible_layers_fails) {
+  network net;
+  EXPECT_NO_THROW(net.add(std::make_shared<layer>(
+      *GetParam(), std::make_shared<vi::nn::sigmoid_activation>(), 42, 400)));
+  EXPECT_THROW(net.add(std::make_shared<layer>(
+                   *GetParam(), std::make_shared<vi::nn::softmax_activation>(), 10, 25)),
+               vi::nn::invalid_configuration);
 }
 
 TEST_P(network_tests, forward_single_example_succeeds) {
-  layer l1(*GetParam(), new vi::nn::sigmoid_activation(), 25, 400);
-  layer l2(*GetParam(), new vi::nn::softmax_activation(), 10, 25);
-  network network(*GetParam(), {l1, l2});
+  network network;
+  network.add(std::make_shared<layer>(*GetParam(), std::make_shared<vi::nn::sigmoid_activation>(),
+                                      25, 400));
+  network.add(
+      std::make_shared<layer>(*GetParam(), std::make_shared<vi::nn::softmax_activation>(), 10, 25));
 
   matrix inputs(*GetParam(), 1, 400U, 1.0);
   matrix predictions = network.forward(inputs);
@@ -41,9 +54,11 @@ TEST_P(network_tests, forward_single_example_succeeds) {
 }
 
 TEST_P(network_tests, forward_multiple_examples_succeed) {
-  layer l1(*GetParam(), new vi::nn::sigmoid_activation(), 25, 400);
-  layer l2(*GetParam(), new vi::nn::softmax_activation(), 10, 25);
-  network network(*GetParam(), {l1, l2});
+  network network;
+  network.add(std::make_shared<layer>(*GetParam(), std::make_shared<vi::nn::sigmoid_activation>(),
+                                      25, 400));
+  network.add(
+      std::make_shared<layer>(*GetParam(), std::make_shared<vi::nn::softmax_activation>(), 10, 25));
 
   matrix inputs(*GetParam(), 42, 400U, 1.0);
   matrix predictions = network.forward(inputs);
@@ -52,18 +67,22 @@ TEST_P(network_tests, forward_multiple_examples_succeed) {
 }
 
 TEST_P(network_tests, forward_invalid_dimensions_fails) {
-  layer l1(*GetParam(), new vi::nn::sigmoid_activation(), 25, 400);
-  layer l2(*GetParam(), new vi::nn::softmax_activation(), 10, 25);
-  network network(*GetParam(), {l1, l2});
+  network network;
+  network.add(std::make_shared<layer>(*GetParam(), std::make_shared<vi::nn::sigmoid_activation>(),
+                                      25, 400));
+  network.add(
+      std::make_shared<layer>(*GetParam(), std::make_shared<vi::nn::softmax_activation>(), 10, 25));
 
   matrix inputs(*GetParam(), 42, 7U, 1.0);
   EXPECT_THROW(network.forward(inputs), vi::la::incompatible_dimensions);
 }
 
 TEST_P(network_tests, backward_succeeds_with_valid_inputs) {
-  layer l1(*GetParam(), new vi::nn::sigmoid_activation(), 25, 10);
-  layer l2(*GetParam(), new vi::nn::softmax_activation(), 10, 25);
-  network network(*GetParam(), {l1, l2});
+  network network;
+  network.add(
+      std::make_shared<layer>(*GetParam(), std::make_shared<vi::nn::sigmoid_activation>(), 25, 10));
+  network.add(
+      std::make_shared<layer>(*GetParam(), std::make_shared<vi::nn::softmax_activation>(), 10, 25));
 
   matrix features(*GetParam(), 10, 10);
   matrix targets(*GetParam(), 10, 10, 1.0);
@@ -74,14 +93,18 @@ TEST_P(network_tests, backward_succeeds_with_valid_inputs) {
 
   ASSERT_LT(0.0, cost_and_gradients.first);
   ASSERT_EQ(2U, cost_and_gradients.second.size());
-  ASSERT_EQ(l1.get_weights().size(), cost_and_gradients.second[0].size());
-  ASSERT_EQ(l2.get_weights().size(), cost_and_gradients.second[1].size());
+  ASSERT_EQ((*network.begin())->weights().size(), cost_and_gradients.second[0].size());
+
+  network::const_iterator second_layer = ++(network.begin());
+  ASSERT_EQ((*second_layer)->weights().size(), cost_and_gradients.second[1].size());
 }
 
 TEST_P(network_tests, backward_fails_with_invalid_feature_dimensions) {
-  layer l1(*GetParam(), new vi::nn::sigmoid_activation(), 25, 10);
-  layer l2(*GetParam(), new vi::nn::softmax_activation(), 10, 25);
-  network network(*GetParam(), {l1, l2});
+  network network;
+  network.add(
+      std::make_shared<layer>(*GetParam(), std::make_shared<vi::nn::sigmoid_activation>(), 25, 10));
+  network.add(
+      std::make_shared<layer>(*GetParam(), std::make_shared<vi::nn::softmax_activation>(), 10, 25));
 
   matrix features(*GetParam(), 10, 7);
   matrix targets(*GetParam(), 10, 10, 1.0);
@@ -91,9 +114,11 @@ TEST_P(network_tests, backward_fails_with_invalid_feature_dimensions) {
 }
 
 TEST_P(network_tests, backward_fails_with_different_number_features_and_targets) {
-  layer l1(*GetParam(), new vi::nn::sigmoid_activation(), 25, 10);
-  layer l2(*GetParam(), new vi::nn::softmax_activation(), 10, 25);
-  network network(*GetParam(), {l1, l2});
+  network network;
+  network.add(
+      std::make_shared<layer>(*GetParam(), std::make_shared<vi::nn::sigmoid_activation>(), 25, 10));
+  network.add(
+      std::make_shared<layer>(*GetParam(), std::make_shared<vi::nn::softmax_activation>(), 10, 25));
 
   matrix features(*GetParam(), 10, 10);
   matrix targets(*GetParam(), 7, 10, 1.0);
@@ -103,9 +128,11 @@ TEST_P(network_tests, backward_fails_with_different_number_features_and_targets)
 }
 
 TEST_P(network_tests, backward_fails_with_invalid_target_dimensions) {
-  layer l1(*GetParam(), new vi::nn::sigmoid_activation(), 25, 10);
-  layer l2(*GetParam(), new vi::nn::softmax_activation(), 10, 25);
-  network network(*GetParam(), {l1, l2});
+  network network;
+  network.add(
+      std::make_shared<layer>(*GetParam(), std::make_shared<vi::nn::sigmoid_activation>(), 25, 10));
+  network.add(
+      std::make_shared<layer>(*GetParam(), std::make_shared<vi::nn::softmax_activation>(), 10, 25));
 
   matrix features(*GetParam(), 10, 10);
   matrix targets(*GetParam(), 10, 7, 1.0);

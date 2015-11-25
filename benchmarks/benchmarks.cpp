@@ -27,7 +27,6 @@ void all_contexts_16_to_512(benchmark::internal::Benchmark* benchmark) {
     }
   }
 }
-
 }
 
 BENCHMARK_MAIN();

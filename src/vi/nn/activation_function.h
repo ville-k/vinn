@@ -9,6 +9,8 @@ namespace nn {
 /// Interface that activation functions must conform to
 class activation_function {
 public:
+  virtual ~activation_function() {}
+
   virtual activation_function* clone() const = 0;
   virtual void activate(vi::la::matrix& inputs) const = 0;
   virtual vi::la::matrix gradient(const vi::la::matrix& activations) const = 0;

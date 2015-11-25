@@ -18,10 +18,11 @@ float random(float start_range, float end_range) {
 namespace vi {
 namespace nn {
 
-layer::layer(vi::la::context& context, activation_function* activation, size_t output_count,
-             size_t input_count)
-    : _activation(activation), _weights(context, output_count, input_count + 1, 1.0f),
-      _context(context) {
+layer::layer() : _activation(nullptr), _weights() {}
+
+layer::layer(vi::la::context& context, std::shared_ptr<activation_function> activation,
+             size_t output_count, size_t input_count)
+    : _activation(activation), _weights(context, output_count, input_count + 1, 1.0f) {
   // initialize weights randomly to break symmetry
   float epsilon = sqrt(6.0f) / sqrt(input_count + output_count);
   for (size_t m = 0U; m < _weights.row_count(); ++m) {
@@ -31,16 +32,25 @@ layer::layer(vi::la::context& context, activation_function* activation, size_t o
   }
 }
 
-layer::layer(vi::la::context& context, activation_function* activation,
-             const vi::la::matrix& weights)
-    : _activation(activation), _weights(weights), _context(context) {}
+layer::layer(std::shared_ptr<activation_function> activation, const vi::la::matrix& weights)
+    : _activation(activation), _weights(weights) {}
 
-layer::layer(const layer& other)
-    : _activation(other._activation), _weights(other._weights), _context(other._context) {}
+layer::layer(const layer& other) : _activation(other._activation), _weights(other._weights) {}
+
+layer& layer::operator=(const layer& other) {
+  if (this == &other) {
+    return *this;
+  }
+
+  _activation = other.activation();
+  _weights = other.weights();
+
+  return *this;
+}
 
 vi::la::matrix layer::forward(const vi::la::matrix& input) const {
-  const vi::la::matrix bias(_context, input.row_count(), 1U, 1.0);
-  vi::la::matrix z((bias << input) * get_weights().transpose());
+  const vi::la::matrix bias(context(), input.row_count(), 1U, 1.0);
+  vi::la::matrix z((bias << input) * weights().transpose());
   _activation->activate(z);
   return z;
 }
@@ -55,28 +65,29 @@ std::pair<vi::la::matrix, vi::la::matrix> layer::backward(const vi::la::matrix& 
   const vi::la::matrix biased_inputs((input_bias << inputs));
   const vi::la::matrix gradient = (delta.transpose() * biased_inputs) / -1.0;
 
-  const vi::la::matrix delta_out = delta * get_weights();
+  const vi::la::matrix delta_out = delta * weights();
   return std::make_pair(delta_out.columns(1U, delta_out.column_count() - 1U), gradient);
 }
 
-size_t layer::get_input_count() const {
+size_t layer::input_count() const {
   // bias unit is internal to the layer
-  return get_weights().column_count() - 1;
+  return weights().column_count() - 1;
 }
 
-size_t layer::get_output_count() const { return get_weights().row_count(); }
+size_t layer::output_count() const { return weights().row_count(); }
 
-const activation_function& layer::activation() const { return *_activation; }
+std::shared_ptr<activation_function> layer::activation() const { return _activation; }
 
-void layer::activation(const activation_function& activation) {
-  delete _activation;
-  _activation = activation.clone();
+void layer::activation(std::shared_ptr<activation_function> activation) {
+  _activation = activation;
 }
 
-const vi::la::matrix& layer::get_weights() const { return _weights; }
+const vi::la::matrix& layer::weights() const { return _weights; }
 
-void layer::set_weights(const vi::la::matrix& weights) { _weights = weights; }
+void layer::weights(const vi::la::matrix& weights) { _weights = weights; }
 
-vi::la::context& layer::context() { return _context; }
+vi::la::context& layer::context() { return _weights.owning_context(); }
+
+vi::la::context& layer::context() const { return _weights.owning_context(); }
 }
 }

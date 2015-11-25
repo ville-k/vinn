@@ -3,5 +3,6 @@
 
 #include <vi/io/csv_file.h>
 #include <vi/io/libsvm_file.h>
+#include <vi/io/model.h>
 
 #endif

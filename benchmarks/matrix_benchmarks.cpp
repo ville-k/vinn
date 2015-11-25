@@ -1,7 +1,6 @@
 #include "benchmarks.h"
 #include "vi/la.h"
 
-
 static void BM_matrix_scalar_multiply(benchmark::State& state) {
   size_t context_index = state.range_x();
   size_t size = state.range_y();

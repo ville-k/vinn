@@ -3,7 +3,7 @@
 
 # ViNN - A modular OpenCL accelerated library for Deep Learning
 
-ViNN is a cross platform MIT-licensed C++ library for training and evaluating artificial neural networks using OpenCL. ViNN parallelizes computationally intensive linear algebra routines using OpenCL, which provides significant performance gains over a single threaded CPU based implementation. 
+ViNN is a cross platform MIT-licensed C++ library for training and evaluating artificial neural networks using OpenCL. ViNN parallelizes computationally intensive linear algebra routines using OpenCL, which provides significant performance gains over a single threaded CPU based implementation. Python bindings with NumPy integration ease developing new models and enable interoperability with existing tools and libraries.
 
 The design goals for ViNN are
 * correctness - use gradient checking, static analysis and strive for 100% unit test coverage
@@ -58,10 +58,12 @@ and machine learning applications.
 
 Integrating with a project:
 * c++ compiler with c++11 support (clang or gcc >= 4.8)
-* OpenCL 1.2 driver and development headers
+* OpenCL 1.1 driver and development headers
+* Swig 3
 
 Additional dependencies when building from source:
-* ruby
+* Ruby
+* Python 3, NumPy
 
 Additional dependencies for committers:
 * clang-format
@@ -71,6 +73,8 @@ Additional dependencies for committers:
 
     brew install lcov
     brew install clang-format
+    brew install swig
+
 
 #### On Ubuntu (15.04)
 
@@ -99,7 +103,7 @@ Additional dependencies for committers:
     make
 
 3. Run all tests:
-    
+
     make test # OR
     ctest
 
@@ -115,4 +119,13 @@ Additional dependencies for committers:
 
     cpack --config CPackConfig.cmake
 
+7. Build Python bindings
 
+    # Source distribution
+    cd build/bindings/python
+    python setup.py sdist
+    pip install --global-option=build_ext --global-option="--swig-opts=-I/Users/ville/projects/vinn/src -c++"  dist/vinnpy-0.2.0.tar.gz
+
+    # Binary wheel distribution
+    cd build/bindings/python
+    python setup.py build_ext --swig-opts="-I/Users/ville/projects/vinn/src -c++" bdist_wheel

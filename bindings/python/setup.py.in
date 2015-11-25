@@ -1,0 +1,23 @@
+#!/usr/bin/env python
+
+import setuptools
+from distutils.core import setup, Extension
+import numpy
+vinnpy_module = Extension('_vinnpy', ['vinnpy.i'],
+                          swig_opts=['-c++'],
+                          extra_compile_args=['-std=c++11'],
+                          include_dirs=[numpy.get_include()],
+                          libraries=['vinn'],
+                          )
+
+setup(name='vinnpy',
+      version='${vinn_VERSION}',
+      author="Ville Kallioniemi",
+      author_email='ville.kallioniemi@gmail.com',
+      url='http://vinn.io',
+      description='Python bindings for ViNN',
+      license="MIT",
+      ext_modules=[vinnpy_module],
+      py_modules=["vinnpy"],
+      install_requires=['numpy'],
+      )

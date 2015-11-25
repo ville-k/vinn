@@ -8,7 +8,7 @@ layer_deserializer::layer_deserializer(vi::nn::layer& layer) : layer_(layer) {}
 
 void layer_deserializer::deserialize(const boost::property_tree::ptree& layer_node) {
   const std::string activation_name = layer_node.get<std::string>("activation_function");
-  std::unique_ptr<vi::nn::activation_function> activation;
+  std::shared_ptr<vi::nn::activation_function> activation;
   if (activation_name == "sigmoid") {
     activation.reset(new vi::nn::sigmoid_activation);
   } else if (activation_name == "softmax") {
@@ -22,7 +22,7 @@ void layer_deserializer::deserialize(const boost::property_tree::ptree& layer_no
     description << "invalid activation type: '" << activation_name << "'";
     throw deserializer::exception(description.str());
   }
-  layer_.activation(*activation);
+  layer_.activation(activation);
 }
 }
 }

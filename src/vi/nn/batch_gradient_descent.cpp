@@ -16,22 +16,22 @@ batch_gradient_descent::batch_gradient_descent(size_t max_epoch_count, float lea
 }
 
 float batch_gradient_descent::train(vi::nn::network& network, const vi::la::matrix& features,
-                                     const vi::la::matrix& targets,
-                                     vi::nn::cost_function& cost_function) {
+                                    const vi::la::matrix& targets,
+                                    vi::nn::cost_function& cost_function) {
   return train(network, features, targets, cost_function, nullptr);
 }
 
 float batch_gradient_descent::train(vi::nn::network& network, const vi::la::matrix& features,
-                                     const vi::la::matrix& targets,
-                                     vi::nn::cost_function& cost_function,
-                                     const vi::nn::l2_regularizer& regularizer) {
+                                    const vi::la::matrix& targets,
+                                    vi::nn::cost_function& cost_function,
+                                    const vi::nn::l2_regularizer& regularizer) {
   return train(network, features, targets, cost_function, &regularizer);
 }
 
 float batch_gradient_descent::train(vi::nn::network& network, const vi::la::matrix& features,
-                                     const vi::la::matrix& targets,
-                                     vi::nn::cost_function& cost_function,
-                                     const vi::nn::l2_regularizer* regularizer) {
+                                    const vi::la::matrix& targets,
+                                    vi::nn::cost_function& cost_function,
+                                    const vi::nn::l2_regularizer* regularizer) {
   float cost(std::numeric_limits<float>::max());
   const size_t example_count = features.row_count();
 
@@ -41,19 +41,22 @@ float batch_gradient_descent::train(vi::nn::network& network, const vi::la::matr
 
     cost = cost_and_gradients.first / example_count;
     std::vector<vi::la::matrix>& gradients = cost_and_gradients.second;
-    for (size_t i = 0U; i < gradients.size(); ++i) {
-      layer& l = network.layers()[i];
-      vi::la::matrix gradient = gradients[i] / example_count;
+
+    size_t layer_index = 0U;
+    for (std::shared_ptr<layer> l : network) {
+      vi::la::matrix gradient = gradients[layer_index] / example_count;
 
       if (regularizer) {
         std::pair<float, vi::la::matrix> cost_and_gradient_penalty =
-            regularizer->penalty(l.get_weights());
+            regularizer->penalty(l->weights());
         cost += cost_and_gradient_penalty.first / example_count;
         gradient = gradient + (cost_and_gradient_penalty.second / example_count);
       }
 
-      vi::la::matrix new_weights = l.get_weights() - (gradient * _learning_rate);
-      l.set_weights(new_weights);
+      vi::la::matrix new_weights = l->weights() - (gradient * _learning_rate);
+      l->weights(new_weights);
+
+      ++layer_index;
     }
 
     if (_stop_early && _stop_early(network, epoch, cost)) {

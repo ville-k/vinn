@@ -25,7 +25,7 @@ size_t matrix::column_count() const { return _column_count; }
 
 vi::la::context& matrix::owning_context() const { return _context; }
 
-float * matrix::raw_data() { return _buffer; }
+float* matrix::raw_data() { return _buffer; }
 
 float* matrix::get() { return _buffer; }
 }

@@ -1,0 +1,36 @@
+find_package(SWIG REQUIRED 3.0.0)
+include(${SWIG_USE_FILE})
+
+set(MANIFEST_IN_IN "${CMAKE_CURRENT_SOURCE_DIR}/MANIFEST.in.in")
+set(MANIFEST_IN "${CMAKE_CURRENT_BINARY_DIR}/MANIFEST.in")
+set(SETUP_PY_IN "${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in")
+set(SETUP_PY "${CMAKE_CURRENT_BINARY_DIR}/setup.py")
+set(DEPENDENCIES
+    "${CMAKE_CURRENT_SOURCE_DIR}/vinnpy.i"
+    "${CMAKE_CURRENT_SOURCE_DIR}/numpy.i"
+)
+set(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/vinnpy.py")
+
+configure_file(${SETUP_PY_IN} ${SETUP_PY})
+configure_file(${MANIFEST_IN_IN} ${MANIFEST_IN})
+
+file(COPY
+    ${CMAKE_CURRENT_SOURCE_DIR}/README
+    ${CMAKE_CURRENT_SOURCE_DIR}/setup.cfg
+    ${CMAKE_CURRENT_SOURCE_DIR}/vinnpy.i
+    ${CMAKE_CURRENT_SOURCE_DIR}/numpy.i
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+add_custom_command(
+    OUTPUT ${OUTPUT}
+    COMMAND ${SWIG_EXECUTABLE} -python -py3 -c++ -I${CMAKE_SOURCE_DIR}/src -outdir ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/vinnpy.i
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    DEPENDS ${DEPENDENCIES}
+    COMMENT "Generating Python files for packaging"
+)
+
+add_custom_target(vinnpy ALL DEPENDS ${OUTPUT}
+    SOURCES ${DEPENDENCIES})
+

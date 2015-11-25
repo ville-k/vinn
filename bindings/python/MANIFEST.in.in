@@ -1,0 +1,3 @@
+include vinnpy.i
+include numpy.i
+include README

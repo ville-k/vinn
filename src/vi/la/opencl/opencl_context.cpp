@@ -64,7 +64,7 @@ void opencl_context::load_kernels() {
   opencl::memory_source_loader loader(vi::la::opencl::paths_to_sources());
 #endif
   opencl::builder builder(loader);
-  //builder.add_build_options({"-DDOUBLE_SUPPORT_AVAILABLE"});
+  // builder.add_build_options({"-DDOUBLE_SUPPORT_AVAILABLE"});
   builder.add_source_paths({"matrix.cl", "activation_functions.cl", "convolution.cl"});
   builder.add_extension_requirements({"cl_khr_fp64"});
   opencl::build_result result = builder.build(*_context);
@@ -100,7 +100,7 @@ cl::Context& opencl_context::context() { return *_context; }
 cl::CommandQueue& opencl_context::command_queue() { return *_command_queue; }
 
 std::shared_ptr<vi::la::matrix_implementation>
-opencl_context::implement_matrix(size_t rows, size_t columns, const float *initial_values) {
+opencl_context::implement_matrix(size_t rows, size_t columns, const float* initial_values) {
   return std::shared_ptr<vi::la::matrix_implementation>(
       new opencl::matrix(*this, rows, columns, initial_values));
 }
@@ -130,7 +130,7 @@ void opencl_context::multiply(matrix& product, const matrix& operand_1, const ma
   _command_queue->finish();
 }
 
-void opencl_context::multiply(matrix &product, const matrix &operand_1, const float operand_2) {
+void opencl_context::multiply(matrix& product, const matrix& operand_1, const float operand_2) {
   opencl::matrix* product_impl = dynamic_cast<opencl::matrix*>(product.implementation());
   opencl::matrix* operand_1_impl = dynamic_cast<opencl::matrix*>(operand_1.implementation());
 
@@ -166,7 +166,7 @@ void opencl_context::multiply_elementwise(matrix& product, const matrix& operand
   _command_queue->finish();
 }
 
-void opencl_context::add(matrix &sum, const matrix &operand_1, const float operand_2) {
+void opencl_context::add(matrix& sum, const matrix& operand_1, const float operand_2) {
   opencl::matrix* sum_impl = dynamic_cast<opencl::matrix*>(sum.implementation());
   opencl::matrix* operand_1_impl = dynamic_cast<opencl::matrix*>(operand_1.implementation());
 

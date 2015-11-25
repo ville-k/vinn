@@ -18,7 +18,8 @@ TEST(layer_deserializer, deserializes_sigmoid_layer) {
   vi::io::layer_deserializer deserializer(layer);
   deserializer.deserialize(layer_node);
 
-  EXPECT_EQ(typeid(vi::nn::sigmoid_activation), typeid(layer.activation()));
+  vi::nn::activation_function* activation = layer.activation().get();
+  EXPECT_EQ(typeid(vi::nn::sigmoid_activation), typeid(*activation));
 }
 
 TEST(layer_deserializer, deserializes_softmax_layer) {
@@ -30,7 +31,8 @@ TEST(layer_deserializer, deserializes_softmax_layer) {
   vi::io::layer_deserializer deserializer(layer);
   deserializer.deserialize(layer_node);
 
-  EXPECT_EQ(typeid(vi::nn::softmax_activation), typeid(layer.activation()));
+  vi::nn::activation_function* activation = layer.activation().get();
+  EXPECT_EQ(typeid(vi::nn::softmax_activation), typeid(*activation));
 }
 
 TEST(layer_deserializer, deserializes_tanh_layer) {
@@ -42,7 +44,8 @@ TEST(layer_deserializer, deserializes_tanh_layer) {
   vi::io::layer_deserializer deserializer(layer);
   deserializer.deserialize(layer_node);
 
-  EXPECT_EQ(typeid(vi::nn::hyperbolic_tangent), typeid(layer.activation()));
+  vi::nn::activation_function* activation = layer.activation().get();
+  EXPECT_EQ(typeid(vi::nn::hyperbolic_tangent), typeid(*activation));
 }
 
 TEST(layer_deserializer, deserializes_linear_layer) {
@@ -54,7 +57,8 @@ TEST(layer_deserializer, deserializes_linear_layer) {
   vi::io::layer_deserializer deserializer(layer);
   deserializer.deserialize(layer_node);
 
-  EXPECT_EQ(typeid(vi::nn::linear_activation), typeid(layer.activation()));
+  vi::nn::activation_function* activation = layer.activation().get();
+  EXPECT_EQ(typeid(vi::nn::linear_activation), typeid(*activation));
 }
 
 TEST(layer_deserializer, fails_to_deserialize_unknown_activation_function) {

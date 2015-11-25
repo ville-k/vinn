@@ -8,7 +8,7 @@ namespace pt = boost::property_tree;
 TEST(layer_serializer, serializes_sigmoid_layer) {
   vi::la::cpu_context context;
   vi::nn::sigmoid_activation sigmoid;
-  vi::nn::layer layer(context, &sigmoid, 1, 1);
+  vi::nn::layer layer(context, std::make_shared<vi::nn::sigmoid_activation>(), 1, 1);
   vi::io::layer_serializer serializer(layer);
 
   pt::ptree layer_node;
@@ -18,8 +18,7 @@ TEST(layer_serializer, serializes_sigmoid_layer) {
 
 TEST(layer_serializer, serializes_tanh_layer) {
   vi::la::cpu_context context;
-  vi::nn::hyperbolic_tangent tanh;
-  vi::nn::layer layer(context, &tanh, 1, 1);
+  vi::nn::layer layer(context, std::make_shared<vi::nn::hyperbolic_tangent>(), 1, 1);
   vi::io::layer_serializer serializer(layer);
 
   pt::ptree layer_node;
@@ -29,8 +28,7 @@ TEST(layer_serializer, serializes_tanh_layer) {
 
 TEST(layer_serializer, serializes_softmax_layer) {
   vi::la::cpu_context context;
-  vi::nn::softmax_activation softmax;
-  vi::nn::layer layer(context, &softmax, 1, 1);
+  vi::nn::layer layer(context, std::make_shared<vi::nn::softmax_activation>(), 1, 1);
   vi::io::layer_serializer serializer(layer);
 
   pt::ptree layer_node;
@@ -40,8 +38,7 @@ TEST(layer_serializer, serializes_softmax_layer) {
 
 TEST(layer_serializer, serializes_linear_layer) {
   vi::la::cpu_context context;
-  vi::nn::linear_activation linear;
-  vi::nn::layer layer(context, &linear, 1, 1);
+  vi::nn::layer layer(context, std::make_shared<vi::nn::linear_activation>(), 1, 1);
   vi::io::layer_serializer serializer(layer);
 
   pt::ptree layer_node;
@@ -62,8 +59,7 @@ public:
 
 TEST(layer_serializer, fails_serializing_unsupported_activation_function) {
   vi::la::cpu_context context;
-  test::unsupported_activation unsupported;
-  vi::nn::layer layer(context, &unsupported, 1, 1);
+  vi::nn::layer layer(context, std::make_shared<test::unsupported_activation>(), 1, 1);
   vi::io::layer_serializer serializer(layer);
 
   pt::ptree layer_node;

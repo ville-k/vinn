@@ -15,7 +15,7 @@ namespace vi {
 namespace la {
 
 std::shared_ptr<vi::la::matrix_implementation>
-cpu_context::implement_matrix(size_t rows, size_t columns, const float *initial_values) {
+cpu_context::implement_matrix(size_t rows, size_t columns, const float* initial_values) {
   matrix_implementation* impl = new cpu::matrix(*this, rows, columns, initial_values);
   return std::shared_ptr<matrix_implementation>(impl);
 }
@@ -37,7 +37,7 @@ void cpu_context::multiply(matrix& product, const matrix& operand_1, const matri
   }
 }
 
-void cpu_context::multiply(matrix &product, const matrix &operand_1, const float operand_2) {
+void cpu_context::multiply(matrix& product, const matrix& operand_1, const float operand_2) {
   cpu::matrix* product_impl = dynamic_cast<cpu::matrix*>(product.implementation());
   cpu::matrix* operand_1_impl = dynamic_cast<cpu::matrix*>(operand_1.implementation());
 
@@ -58,13 +58,13 @@ void cpu_context::multiply_elementwise(matrix& product, const matrix& operand_1,
   for (size_t m = 0U; m < product.row_count(); ++m) {
     for (size_t n = 0U; n < product.column_count(); ++n) {
       const float value = operand_1_impl->get()[m * operand_1.column_count() + n] *
-                           operand_2_impl->get()[m * operand_2.column_count() + n];
+                          operand_2_impl->get()[m * operand_2.column_count() + n];
       product_impl->get()[m * product.column_count() + n] = value;
     }
   }
 }
 
-void cpu_context::add(matrix &sum, const matrix &operand_1, const float operand_2) {
+void cpu_context::add(matrix& sum, const matrix& operand_1, const float operand_2) {
   cpu::matrix* sum_impl = dynamic_cast<cpu::matrix*>(sum.implementation());
   cpu::matrix* operand_1_impl = dynamic_cast<cpu::matrix*>(operand_1.implementation());
 
@@ -84,7 +84,7 @@ void cpu_context::add(matrix& sum, const matrix& operand_1, const matrix& operan
   for (size_t m = 0U; m < sum.row_count(); ++m) {
     for (size_t n = 0U; n < sum.column_count(); ++n) {
       const float value = operand_1_impl->get()[m * operand_1.column_count() + n] +
-                           operand_2_impl->get()[m * operand_2.column_count() + n];
+                          operand_2_impl->get()[m * operand_2.column_count() + n];
       sum_impl->get()[m * sum.column_count() + n] = value;
     }
   }
@@ -98,7 +98,7 @@ void cpu_context::subtract(matrix& difference, const matrix& operand_1, const ma
   for (size_t m = 0U; m < difference.row_count(); ++m) {
     for (size_t n = 0U; n < difference.column_count(); ++n) {
       const float value = operand_1_impl->get()[m * operand_1.column_count() + n] -
-                           operand_2_impl->get()[m * operand_2.column_count() + n];
+                          operand_2_impl->get()[m * operand_2.column_count() + n];
       difference_impl->get()[m * difference.column_count() + n] = value;
     }
   }

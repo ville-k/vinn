@@ -122,8 +122,8 @@ TEST_P(matrix_tests, access_valid_row_index) {
 
 TEST_P(matrix_tests, access_invalid_row) {
   matrix a(*GetParam(), 3U, 3U);
-  EXPECT_THROW(a[3], incompatible_dimensions);
-  EXPECT_THROW(a[42], incompatible_dimensions);
+  EXPECT_THROW(a[3], std::out_of_range);
+  EXPECT_THROW(a[42], std::out_of_range);
 }
 
 TEST_P(matrix_tests, matrix_matrix_multiplication) {
@@ -262,9 +262,9 @@ TEST_P(matrix_tests, sum_columns) {
 
 TEST_P(matrix_tests, splice_columns_with_invalid_indices) {
   matrix a(*GetParam(), 3U, 5U);
-  EXPECT_THROW(a.columns(1U, a.column_count()), incompatible_dimensions);
-  EXPECT_THROW(a.columns(2U, 1U), incompatible_dimensions);
-  EXPECT_THROW(a.columns(a.column_count(), a.column_count()), incompatible_dimensions);
+  EXPECT_THROW(a.columns(1U, a.column_count()), std::out_of_range);
+  EXPECT_THROW(a.columns(2U, 1U), std::out_of_range);
+  EXPECT_THROW(a.columns(a.column_count(), a.column_count()), std::out_of_range);
 }
 
 TEST_P(matrix_tests, splice_columns) {
@@ -280,9 +280,9 @@ TEST_P(matrix_tests, splice_columns) {
 
 TEST_P(matrix_tests, splice_rows_with_invalid_indices) {
   matrix a(*GetParam(), 5U, 4U);
-  EXPECT_THROW(a.rows(1U, a.row_count()), incompatible_dimensions);
-  EXPECT_THROW(a.rows(2U, 1U), incompatible_dimensions);
-  EXPECT_THROW(a.rows(a.row_count(), a.row_count()), incompatible_dimensions);
+  EXPECT_THROW(a.rows(1U, a.row_count()), std::out_of_range);
+  EXPECT_THROW(a.rows(2U, 1U), std::out_of_range);
+  EXPECT_THROW(a.rows(a.row_count(), a.row_count()), std::out_of_range);
 }
 
 TEST_P(matrix_tests, splice_rows) {
@@ -326,9 +326,9 @@ TEST_P(matrix_tests, sub_matrix_succeeds) {
 
 TEST_P(matrix_tests, sub_matrix_fails) {
   matrix a(*GetParam(), 6U, 6U);
-  EXPECT_THROW(a.sub_matrix(0, a.row_count(), 0, 1), incompatible_dimensions);
-  EXPECT_THROW(a.sub_matrix(0, 1, 0, a.column_count()), incompatible_dimensions);
-  EXPECT_THROW(a.sub_matrix(0, a.row_count(), 0, a.column_count()), incompatible_dimensions);
+  EXPECT_THROW(a.sub_matrix(0, a.row_count(), 0, 1), std::out_of_range);
+  EXPECT_THROW(a.sub_matrix(0, 1, 0, a.column_count()), std::out_of_range);
+  EXPECT_THROW(a.sub_matrix(0, a.row_count(), 0, a.column_count()), std::out_of_range);
 }
 
 // Convolutions are WIP - not working on OSX CPU based OpenCL due to missing

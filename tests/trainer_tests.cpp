@@ -17,11 +17,12 @@ protected:
     vi::la::context* context = std::get<0>(GetParam());
     _trainer = std::get<1>(GetParam());
 
-    vi::nn::layer l1(*context, new vi::nn::sigmoid_activation(), 25, 20 * 20);
-    //vi::nn::layer l2(*context, new vi::nn::sigmoid_activation(), 10, 25);
-    vi::nn::layer l2(*context, new vi::nn::softmax_activation(), 10, 25);
+    _network = new vi::nn::network;
+    _network->add(std::make_shared<vi::nn::layer>(
+        *context, std::make_shared<vi::nn::sigmoid_activation>(), 25, 20 * 20));
+    _network->add(std::make_shared<vi::nn::layer>(
+        *context, std::make_shared<vi::nn::softmax_activation>(), 10, 25));
 
-    _network = new vi::nn::network(*context, {l1, l2});
     _features = new vi::la::matrix(*context, 100U, 400U, 42.0f);
     _targets = new vi::la::matrix(*context, 100U, 10U, 0.0f);
     for (size_t row = 0U; row < 100U; ++row) {
@@ -58,11 +59,10 @@ TEST_P(trainer_tests, train_with_l2_regularizer_succeeds) {
 
 TEST_P(trainer_tests, train_calls_early_stopping_callback) {
   size_t early_stopping_called(0U);
-  _trainer->set_stop_early(
-      [&early_stopping_called](const vi::nn::network&, size_t, float) -> bool {
-        early_stopping_called++;
-        return false;
-      });
+  _trainer->set_stop_early([&early_stopping_called](const vi::nn::network&, size_t, float) -> bool {
+    early_stopping_called++;
+    return false;
+  });
 
   float final_cost = _trainer->train(*_network, *_features, *_targets, _cost_function);
   EXPECT_LT(0.0f, final_cost);
@@ -72,11 +72,10 @@ TEST_P(trainer_tests, train_calls_early_stopping_callback) {
 
 TEST_P(trainer_tests, train_stops_training_early) {
   size_t early_stopping_called(0U);
-  _trainer->set_stop_early(
-      [&early_stopping_called](const vi::nn::network&, size_t, float) -> bool {
-        early_stopping_called++;
-        return true;
-      });
+  _trainer->set_stop_early([&early_stopping_called](const vi::nn::network&, size_t, float) -> bool {
+    early_stopping_called++;
+    return true;
+  });
 
   float final_cost = _trainer->train(*_network, *_features, *_targets, _cost_function);
   EXPECT_LT(0.0f, final_cost);

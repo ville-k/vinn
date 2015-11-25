@@ -6,7 +6,7 @@ namespace pt = boost::property_tree;
 
 TEST(network_deserializer, deserializes_layers) {
   vi::la::cpu_context context;
-  vi::nn::network network(context, {});
+  vi::nn::network network;
 
   pt::ptree serialized;
   pt::ptree layers_node;
@@ -16,6 +16,6 @@ TEST(network_deserializer, deserializes_layers) {
   serialized.add_child("layers", layers_node);
 
   vi::io::network_deserializer deserializer(network);
-  deserializer.deserialize(serialized);
-  EXPECT_EQ(1U, network.layers().size());
+  deserializer.deserialize(serialized, context);
+  EXPECT_EQ(1U, network.size());
 }

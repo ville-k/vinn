@@ -13,17 +13,16 @@ class layer_tests : public ::testing::TestWithParam<vi::la::context*> {
 
 protected:
   matrix calculate_numerical_gradient(const layer& l, cost_function& cost_function,
-                                      const matrix& input, const matrix& expected_output,
-                                      float e) {
-    matrix perturbed_weights(l.get_weights());
-    matrix numerical_gradient(*GetParam(), l.get_weights().size(), 0.0);
+                                      const matrix& input, const matrix& expected_output, float e) {
+    matrix perturbed_weights(l.weights());
+    matrix numerical_gradient(*GetParam(), l.weights().size(), 0.0);
     for (size_t m = 0U; m < perturbed_weights.row_count(); ++m) {
       for (size_t n = 0U; n < perturbed_weights.column_count(); ++n) {
         float original = perturbed_weights[m][n];
 
         perturbed_weights[m][n] = original - e;
         layer pl1(l);
-        pl1.set_weights(perturbed_weights);
+        pl1.weights(perturbed_weights);
 
         auto hypothesis = pl1.forward(input);
         matrix cost1 = cost_function.cost(expected_output, hypothesis);
@@ -31,7 +30,7 @@ protected:
 
         perturbed_weights[m][n] = original + e;
         layer pl2(l);
-        pl2.set_weights(perturbed_weights);
+        pl2.weights(perturbed_weights);
 
         auto hypothesis2 = pl2.forward(input);
         matrix cost2 = cost_function.cost(expected_output, hypothesis2);
@@ -64,7 +63,8 @@ INSTANTIATE_TEST_CASE_P(context, layer_tests, ::testing::ValuesIn(test::all_cont
 TEST_P(layer_tests, forward_with_single_example) {
   const size_t input_units = 5U;
   const size_t output_units = 3U;
-  vi::nn::layer l(*GetParam(), new vi::nn::sigmoid_activation(), output_units, input_units);
+  vi::nn::layer l(*GetParam(), std::make_shared<vi::nn::sigmoid_activation>(), output_units,
+                  input_units);
 
   vi::la::matrix input(*GetParam(), 1, input_units, 1.0);
   vi::la::matrix output = l.forward(input);
@@ -75,7 +75,7 @@ TEST_P(layer_tests, forward_with_single_example) {
 TEST_P(layer_tests, forward_with_multiple_examples) {
   const size_t input_units = 5U;
   const size_t output_units = 3U;
-  vi::nn::layer l(*GetParam(), new sigmoid_activation(), output_units, input_units);
+  vi::nn::layer l(*GetParam(), std::make_shared<sigmoid_activation>(), output_units, input_units);
 
   vi::la::matrix input(*GetParam(), 3, input_units, 1.0);
   vi::la::matrix output = l.forward(input);
@@ -86,7 +86,7 @@ TEST_P(layer_tests, forward_with_multiple_examples) {
 TEST_P(layer_tests, backward) {
   const size_t input_units = 5U;
   const size_t output_units = 3U;
-  layer l(*GetParam(), new sigmoid_activation(), output_units, input_units);
+  layer l(*GetParam(), std::make_shared<sigmoid_activation>(), output_units, input_units);
 
   matrix input(*GetParam(), 1U, input_units, 1U);
   matrix activations = l.forward(input);
@@ -96,14 +96,14 @@ TEST_P(layer_tests, backward) {
   matrix& delta(delta_and_gradient.first);
   EXPECT_EQ(input.size(), delta.size());
   matrix& gradient(delta_and_gradient.second);
-  EXPECT_EQ(l.get_weights().size(), gradient.size());
+  EXPECT_EQ(l.weights().size(), gradient.size());
 }
 
 TEST_P(layer_tests, gradient_check_sigmoid_activation) {
   srand(0U);
   const size_t input_units(2U);
   const size_t output_units(6U);
-  layer l(*GetParam(), new sigmoid_activation(), output_units, input_units);
+  layer l(*GetParam(), std::make_shared<sigmoid_activation>(), output_units, input_units);
 
   matrix input(*GetParam(), 1U, input_units, 1U);
   randomize(input);
@@ -132,7 +132,7 @@ TEST_P(layer_tests, gradient_check_hyperbolic_tangent_activation) {
   srand(0U);
   const size_t input_units(2U);
   const size_t output_units(6U);
-  layer l(*GetParam(), new hyperbolic_tangent(), output_units, input_units);
+  layer l(*GetParam(), std::make_shared<hyperbolic_tangent>(), output_units, input_units);
 
   matrix input(*GetParam(), 1U, input_units, 1U);
   randomize(input);
@@ -163,7 +163,7 @@ TEST_P(layer_tests, gradient_check_softmax_activation) {
   srand(0U);
   const size_t input_units(2U);
   const size_t output_units(6U);
-  layer l(*GetParam(), new softmax_activation(), output_units, input_units);
+  layer l(*GetParam(), std::make_shared<softmax_activation>(), output_units, input_units);
 
   matrix input(*GetParam(), 1U, input_units, 1U);
   randomize(input);

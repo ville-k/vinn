@@ -12,10 +12,13 @@ class activation_function;
 
 class layer {
 public:
-  layer(vi::la::context& context, activation_function* activation, size_t output_count,
-        size_t input_count);
-  layer(vi::la::context& context, activation_function* activation, const vi::la::matrix& weights);
+  layer();
+  layer(vi::la::context& context, std::shared_ptr<activation_function> activation,
+        size_t output_count, size_t input_count);
+  layer(std::shared_ptr<activation_function> activation, const vi::la::matrix& weights);
   layer(const layer& other);
+
+  layer& operator=(const layer& other);
 
   vi::la::matrix forward(const vi::la::matrix& input) const;
 
@@ -23,21 +26,21 @@ public:
                                                      const vi::la::matrix& activations,
                                                      const vi::la::matrix& error) const;
 
-  size_t get_input_count() const;
-  size_t get_output_count() const;
+  size_t input_count() const;
+  size_t output_count() const;
 
-  const activation_function& activation() const;
-  void activation(const activation_function& activation);
+  std::shared_ptr<activation_function> activation() const;
+  void activation(std::shared_ptr<activation_function> activation);
 
-  const vi::la::matrix& get_weights() const;
-  void set_weights(const vi::la::matrix& weights);
+  const vi::la::matrix& weights() const;
+  void weights(const vi::la::matrix& weights);
 
   vi::la::context& context();
+  vi::la::context& context() const;
 
 private:
-  activation_function* _activation;
+  std::shared_ptr<activation_function> _activation;
   vi::la::matrix _weights;
-  vi::la::context& _context;
 };
 }
 }

@@ -24,7 +24,7 @@ private:
   void parse_header(const std::string& line, std::vector<std::string>& header) const;
   void parse_row(const std::string& line, std::vector<float>& row) const;
   std::shared_ptr<float> make_buffer(const std::vector<std::vector<float>>& matrix_values,
-                                      size_t max_columns) const;
+                                     size_t max_columns) const;
 
   void store(const vi::la::matrix& matrix, std::vector<std::string>* header);
 

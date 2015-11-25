@@ -12,12 +12,14 @@ class matrix_implementation;
 /// Interface that compute contexes must conform to
 class context {
 public:
+  virtual ~context() {}
+
   virtual void multiply(matrix& product, const matrix& operand_1, const matrix& operand_2) = 0;
-  virtual void multiply(matrix &product, const matrix &operand_1, const float operand_2) = 0;
+  virtual void multiply(matrix& product, const matrix& operand_1, const float operand_2) = 0;
   virtual void multiply_elementwise(matrix& product, const matrix& operand_1,
                                     const matrix& operand_2) = 0;
 
-  virtual void add(matrix &sum, const matrix &operand_1, const float operand_2) = 0;
+  virtual void add(matrix& sum, const matrix& operand_1, const float operand_2) = 0;
   virtual void add(matrix& sum, const matrix& operand_1, const matrix& operand_2) = 0;
   virtual void subtract(matrix& difference, const matrix& operand_1, const matrix& operand_2) = 0;
 
@@ -43,7 +45,7 @@ public:
                            size_t channels) = 0;
 
   virtual std::shared_ptr<vi::la::matrix_implementation>
-  implement_matrix(size_t rows, size_t columns, const float *initial_values) = 0;
+  implement_matrix(size_t rows, size_t columns, const float* initial_values) = 0;
 };
 }
 }

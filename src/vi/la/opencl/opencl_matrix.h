@@ -23,7 +23,7 @@ public:
 
   virtual vi::la::context& owning_context() const;
 
-  virtual float * raw_data();
+  virtual float* raw_data();
 
   cl::Buffer* get();
 

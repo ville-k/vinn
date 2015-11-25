@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.2)
 project(vinn)
 
 set(vinn_VERSION_MAJOR 0)
-set(vinn_VERSION_MINOR 1)
-set(vinn_VERSION_PATCH 1)
+set(vinn_VERSION_MINOR 2)
+set(vinn_VERSION_PATCH 0)
 set(vinn_VERSION "${vinn_VERSION_MAJOR}.${vinn_VERSION_MINOR}.${vinn_VERSION_PATCH}")
 
 
@@ -26,7 +26,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
-  # Treat the missing c++ wrapper as a system include to avoid warnings 
+  # Treat the missing c++ wrapper as a system include to avoid warnings
   include_directories(SYSTEM "${PROJECT_SOURCE_DIR}/src/vi/la/opencl/darwin")
 else()
   # gcc 4.8 has TR1 tuple
@@ -51,6 +51,7 @@ enable_testing()
 add_subdirectory(src)
 add_subdirectory(lib/googletest)
 add_subdirectory(lib/benchmark)
+add_subdirectory(bindings/python)
 add_subdirectory(tests)
 add_subdirectory(benchmarks)
 

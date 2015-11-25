@@ -1,6 +1,7 @@
 #ifndef __vinn__model__
 #define __vinn__model__
 
+#include <vi/la/context.h>
 #include <vi/nn/network.h>
 #include <string>
 #include <boost/filesystem/path.hpp>
@@ -17,7 +18,7 @@ public:
 
   model(const std::string& path);
 
-  void load(vi::nn::network& network);
+  void load(vi::nn::network& network, vi::la::context& context);
   void store(const vi::nn::network& network);
 
 private:

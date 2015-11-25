@@ -59,7 +59,7 @@ void csv_file::parse_row(const std::string& line, std::vector<float>& row) const
 }
 
 std::shared_ptr<float> csv_file::make_buffer(const std::vector<std::vector<float>>& matrix_values,
-                                              size_t max_columns) const {
+                                             size_t max_columns) const {
   float* values = new float[matrix_values.size() * max_columns];
   size_t offset = 0U;
   for (auto row : matrix_values) {

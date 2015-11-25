@@ -49,7 +49,7 @@ TEST_P(activation_function_tests, softmax_activation) {
   EXPECT_NEAR(0.6224593312, input[1][1], max_error);
 }
 
-//TEST_P(activation_function_tests, softmax_gradient) {
+// TEST_P(activation_function_tests, softmax_gradient) {
 //  matrix input(*GetParam(), {{-1.0f, -0.5f},
 //                             {0.5f,  1.0f}});
 //

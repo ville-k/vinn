@@ -8,6 +8,8 @@ namespace nn {
 
 class cost_function {
 public:
+  virtual ~cost_function() {}
+
   virtual vi::la::matrix cost(const vi::la::matrix& expected, const vi::la::matrix& actual) = 0;
   virtual vi::la::matrix cost_derivative(const vi::la::matrix& expected,
                                          const vi::la::matrix& actual) = 0;
